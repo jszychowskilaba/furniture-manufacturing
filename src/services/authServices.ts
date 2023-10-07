@@ -1,5 +1,7 @@
 /* eslint-disable no-useless-catch */
-import { UserCredentials } from '../types';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { v4 as uuid } from 'uuid';
+import { UserCredentials, Tokens } from '../types';
 import * as Credentials from '../databases/Credentials';
 
 const isValidCredentials = (userCredentials: UserCredentials) => {
@@ -11,9 +13,13 @@ const isValidCredentials = (userCredentials: UserCredentials) => {
   }
 };
 
-const generateTokens = (userCredentials: UserCredentials) => {
-  const a = userCredentials;
-  return a;
+const generateTokens = () => {
+  const tokens: Tokens = {
+    token: uuid(),
+    refreshToken: uuid(),
+  };
+
+  return tokens;
 };
 
 export { isValidCredentials, generateTokens };

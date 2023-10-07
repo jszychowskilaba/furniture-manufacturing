@@ -22,7 +22,7 @@ const login = (req: Request, res: Response) => {
 
   try {
     if (authServices.isValidCredentials(userCredentials)) {
-      const authTokens = authServices.generateTokens(userCredentials);
+      const authTokens = authServices.generateTokens();
       res.status(200).send({ status: 'OK', data: authTokens });
     }
   } catch (error) {
