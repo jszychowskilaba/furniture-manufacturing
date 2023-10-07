@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
-import { UserCredentials } from '../types';
+import { UserCredentials, Error } from '../types';
 
 const DB = [
   { username: 'jose', password: '123456' },
@@ -7,17 +7,16 @@ const DB = [
 ];
 
 const isValidCredentials = (userCredentials: UserCredentials) => {
-  // eslint-disable-next-line consistent-return
-  DB.forEach((credential) => {
-    if (
-      credential.username === userCredentials.username
-      && credential.password === userCredentials.password
-    ) {
-      return true;
-    }
-  });
+  const isValid = DB.find(
+    (credential) => credential.username === userCredentials.username
+      && credential.password === userCredentials.password,
+  );
 
-  throw { status: 404, message: 'Invalid user or password' };
+  if (isValid) return true;
+
+  const error: Error = { status: 404, message: 'Invalid user or password' };
+  throw error;
 };
 
+// eslint-disable-next-line import/prefer-default-export
 export { isValidCredentials };

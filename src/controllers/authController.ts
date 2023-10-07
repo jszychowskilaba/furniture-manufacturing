@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Request, Response } from 'express';
 import * as authServices from '../services/authServices';
+import { UserCredentials, Error } from '../types';
 
 const login = (req: Request, res: Response) => {
   const { body } = req;
@@ -14,7 +15,7 @@ const login = (req: Request, res: Response) => {
     });
   }
 
-  const userCredentials = {
+  const userCredentials: UserCredentials = {
     username: body.username,
     password: body.password,
   };
@@ -26,8 +27,11 @@ const login = (req: Request, res: Response) => {
     }
   } catch (error) {
     res
-      .status(error?.status || 500)
-      .send({ status: 'FAILED', data: { error: error?.message || error } });
+      .status((error as Error).status || 500)
+      .send({
+        status: 'FAILED',
+        data: { error: (error as Error).message || error },
+      });
   }
 };
 

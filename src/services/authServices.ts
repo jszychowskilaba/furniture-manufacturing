@@ -1,6 +1,8 @@
+/* eslint-disable no-useless-catch */
+import { UserCredentials } from '../types';
 import * as Credentials from '../databases/Credentials';
 
-const isValidCredentials = (userCredentials: object) => {
+const isValidCredentials = (userCredentials: UserCredentials) => {
   try {
     const isValid = Credentials.isValidCredentials(userCredentials);
     return isValid;
@@ -9,6 +11,9 @@ const isValidCredentials = (userCredentials: object) => {
   }
 };
 
-const generateTokens = (userCredentials: object) => null;
+const generateTokens = (userCredentials: UserCredentials) => {
+  const a = userCredentials;
+  return a;
+};
 
 export { isValidCredentials, generateTokens };
