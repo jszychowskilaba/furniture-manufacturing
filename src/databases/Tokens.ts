@@ -51,7 +51,11 @@ const getTokenAsync = async (key: string): Promise<string | null> => {
  * @param tokenType The  token type
  */
 const storeTokenAsync = async (key: string, value: string): Promise<void> => {
-  await setTokenAsync(key, value);
+  try {
+    await setTokenAsync(key, value);
+  } catch (error) {
+    throw { status: 500, message: error };
+  }
 };
 
 /**
@@ -65,6 +69,4 @@ const deleteTokenAsync = async (key: string): Promise<void> => {
     throw { status: 500, message: error };
   }
 };
-export {
-  TokensDB, storeTokenAsync, getTokenAsync, deleteTokenAsync,
-};
+export { TokensDB, storeTokenAsync, getTokenAsync, deleteTokenAsync };
