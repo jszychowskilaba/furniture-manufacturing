@@ -40,7 +40,7 @@ const getTokenAsync = async (key: string): Promise<string | null> => {
     const token = await TokensDB.get(key);
     return token;
   } catch (error) {
-    throw { status: 500, message: error };
+    throw { status: 500, message: `Can not get token. ${error}` };
   }
 };
 
@@ -54,7 +54,7 @@ const storeTokenAsync = async (key: string, value: string): Promise<void> => {
   try {
     await setTokenAsync(key, value);
   } catch (error) {
-    throw { status: 500, message: error };
+    throw { status: 500, message: `Can not store token. ${error}` };
   }
 };
 
@@ -66,7 +66,9 @@ const deleteTokenAsync = async (key: string): Promise<void> => {
   try {
     await TokensDB.del(key);
   } catch (error) {
-    throw { status: 500, message: error };
+    throw { status: 500, message: `Can not delete token. ${error}` };
   }
 };
-export { TokensDB, storeTokenAsync, getTokenAsync, deleteTokenAsync };
+export {
+  TokensDB, storeTokenAsync, getTokenAsync, deleteTokenAsync,
+};
