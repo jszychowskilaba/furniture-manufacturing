@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
 import express, { Application } from 'express';
 import bodyParser from 'body-parser';
@@ -9,10 +10,13 @@ import { TokensDB } from './databases/Tokens';
 // TokensDB docker must be already executed
 (async () => {
   TokensDB.on('error', (error: unknown) => {
-    // eslint-disable-next-line no-console
     throw error;
   });
-  await TokensDB.connect();
+  try {
+    await TokensDB.connect();
+  } catch (error) {
+    console.log('Redis TokensDB', error);
+  }
 })();
 
 const app: Application = express();
@@ -22,7 +26,6 @@ app.use(bodyParser.json());
 app.use('/api/v1/auth', v1AuthRouter);
 
 app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
   console.log(`API listening port ${PORT}...`);
 });
 
