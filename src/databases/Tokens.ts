@@ -44,9 +44,25 @@ const getTokenAsync = async (key: string): Promise<string | null> => {
   }
 };
 
-const createToken = async (uuid: string, userCredentials: UserCredentials) => {
-  await setTokenAsync(uuid, userCredentials.username);
-  await setTokenAsync(userCredentials.username, uuid);
+/**
+ * Store token in TokensDB. Two values are stored. Token can be
+ * token or refresh token.
+ * 1. The uuid as key and the value as the <username.token_type>
+ * 2. The <username.token_type> as key and the uuid as the value.
+ * 1 => Allows as to know if the token is valid, and update 2.
+ * 2 => Allows as to know the tokens uuid, so we can delete previous
+ * tokens when the user loges in again.
+ * @param uuid The uuid
+ * @param userCredentials The user credentials
+ * @param tokenType The  token type
+ */
+const storeTokenAsync = async (
+  uuid: string,
+  userCredentials: UserCredentials,
+  tokenType: string,
+): Promise<void> => {
+  await setTokenAsync(uuid, `${userCredentials.username}.${tokenType}`);
+  await setTokenAsync(`${userCredentials.username}.${tokenType}`, uuid);
 };
 
-export { TokensDB, createToken, getTokenAsync };
+export { TokensDB, storeTokenAsync, getTokenAsync };
