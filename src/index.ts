@@ -3,6 +3,17 @@ import express, { Application } from 'express';
 import bodyParser from 'body-parser';
 import v1AuthRouter from './v1/routes/authRoutes';
 import 'dotenv/config';
+import TokensDB from './databases/Tokens';
+
+// Starting redis client for auth tokens database
+// TokensDB docker must be already executed
+(async () => {
+  TokensDB.on('error', (error) => {
+    // eslint-disable-next-line no-console
+    console.error('Redis docker client.', error);
+  });
+  await TokensDB.connect();
+})();
 
 const app: Application = express();
 const PORT: number = Number(process.env.PORT) || 3000;
