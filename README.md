@@ -447,3 +447,12 @@ This API **streamlines the process** for estimating production time, materials c
   - 404, not found
 
 </details>
+
+
+# Notes
+
+## Docker
+### Redis
+- REDIS_VERSION = 7.2.1
+- installation command: docker create --name TokensDB -p6379:6379 redis
+- execution command: docker start TokensDB
