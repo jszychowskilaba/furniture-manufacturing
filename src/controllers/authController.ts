@@ -26,12 +26,10 @@ const login = (req: Request, res: Response) => {
       res.status(200).send({ status: 'OK', data: authTokens });
     }
   } catch (error) {
-    res
-      .status((error as Error).status || 500)
-      .send({
-        status: 'FAILED',
-        data: { error: (error as Error).message || error },
-      });
+    res.status((error as Error).status || 500).send({
+      status: 'FAILED',
+      data: { error: (error as Error).message || error },
+    });
   }
 };
 
