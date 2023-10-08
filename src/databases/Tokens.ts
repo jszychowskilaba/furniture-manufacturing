@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
 import { createClient } from 'redis';
-import { UserCredentials, Error } from '../types';
+import { Error } from '../types';
 
 // Create redis TokensDB client
 const TokensDB = createClient({ url: 'redis://localhost:6379' });
@@ -45,24 +45,26 @@ const getTokenAsync = async (key: string): Promise<string | null> => {
 };
 
 /**
- * Store token in TokensDB. Two values are stored. Token can be
- * token or refresh token.
- * 1. The uuid as key and the value as the <username.token_type>
- * 2. The <username.token_type> as key and the uuid as the value.
- * 1 => Allows as to know if the token is valid, and update 2.
- * 2 => Allows as to know the tokens uuid, so we can delete previous
- * tokens when the user loges in again.
+ * Store pair of key value in TokensDB
  * @param uuid The uuid
  * @param userCredentials The user credentials
  * @param tokenType The  token type
  */
-const storeTokenAsync = async (
-  uuid: string,
-  userCredentials: UserCredentials,
-  tokenType: string,
-): Promise<void> => {
-  await setTokenAsync(uuid, `${userCredentials.username}.${tokenType}`);
-  await setTokenAsync(`${userCredentials.username}.${tokenType}`, uuid);
+const storeTokenAsync = async (key: string, value: string): Promise<void> => {
+  await setTokenAsync(key, value);
 };
 
-export { TokensDB, storeTokenAsync, getTokenAsync };
+/**
+ * Delete pair of key value given a key in TokensDB
+ * @param key The key
+ */
+const deleteTokenAsync = async (key: string): Promise<void> => {
+  try {
+    await TokensDB.del(key);
+  } catch (error) {
+    throw { status: 500, message: error };
+  }
+};
+export {
+  TokensDB, storeTokenAsync, getTokenAsync, deleteTokenAsync,
+};
