@@ -27,7 +27,7 @@ const login = async (req: Request, res: Response) => {
 
   // Updating tokens
   try {
-    const [token, refreshToken] = await authServices.login(userCredentials);
+    const [token, refreshToken] = await authServices.updateTokens(userCredentials);
     res.status(200).send({
       message: 'Login successful',
       token,

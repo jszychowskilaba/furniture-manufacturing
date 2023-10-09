@@ -21,8 +21,7 @@ const isValidCredentials = (userCredentials: UserCredentials): boolean => {
 };
 
 /**
- * Login a user given a user credential. If logig successful, updates
- * token, refresh token and return them. It works by:
+ * Updates token, refresh token and return them. It works by:
  * 1. Storing tokens with user information as key, and token as value.
  *  These pair of key values are used for tracking the tokens for
  *  updating them.
@@ -32,7 +31,7 @@ const isValidCredentials = (userCredentials: UserCredentials): boolean => {
  * @param userCredentials The credential
  * @returns The tokens
  */
-const login = async (userCredentials: UserCredentials): Promise<string[]> => {
+const updateTokens = async (userCredentials: UserCredentials): Promise<string[]> => {
   isValidCredentials(userCredentials);
 
   // Creating access key
@@ -76,4 +75,4 @@ const login = async (userCredentials: UserCredentials): Promise<string[]> => {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export { login };
+export { updateTokens };
