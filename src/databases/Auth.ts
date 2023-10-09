@@ -1,20 +1,25 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
 import { createClient } from 'redis';
 import { Error } from '../types';
+import 'dotenv/config';
 
 // Create redis TokensDB client
 const TokensDB = createClient({ url: 'redis://localhost:6379' });
 
 /**
- * Set a pair of key value on TokensDB. Thows an error if operation
- * is not succesfull.
+ * Set a pair of key value on TokensDB with a expiration time
  * @param key The key
  * @param value The value
+ * @param value The expiration time
  */
-const setTokenAsync = async (key: string, value: string): Promise<void> => {
+const storeTokenAsync = async (
+  key: string,
+  value: string,
+  expirationTime: number,
+): Promise<void> => {
   try {
     const isCreated = await TokensDB.set(key, value);
-
+    await TokensDB.expire(key, expirationTime);
     if (!isCreated) {
       const error: Error = {
         status: 500,
@@ -41,20 +46,6 @@ const getTokenAsync = async (key: string): Promise<string | null> => {
     return token;
   } catch (error) {
     throw { status: 500, message: `Can not get token. ${error}` };
-  }
-};
-
-/**
- * Store pair of key value in TokensDB
- * @param uuid The uuid
- * @param userCredentials The user credentials
- * @param tokenType The  token type
- */
-const storeTokenAsync = async (key: string, value: string): Promise<void> => {
-  try {
-    await setTokenAsync(key, value);
-  } catch (error) {
-    throw { status: 500, message: `Can not store token. ${error}` };
   }
 };
 
