@@ -21,7 +21,8 @@ const isValidCredentials = (userCredentials: UserCredentials): boolean => {
 };
 
 /**
- * Updates token, refresh token and return them. It works by:
+ * Updates token and refreshToken with expiration time, refresh token 
+ * and return them. It works by:
  * 1. Storing tokens with user information as key, and token as value.
  *  These pair of key values are used for tracking the tokens for
  *  updating them.
