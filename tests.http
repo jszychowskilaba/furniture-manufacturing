@@ -3,12 +3,12 @@ Content-Type: application/json
 Authorization: 3720d58d-3658-479c-abf3-61529c67db8e
 
 {
-    "username": "jose",
-    "password": "123456"
+    "username": "juan",
+    "password": "5678910"
 }
 
 ### 
 POST http://localhost:3000/secret-area
 Content-Type: application/json
-Authorization: 57bd71a4-e153-449a-a784-ee184c610842
+Authorization: 61a3ec8f-e6d0-4e218673-ec49f4b5a941
 

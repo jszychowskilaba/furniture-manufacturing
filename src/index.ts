@@ -29,7 +29,7 @@ app.use('/api/v1/auth', v1AuthRouter);
 
 // For testing middleware
 app.use('/secret-area', authenticateUser, (req, res) => {
-  res.status(200).send('I am inside the secret area');
+  res.status(200).json('I am inside the secret area');
 });
 
 app.listen(PORT, () => {

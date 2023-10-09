@@ -33,7 +33,7 @@ const login = async (req: Request, res: Response) => {
       refreshToken,
     });
   } catch (error) {
-    res.status((error as Error).status).send({ message: (error as Error).message });
+    res.status((error as Error).status).json((error as Error).message);
   }
 };
 
