@@ -14,7 +14,10 @@ const isValidCredentials = (userCredentials: UserCredentials) => {
 
   if (isValid) return true;
 
-  const error: Error = { status: 404, message: 'Invalid user or password' };
+  const error: Error = {
+    status: 404,
+    message: 'Invalid user or password',
+  };
   throw error;
 };
 
