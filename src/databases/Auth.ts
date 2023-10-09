@@ -28,9 +28,13 @@ const storeTokenAsync = async (
       // eslint-disable-next-line @typescript-eslint/no-throw-literal
       throw error;
     }
-  } catch (error) {
+  } catch (err) {
+    const error: Error = {
+      status: (err as Error).status || 500,
+      message: (err as Error).message || `${err}`,
+    };
     // eslint-disable-next-line @typescript-eslint/no-throw-literal
-    throw { status: 500, message: (error as Error).message || error };
+    throw { error };
   }
 };
 
@@ -44,8 +48,12 @@ const getTokenAsync = async (key: string): Promise<string | null> => {
   try {
     const token = await TokensDB.get(key);
     return token;
-  } catch (error) {
-    throw { status: 500, message: `Can not get token. ${error}` };
+  } catch (err) {
+    const error: Error = {
+      status: 500,
+      message: `Can not get token. ${err}`,
+    };
+    throw error;
   }
 };
 
@@ -56,8 +64,12 @@ const getTokenAsync = async (key: string): Promise<string | null> => {
 const deleteTokenAsync = async (key: string): Promise<void> => {
   try {
     await TokensDB.del(key);
-  } catch (error) {
-    throw { status: 500, message: `Can not delete token. ${error}` };
+  } catch (err) {
+    const error: Error = {
+      status: 500,
+      message: `Can not get token. ${err}`,
+    };
+    throw { error };
   }
 };
 export {

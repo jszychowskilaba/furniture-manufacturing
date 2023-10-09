@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
 import { Request, Response, NextFunction } from 'express';
+import { Error } from '../types';
 import * as Auth from '../databases/Auth';
 /**
  * Authenticate a user by its request token. If token is not valid,
@@ -23,10 +24,11 @@ const authenticateUser = async (
 
   // If there is no token, o token is not valid
   if (!token || !isStoredToken) {
-    res.status(401).send({
-      status: 'Invalid token',
+    const error: Error = {
+      status: 401,
       message: 'Token is not valid for authentication',
-    });
+    };
+    res.status(error.status).send(error.message);
   } else {
     // If authenticated, go to next middleware
     next();

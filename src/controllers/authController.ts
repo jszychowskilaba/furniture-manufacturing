@@ -29,15 +29,11 @@ const login = async (req: Request, res: Response) => {
   try {
     const [token, refreshToken] = await authServices.updateTokens(userCredentials);
     res.status(200).send({
-      message: 'Login successful',
       token,
       refreshToken,
     });
   } catch (error) {
-    res.status((error as Error).status).send({
-      status: (error as Error).status,
-      message: (error as Error).message,
-    });
+    res.status((error as Error).status).send({ message: (error as Error).message });
   }
 };
 
