@@ -454,5 +454,5 @@ This API **streamlines the process** for estimating production time, materials c
 ## Docker
 ### Redis
 - REDIS_VERSION = 7.2.1
-- installation command: docker create --name TokensDB -p6379:6379 redis
-- execution command: docker start TokensDB
+- installation command: docker create --name AuthDB -p6379:6379 redis
+- execution command: docker start AuthDB
