@@ -19,7 +19,7 @@ const authenticateUser = async (
   // Retreive value from token, if there is a value, token is stored.
   let isStoredToken;
   if (token) {
-    isStoredToken = await Auth.getTokenAsync(token);
+    isStoredToken = await Auth.getAsync(token);
   }
 
   // If there is no token, o token is not valid
@@ -28,7 +28,7 @@ const authenticateUser = async (
       status: 401,
       message: 'Token is not valid for authentication',
     };
-    res.status(error.status).send(error.message);
+    res.status(error.status).json(error.message);
   } else {
     // If authenticated, go to next middleware
     next();
