@@ -1,12 +1,17 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
 import { UserCredentials, Error } from '../types';
 
+// For testing porpuses
 const DB = [
   { username: 'jose', password: '123456' },
   { username: 'juan', password: '5678910' },
 ];
-
-const isValidCredentials = (userCredentials: UserCredentials) => {
+/**
+ * Check if user is registred given a user credential
+ * @param userCredentials The user credential
+ * @returns true if user is regiesterd, error if not.
+ */
+const isValidCredentials = (userCredentials: UserCredentials): boolean => {
   const isValid = DB.find(
     (credential) => credential.username === userCredentials.username
       && credential.password === userCredentials.password,
