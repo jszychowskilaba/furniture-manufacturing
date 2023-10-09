@@ -7,8 +7,8 @@ import 'dotenv/config';
 import { TokensDB } from './databases/Auth';
 import authenticateUser from './middlewares/authenticateUser';
 
-// Starting redis client for auth tokens database
-// TokensDB docker must be already executed
+// Starting redis client for Auth Data Base
+// AuthDB docker container must be already running
 (async () => {
   TokensDB.on('error', (error: unknown) => {
     throw error;
@@ -20,18 +20,21 @@ import authenticateUser from './middlewares/authenticateUser';
   }
 })();
 
+// Creating app
 const app: Application = express();
 const PORT: number = Number(process.env.PORT) || 3000;
 
+// Adding middlewares
 app.use(bodyParser.json());
 
+// Hadnling routes
 app.use('/api/v1/auth', v1AuthRouter);
-
 // For testing middleware
 app.use('/secret-area', authenticateUser, (req, res) => {
   res.status(200).json('I am inside the secret area');
 });
 
+// Staring server
 app.listen(PORT, () => {
   console.log(`API listening port ${PORT}...`);
 });
