@@ -3,16 +3,21 @@ import { Request, Response } from 'express';
 import * as authServices from '../services/authServices';
 import { UserCredentials, Error } from '../types';
 
-const login = (req: Request, res: Response) => {
+/**
+ * Perform user login given user credentials in a request. If
+ * login succesful, response with a new pair of token and refreshToken for OAuth
+ * @param req The request
+ * @param res The response
+ */
+const login = async (req: Request, res: Response) => {
   const { body } = req;
-
+  // If not valid user, throw error.
   if (!body.username || !body.password) {
     res.status(400).send({
-      status: 'Bad Request',
-      data: {
-        error: 'Missing keys. "name" or "pass"',
-      },
+      status: 'Cannot log in',
+      error: 'Missing keys. "name" or "pass"',
     });
+    return;
   }
 
   const userCredentials: UserCredentials = {
@@ -20,15 +25,18 @@ const login = (req: Request, res: Response) => {
     password: body.password,
   };
 
+  // Updating tokens
   try {
-    if (authServices.isValidCredentials(userCredentials)) {
-      const authTokens = authServices.generateTokens();
-      res.status(200).send({ status: 'OK', data: authTokens });
-    }
+    const [token, refreshToken] = await authServices.login(userCredentials);
+    res.status(200).send({
+      message: 'Login successful',
+      token,
+      refreshToken,
+    });
   } catch (error) {
-    res.status((error as Error).status || 500).send({
-      status: 'FAILED',
-      data: { error: (error as Error).message || error },
+    res.status((error as Error).status).send({
+      status: (error as Error).status,
+      message: (error as Error).message,
     });
   }
 };
