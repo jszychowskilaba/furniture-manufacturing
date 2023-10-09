@@ -7,12 +7,12 @@ import 'dotenv/config';
 const TokensDB = createClient({ url: 'redis://localhost:6379' });
 
 /**
- * Set a pair of key value on TokensDB with a expiration time
+ * Set a pair of key value on Auth Data Base with a given expiration time
  * @param key The key
  * @param value The value
  * @param value The expiration time
  */
-const storeTokenAsync = async (
+const storeAsync = async (
   key: string,
   value: string,
   expirationTime: number,
@@ -39,12 +39,12 @@ const storeTokenAsync = async (
 };
 
 /**
- * Returns a stored token of a given key from TokensDB. If there key
+ * Returns a stored value of a given key from Auth Data Base. If there key
  * is not present, returns null.
  * @param key The key
  * @returns The value
  */
-const getTokenAsync = async (key: string): Promise<string | null> => {
+const getAsync = async (key: string): Promise<string | null> => {
   try {
     const token = await TokensDB.get(key);
     return token;
@@ -58,10 +58,10 @@ const getTokenAsync = async (key: string): Promise<string | null> => {
 };
 
 /**
- * Delete pair of key value given a key in TokensDB
+ * Delete pair of key value given a key in Auth Data Base
  * @param key The key
  */
-const deleteTokenAsync = async (key: string): Promise<void> => {
+const deleteAsync = async (key: string): Promise<void> => {
   try {
     await TokensDB.del(key);
   } catch (err) {
@@ -73,5 +73,5 @@ const deleteTokenAsync = async (key: string): Promise<void> => {
   }
 };
 export {
-  TokensDB, storeTokenAsync, getTokenAsync, deleteTokenAsync,
+  TokensDB, storeAsync, getAsync, deleteAsync,
 };
