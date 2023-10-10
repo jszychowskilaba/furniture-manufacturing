@@ -49,6 +49,7 @@ const logout = async (req: Request, res: Response) => {
       status: 400,
       message: 'Missing token',
     };
+    // eslint-disable-next-line @typescript-eslint/no-throw-literal
     throw error;
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
