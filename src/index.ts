@@ -4,21 +4,7 @@ import express, { Application } from 'express';
 import bodyParser from 'body-parser';
 import v1AuthRouter from './v1/routes/authRoutes';
 import 'dotenv/config';
-import { TokensDB } from './databases/Auth';
 import authenticateUser from './middlewares/authenticateUser';
-
-// Starting redis client for Auth Data Base
-// AuthDB docker container must be already running
-(async () => {
-  TokensDB.on('error', (error: unknown) => {
-    throw error;
-  });
-  try {
-    await TokensDB.connect();
-  } catch (error) {
-    console.log('Redis TokensDB', error);
-  }
-})();
 
 // Creating app
 const app: Application = express();
