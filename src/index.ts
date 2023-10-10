@@ -22,7 +22,6 @@ import authenticateUser from './middlewares/authenticateUser';
 
 // Creating app
 const app: Application = express();
-const PORT: number = Number(process.env.PORT) || 3000;
 
 // Adding middlewares
 app.use(bodyParser.json());
@@ -32,11 +31,6 @@ app.use('/api/v1/auth', v1AuthRouter);
 // For testing middleware
 app.use('/secret-area', authenticateUser, (req, res) => {
   res.status(200).json('I am inside the secret area');
-});
-
-// Staring server
-app.listen(PORT, () => {
-  console.log(`API listening port ${PORT}...`);
 });
 
 export default app;
