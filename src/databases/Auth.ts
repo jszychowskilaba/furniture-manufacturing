@@ -4,7 +4,7 @@ import { Error } from '../types';
 import 'dotenv/config';
 
 // Create redis TokensDB client
-const TokensDB = createClient({ url: 'redis://localhost:6379' });
+const TokensDB = createClient({ url: 'redis://AuthDB:6379' });
 
 /**
  * Set a pair of key value on Auth Data Base with a given expiration time
