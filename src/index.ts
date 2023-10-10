@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
-import express, { Application } from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 import v1AuthRouter from './v1/routes/authRoutes';
 import 'dotenv/config';
 import authenticateUser from './middlewares/authenticateUser';
 
 // Creating app
-const app: Application = express();
+const app = express();
 
 // Adding middlewares
 app.use(bodyParser.json());
