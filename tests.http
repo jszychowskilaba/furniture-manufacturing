@@ -11,7 +11,7 @@ Authorization: 3720d58d-3658-479c-abf3-61529c67db8e
 ### Entering secret area with valid token
 POST http://localhost:3000/secret-area
 Content-Type: application/json
-Authorization: 0436fb00-d119-47d4-9cfc-4fe44b600a15
+Authorization: 542ce151-b9d9-40b3-b50c-13034187efa1
 
 ### Refresh tokens with a valid refresh token
 get http://localhost:3000/api/v1/auth/refresh-token
@@ -20,4 +20,4 @@ Authorization: 7d698800-d8e6-479f-b765-0fb0602a15d4
 ### Log out with a valid token
 POST http://localhost:3000/api/v1/auth/logout
 Content-Type: application/json
-Authorization: 58659245-9803-48db-814e-4cee488b76ef
+Authorization: 542ce151-b9d9-40b3-b50c-13034187efa1
