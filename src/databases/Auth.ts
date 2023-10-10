@@ -72,6 +72,21 @@ const deleteAsync = async (key: string): Promise<void> => {
     throw { error };
   }
 };
+
+// eslint-disable-next-line consistent-return
+const getTokenType = async (token: string): Promise<string | undefined> => {
+  const usernameKey = await getAsync(token); // <username>.refreshToken | <username>.token
+  if (usernameKey) {
+    // checking if usernameKey is token type or refreshToken type
+    const regex = /(?<token>^(.+)\.token$)|(?<refreshToken>^(.+)\.refreshToken$)/;
+    const match = regex.exec(usernameKey);
+    if (match && match.groups) {
+      if (match.groups.token) return 'token';
+      if (match.groups.refreshToken) return 'refreshToken';
+    }
+  }
+  return undefined;
+};
 export {
-  TokensDB, storeAsync, getAsync, deleteAsync,
+  TokensDB, storeAsync, getAsync, deleteAsync, getTokenType,
 };
