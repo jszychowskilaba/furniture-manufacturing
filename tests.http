@@ -1,4 +1,4 @@
-### For loging
+### Login
 POST http://localhost:3000/api/v1/auth/login 
 Content-Type: application/json
 Authorization: 3720d58d-3658-479c-abf3-61529c67db8e
@@ -8,15 +8,16 @@ Authorization: 3720d58d-3658-479c-abf3-61529c67db8e
     "password": "5678910"
 }
 
-### For testing authentication
+### Entering secret area with valid token
 POST http://localhost:3000/secret-area
 Content-Type: application/json
-Authorization: e74693c5-5d73-47eb-93aa-ed17bb24d2fa
-### For testing authentication
-get http://localhost:3000/api/v1/auth/refresh-token
-Authorization: 8abd3dc3-46f5-4be6-ba3d-8236762816aa
+Authorization: 0436fb00-d119-47d4-9cfc-4fe44b600a15
 
-### For testing logout
+### Refresh tokens with a valid refresh token
+get http://localhost:3000/api/v1/auth/refresh-token
+Authorization: 7d698800-d8e6-479f-b765-0fb0602a15d4
+
+### Log out with a valid token
 POST http://localhost:3000/api/v1/auth/logout
 Content-Type: application/json
-Authorization: 54168799-f416-43bf-bdf4-cde40a51b104
+Authorization: 58659245-9803-48db-814e-4cee488b76ef
