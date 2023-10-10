@@ -45,17 +45,14 @@ const logout = async (req: Request, res: Response) => {
       res.status(200).json('Successful logout');
       return;
     }
+    const error: Error = {
+      status: 400,
+      message: 'Missing token',
+    };
+    throw error;
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
-    return;
   }
-
-  const error: Error = {
-    status: 500,
-    message: 'Unespected server error after logout.',
-  };
-
-  res.status((error as Error).status).json((error as Error).message);
 };
 
 /**
@@ -69,7 +66,7 @@ const refreshTokens = async (req: Request, res: Response) => {
   if (!oldRefreshToken) {
     const error: Error = {
       status: 400,
-      message: 'Refresh token is missing',
+      message: 'Missing refresh token',
     };
     res.status(error.status).json(error.message);
     return;
