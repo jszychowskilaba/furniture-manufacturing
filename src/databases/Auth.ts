@@ -4,7 +4,9 @@ import { Error } from '../types';
 import 'dotenv/config';
 
 // Create redis TokensDB client
-const TokensDB = createClient({ url: 'redis://AuthDB:6379' });
+const TokensDB = createClient({ url: 'redis://localhost:6379' });
+// FOR DOCKER 'redis://AuthDB:6379'
+// For TypeScript 'redis://localhost:6379'
 
 /**
  * Set a pair of key value on Auth Data Base with a given expiration time
@@ -92,6 +94,10 @@ const getTokenType = async (token: string): Promise<string | undefined> => {
   return undefined;
 };
 
+/* Get the username (the owener) of a give token or refresh token
+ * @param token The token or refresh token
+ * @returns The user name or undefined
+ */
 const getUsernameFromToken = async (token: string): Promise<string | undefined> => {
   const tokenType = await getTokenType(token);
   if (tokenType) {
