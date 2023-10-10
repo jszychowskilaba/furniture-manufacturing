@@ -1,0 +1,25 @@
+version: "4.23.0"
+services:
+  AuthDB:
+    image: redis:7.2.1
+    networks: 
+      - appnet
+  app:
+    build: .
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - AuthDB
+    networks:
+      - appnet
+  
+networks:
+  appnet:
+    driver: bridge
+    
+    
+## Command for prepare everything
+# docker compose up
+
+## Command for delete all previous preparations
+# docker compose down
