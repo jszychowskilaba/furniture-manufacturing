@@ -13,7 +13,7 @@ const login = async (req: Request, res: Response) => {
   const { body } = req;
   // If not valid user, throw error.
   if (!body.username || !body.password) {
-    res.status(400).send({
+    res.status(400).json({
       status: 'Cannot log in',
       error: 'Missing keys. "name" or "pass"',
     });
@@ -28,7 +28,7 @@ const login = async (req: Request, res: Response) => {
   // Updating tokens
   try {
     const [newToken, newRefreshToken] = await authServices.login(userCredentials);
-    res.status(200).send({ newToken, newRefreshToken });
+    res.status(200).json({ newToken, newRefreshToken });
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
   }
@@ -77,7 +77,7 @@ const refreshTokens = async (req: Request, res: Response) => {
 
   try {
     const [newToken, newRefreshToken] = await authServices.refreshTokens(oldRefreshToken);
-    res.status(200).send({ newToken, newRefreshToken });
+    res.status(200).json({ newToken, newRefreshToken });
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
   }
