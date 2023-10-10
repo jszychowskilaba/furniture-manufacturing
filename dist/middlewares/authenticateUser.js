@@ -31,54 +31,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.refreshTokens = exports.login = void 0;
-const updateTokens_1 = __importDefault(require("./auth-utils/updateTokens"));
-const isValidCredentials_1 = __importDefault(require("./auth-utils/isValidCredentials"));
 const Auth = __importStar(require("../databases/Auth"));
-const refreshTokens = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
-    const tokenType = yield Auth.getTokenType(refreshToken);
-    if (tokenType === 'refreshToken') {
-        const username = yield Auth.getUsernameFromToken(refreshToken);
-        if (username) {
-            const userCredentials = {
-                username,
-                password: null,
-            };
-            return (0, updateTokens_1.default)(userCredentials);
+const authenticateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.header('authorization');
+    try {
+        if (token) {
+            const tokenType = yield Auth.getTokenType(token);
+            if (tokenType === 'token') {
+                next();
+                return;
+            }
         }
+    }
+    catch (error) {
+        res.status(error.status).json(error.message);
+        return;
     }
     const error = {
         status: 401,
-        message: 'Refresh token not valid',
+        message: 'Token is not valid for authentication',
     };
-    throw error;
+    res.status(error.status).json(error.message);
 });
-exports.refreshTokens = refreshTokens;
-const logout = (token) => __awaiter(void 0, void 0, void 0, function* () {
-    const username = yield Auth.getUsernameFromToken(token);
-    if (!username) {
-        const error = {
-            status: 401,
-            message: 'Invalid refresh token',
-        };
-        throw error;
-    }
-    const refreshToken = yield Auth.getAsync(`${username}.refreshToken`);
-    yield Auth.deleteAsync(token);
-    yield Auth.deleteAsync(`${username}.token`);
-    if (refreshToken) {
-        yield Auth.deleteAsync(refreshToken);
-        yield Auth.deleteAsync(`${username}.refreshToken`);
-    }
-});
-exports.logout = logout;
-const login = (userCredentials) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, isValidCredentials_1.default)(userCredentials);
-    return (0, updateTokens_1.default)(userCredentials);
-});
-exports.login = login;
-//# sourceMappingURL=authServices.js.map
+exports.default = authenticateUser;
+//# sourceMappingURL=authenticateUser.js.map

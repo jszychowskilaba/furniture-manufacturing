@@ -6,13 +6,15 @@ const DB = [
     { username: 'juan', password: '5678910' },
 ];
 const isValidCredentials = (userCredentials) => {
-    DB.forEach((credential) => {
-        if (credential.username === userCredentials.username
-            && credential.password === userCredentials.password) {
-            return true;
-        }
-    });
-    throw { status: 404, message: 'Invalid user or password' };
+    const isValid = DB.find((credential) => credential.username === userCredentials.username
+        && credential.password === userCredentials.password);
+    if (isValid)
+        return true;
+    const error = {
+        status: 404,
+        message: 'Invalid user or password',
+    };
+    throw error;
 };
 exports.isValidCredentials = isValidCredentials;
 //# sourceMappingURL=Credentials.js.map
