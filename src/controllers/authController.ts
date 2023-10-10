@@ -40,6 +40,12 @@ const logout = (req: Request, res: Response) => {
   res.send('logout');
 };
 
+/**
+ * Response with new authentication tokens given a valid refresh token
+ * from a request.
+ * @param req The request
+ * @param res The response
+ */
 const refreshTokens = async (req: Request, res: Response) => {
   const oldRefreshToken = req.header('authorization');
   if (oldRefreshToken) {
