@@ -2,7 +2,6 @@
 import { Request, Response } from 'express';
 import * as authServices from '../services/authServices';
 import { UserCredentials, Error } from '../types';
-import { isValidCredentials } from '../databases/Credentials';
 
 /**
  * Perform user login given user credentials in a request. If
@@ -28,7 +27,6 @@ const login = async (req: Request, res: Response) => {
 
   // Updating tokens
   try {
-    isValidCredentials(userCredentials); // If not valid, throws error
     const [newToken, newRefreshToken] = await authServices.login(userCredentials);
     res.status(200).send({ newToken, newRefreshToken });
   } catch (error) {
@@ -70,8 +68,8 @@ const refreshTokens = async (req: Request, res: Response) => {
   const oldRefreshToken = req.header('authorization');
   if (!oldRefreshToken) {
     const error: Error = {
-      status: 401,
-      message: 'Refresh token not valid',
+      status: 400,
+      message: 'Refresh token is missing',
     };
     res.status(error.status).json(error.message);
     return;
