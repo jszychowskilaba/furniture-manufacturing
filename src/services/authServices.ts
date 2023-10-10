@@ -32,7 +32,7 @@ const isValidCredentials = (userCredentials: UserCredentials): boolean => {
  * @param userCredentials The credential
  * @returns The new tokens
  */
-const updateTokens = async (userCredentials: UserCredentials): Promise<string[]> => {
+const login = async (userCredentials: UserCredentials): Promise<string[]> => {
   // Creating access key
   const tokenKey = `${userCredentials.username}.token`;
   const refreshTokenKey = `${userCredentials.username}.refreshToken`;
@@ -101,8 +101,8 @@ const refreshTokens = async (refreshToken: string): Promise<string[]> => {
     username: userName,
     password: null, // setting null value to have the corresponding type
   };
-  return updateTokens(userCredentials);
+  return login(userCredentials);
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export { updateTokens, refreshTokens, isValidCredentials };
+export { login, refreshTokens, isValidCredentials };

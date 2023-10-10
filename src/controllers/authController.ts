@@ -29,7 +29,7 @@ const login = async (req: Request, res: Response) => {
   // Updating tokens
   try {
     isValidCredentials(userCredentials); // If not valid, throws error
-    const [newToken, newRefreshToken] = await authServices.updateTokens(userCredentials);
+    const [newToken, newRefreshToken] = await authServices.login(userCredentials);
     res.status(200).send({ newToken, newRefreshToken });
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
