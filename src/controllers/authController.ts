@@ -36,8 +36,28 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
-const logout = (req: Request, res: Response) => {
-  res.send('logout');
+const logout = async (req: Request, res: Response) => {
+  const token = req.header('authorization');
+
+  try {
+    if (token) {
+      // We are sure there is a token, as we use
+      // authenticateUser middlware on this end point
+      await authServices.logout(token);
+      res.status(200).json('Successful logout');
+      return;
+    }
+  } catch (error) {
+    res.status((error as Error).status).json((error as Error).message);
+    return;
+  }
+
+  const error: Error = {
+    status: 500,
+    message: 'Unespected server error after logout.',
+  };
+
+  res.status((error as Error).status).json((error as Error).message);
 };
 
 /**
@@ -48,19 +68,20 @@ const logout = (req: Request, res: Response) => {
  */
 const refreshTokens = async (req: Request, res: Response) => {
   const oldRefreshToken = req.header('authorization');
-  if (oldRefreshToken) {
-    try {
-      const [newToken, newRefreshToken] = await authServices.refreshTokens(oldRefreshToken);
-      res.status(200).send({ newToken, newRefreshToken });
-    } catch (error) {
-      res.status((error as Error).status).json((error as Error).message);
-    }
-  } else {
+  if (!oldRefreshToken) {
     const error: Error = {
       status: 401,
       message: 'Refresh token not valid',
     };
     res.status(error.status).json(error.message);
+    return;
+  }
+
+  try {
+    const [newToken, newRefreshToken] = await authServices.refreshTokens(oldRefreshToken);
+    res.status(200).send({ newToken, newRefreshToken });
+  } catch (error) {
+    res.status((error as Error).status).json((error as Error).message);
   }
 };
 
