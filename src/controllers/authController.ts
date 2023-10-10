@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import * as authServices from '../services/authServices';
 import { UserCredentials, Error } from '../types';
+import { isValidCredentials } from '../databases/Credentials';
 
 /**
  * Perform user login given user credentials in a request. If
@@ -27,11 +28,9 @@ const login = async (req: Request, res: Response) => {
 
   // Updating tokens
   try {
-    const [token, refreshToken] = await authServices.updateTokens(userCredentials);
-    res.status(200).send({
-      token,
-      refreshToken,
-    });
+    isValidCredentials(userCredentials); // If not valid, throws error
+    const [newToken, newRefreshToken] = await authServices.updateTokens(userCredentials);
+    res.status(200).send({ newToken, newRefreshToken });
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
   }
@@ -41,8 +40,22 @@ const logout = (req: Request, res: Response) => {
   res.send('logout');
 };
 
-const refreshToken = (req: Request, res: Response) => {
-  res.send('refresh token');
+const refreshTokens = async (req: Request, res: Response) => {
+  const oldRefreshToken = req.header('authorization');
+  if (oldRefreshToken) {
+    try {
+      const [newToken, newRefreshToken] = await authServices.refreshTokens(oldRefreshToken);
+      res.status(200).send({ newToken, newRefreshToken });
+    } catch (error) {
+      res.status((error as Error).status).json((error as Error).message);
+    }
+  } else {
+    const error: Error = {
+      status: 401,
+      message: 'Refresh token not valid',
+    };
+    res.status(error.status).json(error.message);
+  }
 };
 
-export { login, logout, refreshToken };
+export { login, logout, refreshTokens };
