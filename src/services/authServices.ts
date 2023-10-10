@@ -86,7 +86,9 @@ const login = async (userCredentials: UserCredentials): Promise<string[]> => {
 const refreshTokens = async (refreshToken: string): Promise<string[]> => {
   // Getting username using the refresh token
   const userNameKey = await Auth.getAsync(refreshToken); // <username>.refreshToken
-  if (!userNameKey) {
+  if (!userNameKey || !(userNameKey.slice(-13) === '.refreshToken')) {
+    // If client sent a token, there will be userNameKey, second condition
+    // is for being shure that they sent a refresh token
     const error: Error = {
       status: 401,
       message: 'Invalid refresh token',
@@ -104,5 +106,34 @@ const refreshTokens = async (refreshToken: string): Promise<string[]> => {
   return login(userCredentials);
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { login, refreshTokens, isValidCredentials };
+/**
+ * Delete tokens from Auth Data Base if incoming token is valid
+ * @param token The token
+ */
+const logout = async (token: string): Promise<void> => {
+  const usernameKey = await Auth.getAsync(token); // <username>.token
+  if (!usernameKey) {
+    const error: Error = {
+      status: 401,
+      message: 'Invalid refresh token',
+    };
+    // eslint-disable-next-line @typescript-eslint/no-throw-literal
+    throw error;
+  }
+
+  const username = usernameKey.slice(0, -6); // username, removes <.token>
+
+  const refreshToken = await Auth.getAsync(`${username}.refreshToken`);
+
+  // Deleting tokens
+  await Auth.deleteAsync(token);
+  await Auth.deleteAsync(`${username}.token`);
+  if (refreshToken) {
+    await Auth.deleteAsync(refreshToken);
+    await Auth.deleteAsync(`${username}.refreshToken`);
+  }
+};
+
+export {
+  login, refreshTokens, isValidCredentials, logout,
+};

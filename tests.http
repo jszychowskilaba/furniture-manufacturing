@@ -11,8 +11,12 @@ Authorization: 3720d58d-3658-479c-abf3-61529c67db8e
 ### For testing authentication
 POST http://localhost:3000/secret-area
 Content-Type: application/json
-Authorization: e0db6ad5-7c16-48d2-9b3f-6bc8982cc86f 
-
+Authorization: e74693c5-5d73-47eb-93aa-ed17bb24d2fa
 ### For testing authentication
 get http://localhost:3000/api/v1/auth/refresh-token
-Authorization: 5e05514a-ad64-4d2e-80a2-910db93bd2f9
+Authorization: 8abd3dc3-46f5-4be6-ba3d-8236762816aa
+
+### For testing logout
+POST http://localhost:3000/api/v1/auth/logout
+Content-Type: application/json
+Authorization: 54168799-f416-43bf-bdf4-cde40a51b104
