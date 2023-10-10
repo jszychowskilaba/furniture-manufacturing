@@ -72,7 +72,11 @@ const deleteAsync = async (key: string): Promise<void> => {
     throw { error };
   }
 };
-
+/**
+ * Get the token type of a given token or refresh token
+ * @param token The token or refresh token
+ * @returns The token type ('token' | 'refreshToken' | undefined)
+ */
 // eslint-disable-next-line consistent-return
 const getTokenType = async (token: string): Promise<string | undefined> => {
   const usernameKey = await getAsync(token); // <username>.refreshToken | <username>.token
@@ -87,6 +91,18 @@ const getTokenType = async (token: string): Promise<string | undefined> => {
   }
   return undefined;
 };
+
+const getUsernameFromToken = async (token: string): Promise<string | undefined> => {
+  const tokenType = await getTokenType(token);
+  if (tokenType) {
+    const usernameKey = await getAsync(token);
+    if (usernameKey) {
+      if (tokenType === 'token') return usernameKey.slice(0, -6);
+      if (tokenType === 'refreshToken') return usernameKey.slice(0, -13);
+    }
+  }
+  return undefined;
+};
 export {
-  TokensDB, storeAsync, getAsync, deleteAsync, getTokenType,
+  TokensDB, storeAsync, getAsync, deleteAsync, getTokenType, getUsernameFromToken,
 };
