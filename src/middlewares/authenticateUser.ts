@@ -9,30 +9,27 @@ import * as Auth from '../databases/Auth';
  * @param res The response
  * @param next The next middleware
  */
-const authenticateUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
+const authenticateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const token = req.header('authorization');
 
-  // Retreive value from token, if there is a value, token is stored.
-  let isStoredToken;
-  if (token) {
-    isStoredToken = await Auth.getAsync(token);
+  try {
+    if (token) {
+      const tokenType = await Auth.getTokenType(token);
+      if (tokenType === 'token') {
+        next();
+        return;
+      }
+    }
+  } catch (error) { // If database error
+    res.status((error as Error).status).json((error as Error).message);
+    return;
   }
 
-  // If there is no token, o token is not valid
-  if (!token || !isStoredToken) {
-    const error: Error = {
-      status: 401,
-      message: 'Token is not valid for authentication',
-    };
-    res.status(error.status).json(error.message);
-  } else {
-    // If authenticated, go to next middleware
-    next();
-  }
+  const error: Error = {
+    status: 401,
+    message: 'Token is not valid for authentication',
+  };
+  res.status(error.status).json(error.message);
 };
 
 export default authenticateUser;
