@@ -46,10 +46,12 @@ This API **streamlines the process** for estimating production time, materials c
 
 ### **`authentication`** authentication operations
 
-![](./images/post-colour.png) **`POST`** `/api/v1/auth/login` Login the user
+![](./images/post-colour.png) **`POST`** `/api/v1/auth/login` Login the user.
 
 <details>
   <summary>Click here</summary>
+
+Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
 - Request
 
@@ -69,18 +71,47 @@ This API **streamlines the process** for estimating production time, materials c
 
   ```json
   // Example
+  // Header
   HTTP/1.1 200 OK
   Content-Type: application/json; charset=utf-8
 
+  // Body
   {
-  "newToken": "2d54193e-2cf5-4446-86a8-8d46b407b74f",
-  "newRefreshToken": "c032936f-310d-4fca-bbca-f5e70e41537d"
+    "newToken": "2d54193e-2cf5-4446-86a8-8d46b407b74f",
+    "newRefreshToken": "c032936f-310d-4fca-bbca-f5e70e41537d"
   }
   ```
 
-  - 400 Bad Request. Response body with a JSON informative message.
+  - 400 Bad Request. (Missing argument). Response body with a JSON informative message.
 
-  - 404 Not Found. Response body with a JSON informative message.
+  - 404 Not Found. (Invalid credentials). Response body with a JSON informative message.
+
+  - 500 Internal Server Error. Response body with a JSON informative message.
+
+</details>
+
+![](./images/delete-colour.png) **`DELETE`** `/api/v1/auth/logout` Logout the user.
+
+<details>
+  <summary>Click here</summary>
+
+Server side delete the OAuth 2.0 tokens from the DB.
+
+- Request
+
+  ```json
+  // Example
+  // Header
+  Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
+  ```
+
+- **Responses:**
+
+  - 204 No Content. (Successful logout).
+
+  - 400 Bad Request. (Missing authentication token). Response body with a JSON informative message.
+
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
 
   - 500 Internal Server Error. Response body with a JSON informative message.
 
