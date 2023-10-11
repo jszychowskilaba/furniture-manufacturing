@@ -8,7 +8,6 @@ import * as Credentials from '../../databases/Credentials';
  * @returns true if valid, error if not
  */
 const isValidCredentials = (userCredentials: UserCredentials): boolean => {
-  // eslint-disable-next-line no-useless-catch
   try {
     const isValid = Credentials.isValidCredentials(userCredentials);
     return isValid;

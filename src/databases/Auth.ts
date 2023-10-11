@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-throw-literal */
 import { createClient } from 'redis';
 import { Error } from '../types';
 import 'dotenv/config';
 
 // Create redis TokensDB client
-const TokensDB = createClient({ url: process.env.DOCKER_HOST || 'redis://localhost:6379' });
+const TokensDB = createClient({
+  url: process.env.DOCKER_HOST || 'redis://localhost:6379',
+});
 // FOR DOCKER 'redis://AuthDB:6379'
 // For TypeScript 'redis://localhost:6379'
 
@@ -17,7 +18,7 @@ const TokensDB = createClient({ url: process.env.DOCKER_HOST || 'redis://localho
 const storeAsync = async (
   key: string,
   value: string,
-  expirationTime: number,
+  expirationTime: number
 ): Promise<void> => {
   try {
     const isCreated = await TokensDB.set(key, value);
@@ -27,7 +28,7 @@ const storeAsync = async (
         status: 500,
         message: 'Can not create token',
       };
-      // eslint-disable-next-line @typescript-eslint/no-throw-literal
+
       throw error;
     }
   } catch (err) {
@@ -35,7 +36,7 @@ const storeAsync = async (
       status: (err as Error).status || 500,
       message: (err as Error).message || `${err}`,
     };
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
+
     throw { error };
   }
 };
@@ -74,17 +75,18 @@ const deleteAsync = async (key: string): Promise<void> => {
     throw { error };
   }
 };
+
 /**
  * Get the token type of a given token or refresh token
  * @param token The token or refresh token
  * @returns The token type ('token' | 'refreshToken' | undefined)
  */
-// eslint-disable-next-line consistent-return
 const getTokenType = async (token: string): Promise<string | undefined> => {
   const usernameKey = await getAsync(token); // <username>.refreshToken | <username>.token
   if (usernameKey) {
     // checking if usernameKey is token type or refreshToken type
-    const regex = /(?<token>^(.+)\.token$)|(?<refreshToken>^(.+)\.refreshToken$)/;
+    const regex =
+      /(?<token>^(.+)\.token$)|(?<refreshToken>^(.+)\.refreshToken$)/;
     const match = regex.exec(usernameKey);
     if (match && match.groups) {
       if (match.groups.token) return 'token';
@@ -94,11 +96,13 @@ const getTokenType = async (token: string): Promise<string | undefined> => {
   return undefined;
 };
 
-/* Get the username (the owener) of a give token or refresh token
+/* Get the username (the owner) of a give token or refresh token
  * @param token The token or refresh token
  * @returns The user name or undefined
  */
-const getUsernameFromToken = async (token: string): Promise<string | undefined> => {
+const getUsernameFromToken = async (
+  token: string
+): Promise<string | undefined> => {
   const tokenType = await getTokenType(token);
   if (tokenType) {
     const usernameKey = await getAsync(token);
@@ -110,5 +114,10 @@ const getUsernameFromToken = async (token: string): Promise<string | undefined> 
   return undefined;
 };
 export {
-  TokensDB, storeAsync, getAsync, deleteAsync, getTokenType, getUsernameFromToken,
+  TokensDB,
+  storeAsync,
+  getAsync,
+  deleteAsync,
+  getTokenType,
+  getUsernameFromToken,
 };

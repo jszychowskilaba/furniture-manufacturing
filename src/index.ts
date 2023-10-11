@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable import/no-extraneous-dependencies */
 import express from 'express';
 import bodyParser from 'body-parser';
 import v1AuthRouter from './v1/routes/authRoutes';
@@ -12,7 +10,7 @@ const app = express();
 // Adding middlewares
 app.use(bodyParser.json());
 
-// Hadnling routes
+// Handling routes
 app.use('/api/v1/auth', v1AuthRouter);
 // For testing middleware
 app.use('/secret-area', authenticateUser, (req, res) => {

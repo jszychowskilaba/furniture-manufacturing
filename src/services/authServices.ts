@@ -1,5 +1,3 @@
-/* eslint-disable no-useless-catch */
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { UserCredentials, Error } from '../types';
 import updateTokens from './auth-utils/updateTokens';
 import isValidCredentials from './auth-utils/isValidCredentials';
@@ -30,7 +28,6 @@ const refreshTokens = async (refreshToken: string): Promise<string[]> => {
     message: 'Refresh token not valid',
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-throw-literal
   throw error;
 };
 
@@ -45,7 +42,7 @@ const logout = async (token: string): Promise<void> => {
       status: 401,
       message: 'Invalid refresh token',
     };
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
+
     throw error;
   }
 
@@ -71,6 +68,4 @@ const login = async (userCredentials: UserCredentials): Promise<string[]> => {
   return updateTokens(userCredentials);
 };
 
-export {
-  login, refreshTokens, logout,
-};
+export { login, refreshTokens, logout };

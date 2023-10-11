@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import express, { Router } from 'express';
 import * as authController from '../../controllers/authController';
 import authenticateUser from '../../middlewares/authenticateUser';

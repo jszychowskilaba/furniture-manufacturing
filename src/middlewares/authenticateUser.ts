@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-throw-literal */
 import { Request, Response, NextFunction } from 'express';
 import { Error } from '../types';
 import * as Auth from '../databases/Auth';

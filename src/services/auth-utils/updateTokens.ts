@@ -15,7 +15,9 @@ import * as Auth from '../../databases/Auth';
  * @param userCredentials The credential
  * @returns The new tokens
  */
-const updateTokens = async (userCredentials: UserCredentials): Promise<string[]> => {
+const updateTokens = async (
+  userCredentials: UserCredentials
+): Promise<string[]> => {
   // Creating access key
   const tokenKey = `${userCredentials.username}.token`;
   const refreshTokenKey = `${userCredentials.username}.refreshToken`;
@@ -41,7 +43,8 @@ const updateTokens = async (userCredentials: UserCredentials): Promise<string[]>
   const newToken = uuid();
   const newRefreshToken = uuid();
   const newTokenExpiration = Number(process.env.TOKEN_EXPIRATION) || 300;
-  const newRefreshTokenExpiration = Number(process.env.REFRESH_TOKEN_EXPIRATION) || 19200;
+  const newRefreshTokenExpiration =
+    Number(process.env.REFRESH_TOKEN_EXPIRATION) || 19200;
 
   // Storing new tokens
   await Auth.storeAsync(tokenKey, newToken, newTokenExpiration);
@@ -49,12 +52,12 @@ const updateTokens = async (userCredentials: UserCredentials): Promise<string[]>
   await Auth.storeAsync(
     refreshTokenKey,
     newRefreshToken,
-    newRefreshTokenExpiration,
+    newRefreshTokenExpiration
   );
   await Auth.storeAsync(
     newRefreshToken,
     refreshTokenKey,
-    newRefreshTokenExpiration,
+    newRefreshTokenExpiration
   );
 
   return [newToken, newRefreshToken];

@@ -10,12 +10,18 @@ Content-Type: application/json
 ### Entering secret area with valid token
 POST http://localhost:3000/secret-area
 Content-Type: application/json
-Authorization: a3cd3518-53cb-418b-90ca-468e8a70f72e
+Authorization: INVALID-TOKEN
 
 ### Refresh tokens with a valid refresh token
 PUT http://localhost:3000/api/v1/auth/refresh-tokens
-Authorization: 5a13e947-0504-46ca-8970-6619db1e1213
+Authorization: 2212799a-6e50-4d9e-82ee-8421ed26a958
+
+
+
+
+
+
 
 ### Log out with a valid token
 DELETE http://localhost:3000/api/v1/auth/logout
-Authorization: 484fa474-ab89-42e1-a5c6-eaa458833c52
+Authorization: 309d21b0-8cd0-47d1-960a-f6b67915d375

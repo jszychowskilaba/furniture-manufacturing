@@ -1,11 +1,10 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { Request, Response } from 'express';
 import * as authServices from '../services/authServices';
 import { UserCredentials, Error } from '../types';
 
 /**
  * Perform user login given user credentials in a request. If
- * login succesful, response with a new pair of token and refreshToken for OAuth
+ * login successful, response with a new pair of token and refreshToken for OAuth
  * @param req The request
  * @param res The response
  */
@@ -24,8 +23,9 @@ const login = async (req: Request, res: Response) => {
 
   // Updating tokens
   try {
-    const [newToken, newRefreshToken] =
-      await authServices.login(userCredentials);
+    const [newToken, newRefreshToken] = await authServices.login(
+      userCredentials
+    );
     res.status(200).json({ newToken, newRefreshToken });
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
@@ -34,11 +34,11 @@ const login = async (req: Request, res: Response) => {
 
 const logout = async (req: Request, res: Response) => {
   const token = req.header('authorization');
-  console.log(token);
+
   try {
     if (token) {
       // We are sure there is a token, as we use
-      // authenticateUser middlware on this end point
+      // authenticateUser middleware on this end point
       await authServices.logout(token);
       res.status(204).json('');
       return;
@@ -66,8 +66,9 @@ const refreshTokens = async (req: Request, res: Response) => {
   }
 
   try {
-    const [newToken, newRefreshToken] =
-      await authServices.refreshTokens(oldRefreshToken);
+    const [newToken, newRefreshToken] = await authServices.refreshTokens(
+      oldRefreshToken
+    );
     res.status(200).json({ newToken, newRefreshToken });
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
