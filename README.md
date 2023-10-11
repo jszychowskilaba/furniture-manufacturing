@@ -44,6 +44,48 @@ This API **streamlines the process** for estimating production time, materials c
 
 ## API endpoints
 
+### **`authentication`** authentication operations
+
+![](./images/post-colour.png) **`POST`** `/api/v1/auth/login` Login the user
+
+<details>
+  <summary>Click here</summary>
+
+- Request
+
+  ```json
+  // Example
+  Content-Type: application/json
+
+  {
+      "username": "juan",
+      "password": "5678910"
+  }
+  ```
+
+- **Responses:**
+
+  - 201 OK. Response with **token** and **refresh token** for OAuth 2.0 authorization. Tokens must be stored by client.
+
+  ```json
+  // Example
+  HTTP/1.1 200 OK
+  Content-Type: application/json; charset=utf-8
+
+  {
+  "newToken": "2d54193e-2cf5-4446-86a8-8d46b407b74f",
+  "newRefreshToken": "c032936f-310d-4fca-bbca-f5e70e41537d"
+  }
+  ```
+
+  - 400 Bad Request. Response body with a JSON informative message.
+
+  - 404 Not Found. Response body with a JSON informative message.
+
+  - 500 Internal Server Error. Response body with a JSON informative message.
+
+</details>
+
 ### **`inventory`** inventory operations
 
 ![](./images/get-colour.png) **`GET`** `/v1/inventory` Returns all inventory
@@ -413,21 +455,21 @@ This API **streamlines the process** for estimating production time, materials c
 
 ```json
 {
-    "description": "antique table",
-    "status": "pending",
-    "manufactured": 0,
-    "price": 450,
-    "totalProductionTime": 143,
-    "unitsToManufacture": 25,
-    "materials": [
-      { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
-      { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 8 }
-    ],
-    "labors": [
-      { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
-      { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
-    ]
-  }
+  "description": "antique table",
+  "status": "pending",
+  "manufactured": 0,
+  "price": 450,
+  "totalProductionTime": 143,
+  "unitsToManufacture": 25,
+  "materials": [
+    { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
+    { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 8 }
+  ],
+  "labors": [
+    { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
+    { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
+  ]
+}
 ```
 
 - **Responses:**
@@ -448,11 +490,12 @@ This API **streamlines the process** for estimating production time, materials c
 
 </details>
 
-
 # Notes
 
 ## Docker
+
 ### Redis
+
 - REDIS_VERSION = 7.2.1
 - installation command: docker create --name AuthDB -p6379:6379 redis
 - execution command: docker start AuthDB
