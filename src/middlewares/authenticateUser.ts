@@ -9,7 +9,11 @@ import * as Auth from '../databases/Auth';
  * @param res The response
  * @param next The next middleware
  */
-const authenticateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const authenticateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const token = req.header('authorization');
 
   try {
@@ -20,14 +24,26 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
         return;
       }
     }
-  } catch (error) { // If database error
+  } catch (error) {
+    // If database error
     res.status((error as Error).status).json((error as Error).message);
     return;
   }
 
+  let status;
+  let message;
+
+  if (token === undefined) {
+    status = 400;
+    message = 'Missing token';
+  } else {
+    status = 401;
+    message = 'Token is not valid for authentication';
+  }
+
   const error: Error = {
-    status: 401,
-    message: 'Token is not valid for authentication',
+    status,
+    message,
   };
   res.status(error.status).json(error.message);
 };
