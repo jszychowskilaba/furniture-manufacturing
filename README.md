@@ -4,12 +4,25 @@ The `Custom Furniture Manufacturing API System` provides an interface for integr
 
 This API **streamlines the process** for estimating production time, materials cost, labor cost and order progress tracking. Additionally, the API incorporates the materials purchasing time into the production time when materials are not available.
 
+## Table of content
+
+- [Key features](#key-features)
+- [API endpoints](#api-endpoints)
+  - [authentication operations](#authentication-authentication-operations)
+  - [inventory operations](#inventory-inventory-operations)
+  - [labor operations](#labor-labor-operations)
+  - [orders operations](#orders-orders-operations)
+- [Installation](#installation)
+
 ## Key features
+
+<details>
+  <summary>Click here</summary>
 
 - **Time estimation:** estimates an order production time based into;
 
-  - materials purchasing time
-  - production time for each manufacturing step
+- materials purchasing time
+- production time for each manufacturing step
 
 - **Cost calculation:** calculates an order cost based in;
 
@@ -41,6 +54,7 @@ This API **streamlines the process** for estimating production time, materials c
 
   - labor time
   - labor cost
+  </details>
 
 ## API endpoints
 
@@ -67,7 +81,7 @@ Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
 - **Responses:**
 
-  - 201 OK. Response with **token** and **refresh token** for OAuth 2.0 authorization. Tokens must be stored by client.
+  - 201 OK. Response with a **token** and a **refresh token**. Tokens must be stored by client.
 
   ```json
   // Example
@@ -108,6 +122,46 @@ Server side delete the OAuth 2.0 tokens from the DB.
 - **Responses:**
 
   - 204 No Content. (Successful logout).
+
+  - 400 Bad Request. (Missing authentication token). Response body with a JSON informative message.
+
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+
+  - 500 Internal Server Error. Response body with a JSON informative message.
+
+</details>
+
+![](./images/put-colour.png) **`PUT`** `/api/v1/auth/refresh-tokens` Refresh the OAuth 2.0 tokens.
+
+<details>
+  <summary>Click here</summary>
+
+Server side generates a new token and a new refresh token, update the old ones in the DB side and response with the new tokens.
+
+- Request
+
+  ```json
+  // Example
+  // Header
+  Authorization: 17e5938b-b55b-43ae-a64d-3f88db602c34 // valid refresh token
+  ```
+
+- **Responses:**
+
+  - 201 OK. Response with a **new token** and a **new refresh token**. Tokens must be stored by client.
+
+  ```json
+  // Example
+  // Header
+  HTTP/1.1 200 OK
+  Content-Type: application/json; charset=utf-8
+
+  // Body
+  {
+    "newToken": "2d54193e-2cf5-4446-86a8-8d46b407b74f",
+    "newRefreshToken": "c032936f-310d-4fca-bbca-f5e70e41537d"
+  }
+  ```
 
   - 400 Bad Request. (Missing authentication token). Response body with a JSON informative message.
 
@@ -521,12 +575,30 @@ Server side delete the OAuth 2.0 tokens from the DB.
 
 </details>
 
-# Notes
+## Installation
 
-## Docker
+1. `Clone` the repository
 
-### Redis
+```bash
+git clone https://github.com/jszychowskilaba/furniture-manufacturing.git
+```
 
-- REDIS_VERSION = 7.2.1
-- installation command: docker create --name AuthDB -p6379:6379 redis
-- execution command: docker start AuthDB
+2. `Install` dependencies
+
+```bash
+npm install
+```
+
+3. `Compile` code if you modify TypeScript code
+
+```bash
+npx tsc
+```
+
+4. `Compose` docker containers
+
+```bash
+docker compose up
+```
+
+5. `Have fun`
