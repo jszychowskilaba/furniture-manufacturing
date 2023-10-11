@@ -13,10 +13,7 @@ const login = async (req: Request, res: Response) => {
   const { body } = req;
   // If not valid user, throw error.
   if (!body.username || !body.password) {
-    res.status(400).json({
-      status: 'Cannot log in',
-      error: 'Missing keys. "name" or "pass"',
-    });
+    res.status(400).json('Missing keys. "name" or "pass"');
     return;
   }
 
@@ -27,7 +24,8 @@ const login = async (req: Request, res: Response) => {
 
   // Updating tokens
   try {
-    const [newToken, newRefreshToken] = await authServices.login(userCredentials);
+    const [newToken, newRefreshToken] =
+      await authServices.login(userCredentials);
     res.status(200).json({ newToken, newRefreshToken });
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
@@ -36,21 +34,15 @@ const login = async (req: Request, res: Response) => {
 
 const logout = async (req: Request, res: Response) => {
   const token = req.header('authorization');
-
+  console.log(token);
   try {
     if (token) {
       // We are sure there is a token, as we use
       // authenticateUser middlware on this end point
       await authServices.logout(token);
-      res.status(200).json('Successful logout');
+      res.status(204).json('');
       return;
     }
-    const error: Error = {
-      status: 400,
-      message: 'Missing token',
-    };
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
-    throw error;
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
   }
@@ -74,7 +66,8 @@ const refreshTokens = async (req: Request, res: Response) => {
   }
 
   try {
-    const [newToken, newRefreshToken] = await authServices.refreshTokens(oldRefreshToken);
+    const [newToken, newRefreshToken] =
+      await authServices.refreshTokens(oldRefreshToken);
     res.status(200).json({ newToken, newRefreshToken });
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
