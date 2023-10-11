@@ -37,10 +37,7 @@ const authServices = __importStar(require("../services/authServices"));
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     if (!body.username || !body.password) {
-        res.status(400).json({
-            status: 'Cannot log in',
-            error: 'Missing keys. "name" or "pass"',
-        });
+        res.status(400).json('Missing keys. "name" or "pass"');
         return;
     }
     const userCredentials = {
@@ -58,22 +55,17 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.login = login;
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.header('authorization');
+    console.log(token);
     try {
         if (token) {
             yield authServices.logout(token);
-            res.status(200).json('Successful logout');
+            res.status(204).json('');
             return;
         }
     }
     catch (error) {
         res.status(error.status).json(error.message);
-        return;
     }
-    const error = {
-        status: 500,
-        message: 'Unespected server error after logout.',
-    };
-    res.status(error.status).json(error.message);
 });
 exports.logout = logout;
 const refreshTokens = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -81,7 +73,7 @@ const refreshTokens = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     if (!oldRefreshToken) {
         const error = {
             status: 400,
-            message: 'Refresh token is missing',
+            message: 'Missing refresh token',
         };
         res.status(error.status).json(error.message);
         return;

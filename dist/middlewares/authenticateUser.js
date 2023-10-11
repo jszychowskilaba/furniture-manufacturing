@@ -48,9 +48,19 @@ const authenticateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         res.status(error.status).json(error.message);
         return;
     }
+    let status;
+    let message;
+    if (token === undefined) {
+        status = 400;
+        message = 'Missing token';
+    }
+    else {
+        status = 401;
+        message = 'Token is not valid for authentication';
+    }
     const error = {
-        status: 401,
-        message: 'Token is not valid for authentication',
+        status,
+        message,
     };
     res.status(error.status).json(error.message);
 });

@@ -31,7 +31,7 @@ const authController = __importStar(require("../../controllers/authController"))
 const authenticateUser_1 = __importDefault(require("../../middlewares/authenticateUser"));
 const router = express_1.default.Router();
 router.post('/login', authController.login);
-router.post('/logout', authenticateUser_1.default, authController.logout);
-router.get('/refresh-token', authController.refreshTokens);
+router.delete('/logout', authenticateUser_1.default, authController.logout);
+router.put('/refresh-tokens', authController.refreshTokens);
 exports.default = router;
 //# sourceMappingURL=authRoutes.js.map
