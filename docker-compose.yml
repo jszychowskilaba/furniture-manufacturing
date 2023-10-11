@@ -12,6 +12,8 @@ services:
       - AuthDB
     networks:
       - appnet
+    environment:
+      - DOCKER_HOST=redis://AuthDB:6379
   
 networks:
   appnet:
