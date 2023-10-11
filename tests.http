@@ -1,7 +1,6 @@
 ### Login
 POST http://localhost:3000/api/v1/auth/login 
 Content-Type: application/json
-Authorization: 3720d58d-3658-479c-abf3-61529c67db8e
 
 {
     "username": "juan",
@@ -11,13 +10,12 @@ Authorization: 3720d58d-3658-479c-abf3-61529c67db8e
 ### Entering secret area with valid token
 POST http://localhost:3000/secret-area
 Content-Type: application/json
-Authorization: 542ce151-b9d9-40b3-b50c-13034187efa1
+Authorization: a3cd3518-53cb-418b-90ca-468e8a70f72e
 
 ### Refresh tokens with a valid refresh token
-get http://localhost:3000/api/v1/auth/refresh-token
-Authorization: 7d698800-d8e6-479f-b765-0fb0602a15d4
+PUT http://localhost:3000/api/v1/auth/refresh-tokens
+Authorization: 5a13e947-0504-46ca-8970-6619db1e1213
 
 ### Log out with a valid token
-POST http://localhost:3000/api/v1/auth/logout
-Content-Type: application/json
-Authorization: 542ce151-b9d9-40b3-b50c-13034187efa1
+DELETE http://localhost:3000/api/v1/auth/logout
+Authorization: 484fa474-ab89-42e1-a5c6-eaa458833c52
