@@ -69,7 +69,7 @@ Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
 - Request
 
-  ```http
+  ```json
   # Example
 
   # Header
