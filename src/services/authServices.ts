@@ -16,8 +16,8 @@ const refreshTokens = async (refreshToken: string): Promise<string[]> => {
     const username = await Auth.getUsernameFromToken(refreshToken);
     if (username) {
       const userCredentials: UserCredentials = {
-        username,
-        password: null,
+        client_id: username,
+        client_secret: null,
       };
       return updateTokens(userCredentials);
     }
