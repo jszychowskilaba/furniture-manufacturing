@@ -1,6 +1,6 @@
 export interface UserCredentials {
-  username: string;
-  password: string | null;
+  client_id: string;
+  client_secret: string | null;
 }
 
 export interface Error {
