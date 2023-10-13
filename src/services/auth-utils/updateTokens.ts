@@ -10,7 +10,7 @@ import * as Auth from '../../databases/Auth';
  *  updating them after a login or logout
  * 2. Store the same tokens as key, and the user information as values
  *  These pair of tokens are the used for OAuth, so no user information
- *  is needed to validate the user. But we can track the username by
+ *  is needed to validate the user. But we can track the client_id by
  *  getting the value from the token
  * @param userCredentials The credential
  * @returns The new tokens
@@ -19,8 +19,8 @@ const updateTokens = async (
   userCredentials: UserCredentials
 ): Promise<string[]> => {
   // Creating access key
-  const tokenKey = `${userCredentials.username}.token`;
-  const refreshTokenKey = `${userCredentials.username}.refreshToken`;
+  const tokenKey = `${userCredentials.client_id}.token`;
+  const refreshTokenKey = `${userCredentials.client_id}.refreshToken`;
 
   // Getting old tokens
   const oldToken = await Auth.getAsync(tokenKey);
