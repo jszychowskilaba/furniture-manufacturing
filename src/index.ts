@@ -8,7 +8,7 @@ const app = express();
 
 // Adding middlewares
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 
 // Handling routes
 app.use('/api/v1/auth', v1AuthRouter);
