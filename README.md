@@ -134,7 +134,7 @@ Server side delete the OAuth 2.0 tokens from the DB.
 
 </details>
 
-![](./images/put-colour.png) **`POST`** `/api/v1/auth/refresh-tokens` Refresh the OAuth 2.0 tokens.
+![](./images/post-colour.png) **`POST`** `/api/v1/auth/refresh-tokens` Refresh the OAuth 2.0 tokens.
 
 <details>
   <summary>Click here</summary>
