@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import v1AuthRouter from './v1/routes/authRoutes';
 import 'dotenv/config';
 import authenticateUser from './middlewares/authenticateUser';
@@ -8,7 +7,8 @@ import authenticateUser from './middlewares/authenticateUser';
 const app = express();
 
 // Adding middlewares
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 // Handling routes
 app.use('/api/v1/auth', v1AuthRouter);
