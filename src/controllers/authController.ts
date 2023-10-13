@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as authServices from '../services/authServices';
 import { UserCredentials, Error } from '../types';
+import 'dotenv/config';
 
 /**
  * Perform user login given user credentials in a request. If
@@ -9,16 +10,16 @@ import { UserCredentials, Error } from '../types';
  * @param res The response
  */
 const login = async (req: Request, res: Response) => {
-  const { body } = req;
-  // If not valid user, throw error.
-  if (!body.username || !body.password) {
-    res.status(400).json('Missing keys. "name" or "pass"');
+  const body = req.body;
+
+  if (!body.client_id || !body.client_secret) {
+    res.status(400).json('Missing keys. "client_id" or "client_secret"');
     return;
   }
 
   const userCredentials: UserCredentials = {
-    username: body.username,
-    password: body.password,
+    client_id: body.client_id,
+    client_secret: body.client_secret,
   };
 
   // Updating tokens
@@ -26,7 +27,13 @@ const login = async (req: Request, res: Response) => {
     const [newToken, newRefreshToken] = await authServices.login(
       userCredentials
     );
-    res.status(200).json({ newToken, newRefreshToken });
+    res
+      .status(200)
+      .json({
+        access_token: newToken,
+        refresh_token: newRefreshToken,
+        expires_in: Number(process.env.TOKEN_EXPIRATION) || 300,
+      });
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
   }
@@ -55,7 +62,7 @@ const logout = async (req: Request, res: Response) => {
  * @param res The response
  */
 const refreshTokens = async (req: Request, res: Response) => {
-  const oldRefreshToken = req.header('authorization');
+  const oldRefreshToken = req.body.refresh_token;
   if (!oldRefreshToken) {
     const error: Error = {
       status: 400,
@@ -69,7 +76,11 @@ const refreshTokens = async (req: Request, res: Response) => {
     const [newToken, newRefreshToken] = await authServices.refreshTokens(
       oldRefreshToken
     );
-    res.status(200).json({ newToken, newRefreshToken });
+    res.status(200).json({
+      access_token: newToken,
+      refresh_token: newRefreshToken,
+      expires_in: Number(process.env.TOKEN_EXPIRATION) || 300,
+    });
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
   }
