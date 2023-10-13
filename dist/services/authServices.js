@@ -45,8 +45,8 @@ const refreshTokens = (refreshToken) => __awaiter(void 0, void 0, void 0, functi
         const username = yield Auth.getUsernameFromToken(refreshToken);
         if (username) {
             const userCredentials = {
-                username,
-                password: null,
+                client_id: username,
+                client_secret: null,
             };
             return (0, updateTokens_1.default)(userCredentials);
         }

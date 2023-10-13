@@ -35,8 +35,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const uuid_1 = require("uuid");
 const Auth = __importStar(require("../../databases/Auth"));
 const updateTokens = (userCredentials) => __awaiter(void 0, void 0, void 0, function* () {
-    const tokenKey = `${userCredentials.username}.token`;
-    const refreshTokenKey = `${userCredentials.username}.refreshToken`;
+    const tokenKey = `${userCredentials.client_id}.token`;
+    const refreshTokenKey = `${userCredentials.client_id}.refreshToken`;
     const oldToken = yield Auth.getAsync(tokenKey);
     const oldRefreshToken = yield Auth.getAsync(refreshTokenKey);
     if (oldToken) {

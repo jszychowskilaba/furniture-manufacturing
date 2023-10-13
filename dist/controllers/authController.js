@@ -36,13 +36,13 @@ exports.refreshTokens = exports.logout = exports.login = void 0;
 const authServices = __importStar(require("../services/authServices"));
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
-    if (!body.username || !body.password) {
-        res.status(400).json('Missing keys. "name" or "pass"');
+    if (!body.client_id || !body.client_secret) {
+        res.status(400).json('Missing keys. "client_id" or "client_secret"');
         return;
     }
     const userCredentials = {
-        username: body.username,
-        password: body.password,
+        client_id: body.client_id,
+        client_secret: body.client_secret,
     };
     try {
         const [newToken, newRefreshToken] = yield authServices.login(userCredentials);
@@ -55,7 +55,6 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.login = login;
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.header('authorization');
-    console.log(token);
     try {
         if (token) {
             yield authServices.logout(token);

@@ -12,7 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUsernameFromToken = exports.getTokenType = exports.deleteAsync = exports.getAsync = exports.storeAsync = exports.TokensDB = void 0;
 const redis_1 = require("redis");
 require("dotenv/config");
-const TokensDB = (0, redis_1.createClient)({ url: process.env.DOCKER_HOST || 'redis://localhost:6379' });
+const TokensDB = (0, redis_1.createClient)({
+    url: process.env.DOCKER_HOST || 'redis://localhost:6379',
+});
 exports.TokensDB = TokensDB;
 const storeAsync = (key, value, expirationTime) => __awaiter(void 0, void 0, void 0, function* () {
     try {
