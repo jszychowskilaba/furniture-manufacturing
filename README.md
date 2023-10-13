@@ -76,8 +76,7 @@ Server side create OAuth 2.0 tokens, stores them in DB and return them.
   Content-Type: application/x-www-form-urlencoded
 
   # Body
-  client_id=juan
-  &client_secret=5678910
+  client_id=juan&client_secret=5678910
 
   ```
 
