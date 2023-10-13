@@ -69,13 +69,13 @@ Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
 - Request
 
-  ```http
-  # Example
+  ```
+  // Example
 
-  # Header
+  // Header
   Content-Type: application/x-www-form-urlencoded
 
-  # Body
+  // Body
   client_id=juan&client_secret=5678910
 
   ```
@@ -84,8 +84,9 @@ Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
   - 201 OK. Response with a **access_token**, **refresh_token** and **expires_in** (expiration time of access_token in seconds). Tokens must be stored by client.
 
-  ```json
+  ```
   // Example
+
   // Header
   HTTP/1.1 200 OK
   Content-Type: application/json; charset=utf-8
@@ -115,8 +116,9 @@ Server side delete the OAuth 2.0 tokens from the DB.
 
 - Request
 
-  ```json
+  ```
   // Example
+
   // Header
   Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
   ```
@@ -142,8 +144,9 @@ Server side generates a new token and a new refresh token, update the old ones i
 
 - Request
 
-  ```json
+  ```
   // Example
+
   // Header
   Content-Type: application/x-www-form-urlencoded
 
@@ -153,10 +156,11 @@ Server side generates a new token and a new refresh token, update the old ones i
 
 - **Responses:**
 
-  - 201 OK. Response with a **new token** and a **new refresh token**. Tokens must be stored by client.
+  - 200 OK. Response with a **new token** and a **new refresh token**. Tokens must be stored by client.
 
-  ```json
+  ```
   // Example
+  
   // Header
   HTTP/1.1 200 OK
   Content-Type: application/json; charset=utf-8
