@@ -69,19 +69,21 @@ Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
 - Request
 
-  ```json
-  // Example
-  Content-Type: application/json
+  ```http
+  # Example
 
-  {
-      "username": "juan",
-      "password": "5678910"
-  }
+  # Header
+  Content-Type: application/x-www-form-urlencoded
+
+  # Body
+  client_id=juan
+  &client_secret=5678910
+
   ```
 
 - **Responses:**
 
-  - 201 OK. Response with a **token** and a **refresh token**. Tokens must be stored by client.
+  - 201 OK. Response with a **access_token**, **refresh_token** and **expires_in** (expiration time of access_token in seconds). Tokens must be stored by client.
 
   ```json
   // Example
@@ -91,8 +93,9 @@ Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
   // Body
   {
-    "newToken": "2d54193e-2cf5-4446-86a8-8d46b407b74f",
-    "newRefreshToken": "c032936f-310d-4fca-bbca-f5e70e41537d"
+    "access_token": "1ad67c7c-785d-4968-b34d-2d77d5802bbf",
+    "refresh_token": "d4917ddd-11bb-404b-ac6d-a3123de3e24c",
+    "expires_in": 60
   }
   ```
 
@@ -131,7 +134,7 @@ Server side delete the OAuth 2.0 tokens from the DB.
 
 </details>
 
-![](./images/put-colour.png) **`PUT`** `/api/v1/auth/refresh-tokens` Refresh the OAuth 2.0 tokens.
+![](./images/put-colour.png) **`POST`** `/api/v1/auth/refresh-tokens` Refresh the OAuth 2.0 tokens.
 
 <details>
   <summary>Click here</summary>
@@ -143,7 +146,10 @@ Server side generates a new token and a new refresh token, update the old ones i
   ```json
   // Example
   // Header
-  Authorization: 17e5938b-b55b-43ae-a64d-3f88db602c34 // valid refresh token
+  Content-Type: application/x-www-form-urlencoded
+
+  // Body
+  refresh_token=1ea0e31e-2fc8-429b-9038-827f35e42dc3
   ```
 
 - **Responses:**
@@ -158,8 +164,9 @@ Server side generates a new token and a new refresh token, update the old ones i
 
   // Body
   {
-    "newToken": "2d54193e-2cf5-4446-86a8-8d46b407b74f",
-    "newRefreshToken": "c032936f-310d-4fca-bbca-f5e70e41537d"
+    "access_token": "add11a75-3dfa-4f76-888e-967a1a1a738a",
+    "refresh_token": "51b27992-2043-4233-9dc9-56c31086688d",
+    "expires_in": 60
   }
   ```
 
