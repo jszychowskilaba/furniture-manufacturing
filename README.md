@@ -160,7 +160,7 @@ Server side generates a new token and a new refresh token, update the old ones i
 
   ```
   // Example
-  
+
   // Header
   HTTP/1.1 200 OK
   Content-Type: application/json; charset=utf-8
@@ -228,22 +228,35 @@ Server side generates a new token and a new refresh token, update the old ones i
 <details>
   <summary>Click here</summary>
 
-- **Example**
+Creates a new material and store it in DB.
 
-```json
-{
-  "description": "wood",
-  "quantity": 24,
-  "pricePerUnit": 15, // USD
-  "unit": "m2",
-  "purchaseTime": 5 // days
-}
-```
+- **Request**
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json; charset=utf-8
+  Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
+
+  // Body
+  {
+    "internalCode": "w-01",
+    "description": "Light ocher reflective wood board of 2 inches wide",
+    "quantity": 24,
+    "pricePerUnit": 15,
+    "unit": "m2",
+    "purchaseTime": 5
+    "internalNotes": "used for tables top"
+  }
+  ```
 
 - **Responses:**
-  - 201, created resource
-  - 400, bad request
-  - 409, conflict
+  - 201 Created. The material has been created and stored in DB.
+  - 400 Bad Request. (Missing argument). Response body with a JSON informative message.
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 409 Conflict. (Internal code already used in another material). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
 
