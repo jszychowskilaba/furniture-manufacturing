@@ -2,8 +2,8 @@ import { UserCredentials, Error } from '../types';
 
 // For testing proposes
 const DB = [
-  { username: 'jose', password: '123456' },
-  { username: 'juan', password: '5678910' },
+  { client_id: 'jose', client_secret: '123456' },
+  { client_id: 'juan', client_secret: '5678910' },
 ];
 /**
  * Check if user is registered given a user credential
@@ -13,8 +13,8 @@ const DB = [
 const isValidCredentials = (userCredentials: UserCredentials): boolean => {
   const isValid = DB.find(
     (credential) =>
-      credential.username === userCredentials.username &&
-      credential.password === userCredentials.password
+      credential.client_id === userCredentials.client_id &&
+      credential.client_secret === userCredentials.client_secret
   );
 
   if (isValid) return true;
