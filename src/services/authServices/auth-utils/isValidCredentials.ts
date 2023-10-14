@@ -1,5 +1,5 @@
-import { UserCredentials } from '../../types/types';
-import * as Credentials from '../../databases/Credentials';
+import { UserCredentials } from '../../../types/types';
+import * as Credentials from '../../../databases/Credentials';
 
 /**
  * Checks if user credential es valid. Function will modified

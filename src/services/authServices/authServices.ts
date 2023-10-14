@@ -1,8 +1,8 @@
-import { UserCredentials, Error } from '../types/types';
+import { UserCredentials, Error } from '../../types/types';
 import updateTokens from './auth-utils/updateTokens';
 import isValidCredentials from './auth-utils/isValidCredentials';
 
-import * as Auth from '../databases/Auth';
+import * as Auth from '../../databases/Auth';
 
 /**
  * Refresh the token and refresh token if the incoming
