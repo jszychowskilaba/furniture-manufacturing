@@ -4,6 +4,7 @@ import { Material } from '../../../types/types';
 export const materialSchema: JSONSchemaType<Material> = {
   type: 'object',
   properties: {
+    status: { type: 'string', enum: ['active', 'inactive']},
     internalCode: { type: 'string', minLength: 0, maxLength: 255 },
     description: { type: 'string', minLength: 1, maxLength: 255 },
     quantity: { type: 'number', minimum: 0 },
