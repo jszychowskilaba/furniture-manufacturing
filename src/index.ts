@@ -1,7 +1,7 @@
 import express from 'express';
 import v1AuthRouter from './v1/routes/authRoutes';
 import 'dotenv/config';
-import authenticateUser from './middlewares/authenticateUser';
+import authenticateUser from './middlewares/authenticateUser/authenticateUser';
 
 // Creating app
 const app = express();
