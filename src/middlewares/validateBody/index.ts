@@ -1,9 +1,10 @@
 import Ajv, { JSONSchemaType } from 'ajv';
 import { Request, Response, NextFunction } from 'express';
 import { materialSchema } from './schemas/materialSchema';
+import { Error } from '../../types/types';
 
 /**
- * High order function that returns a middleware validating request body 
+ * High order function that returns a middleware validating request body
  * against a predefined schema. If request body is invalid, throws an error.
  * @param schema The predefined schema
  * @returns The middleware
@@ -17,9 +18,13 @@ export const validateBody = (schema: JSONSchemaType<any>) => {
     if (validate(data)) {
       next();
     } else {
-      throw validate.errors;
+      const error: Error = {
+        status: 400,
+        message: `Error in request body. ${JSON.stringify(validate.errors)}`,
+      };
+      next(error);
     }
   };
 };
 
-export {materialSchema}
+export { materialSchema };
