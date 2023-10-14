@@ -22,16 +22,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const authController = __importStar(require("../../controllers/authController/authController"));
-const authenticateUser_1 = __importDefault(require("../../middlewares/authenticateUser/authenticateUser"));
-const router = express_1.default.Router();
-router.post('/login', authController.login);
-router.delete('/logout', authenticateUser_1.default, authController.logout);
-router.post('/refresh-tokens', authController.refreshTokens);
-exports.default = router;
-//# sourceMappingURL=authRoutes.js.map
+const Credentials = __importStar(require("../../../databases/Credentials"));
+const isValidCredentials = (userCredentials) => {
+    try {
+        const isValid = Credentials.isValidCredentials(userCredentials);
+        return isValid;
+    }
+    catch (error) {
+        throw error;
+    }
+};
+exports.default = isValidCredentials;
+//# sourceMappingURL=isValidCredentials.js.map

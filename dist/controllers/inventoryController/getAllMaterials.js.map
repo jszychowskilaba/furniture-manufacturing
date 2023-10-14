@@ -1,0 +1,1 @@
+{"version":3,"file":"getAllMaterials.js","sourceRoot":"","sources":["../../../src/controllers/inventoryController/getAllMaterials.ts"],"names":[],"mappings":";;;AAEO,MAAM,eAAe,GAAG,CAC7B,GAAY,EACZ,GAAa,EACb,IAAkB,EAClB,EAAE;IACF,GAAG,CAAC,MAAM,CAAC,GAAG,CAAC,CAAC,IAAI,CAAC,6BAA6B,CAAC,CAAC;AACtD,CAAC,CAAC;AANW,QAAA,eAAe,mBAM1B"}

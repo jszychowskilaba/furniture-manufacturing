@@ -27,11 +27,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const authController = __importStar(require("../../controllers/authController/authController"));
-const authenticateUser_1 = __importDefault(require("../../middlewares/authenticateUser/authenticateUser"));
+const laborController = __importStar(require("../../controllers/laborController"));
+const validateBody_1 = require("../../middlewares/validateBody");
 const router = express_1.default.Router();
-router.post('/login', authController.login);
-router.delete('/logout', authenticateUser_1.default, authController.logout);
-router.post('/refresh-tokens', authController.refreshTokens);
+router.get('/', laborController.getAllLabors);
+router.post('/', (0, validateBody_1.validateBody)(validateBody_1.laborSchema), laborController.createLabor);
+router.get('/:id', laborController.getOneLabor);
+router.put('/:id', (0, validateBody_1.validateBody)(validateBody_1.laborSchema), laborController.updateLabor);
 exports.default = router;
-//# sourceMappingURL=authRoutes.js.map
+//# sourceMappingURL=laborRoutes.js.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"getAllLabors.js","sourceRoot":"","sources":["../../../src/controllers/laborController/getAllLabors.ts"],"names":[],"mappings":";;;AAEO,MAAM,YAAY,GAAG,CAC1B,GAAY,EACZ,GAAa,EACb,IAAkB,EAClB,EAAE;IACF,GAAG,CAAC,MAAM,CAAC,GAAG,CAAC,CAAC,IAAI,CAAC,0BAA0B,CAAC,CAAC;AACnD,CAAC,CAAC;AANW,QAAA,YAAY,gBAMvB"}

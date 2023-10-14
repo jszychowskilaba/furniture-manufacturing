@@ -27,11 +27,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const authController = __importStar(require("../../controllers/authController/authController"));
-const authenticateUser_1 = __importDefault(require("../../middlewares/authenticateUser/authenticateUser"));
+const inventoryController = __importStar(require("../../controllers/inventoryController"));
+const validateBody_1 = require("../../middlewares/validateBody");
 const router = express_1.default.Router();
-router.post('/login', authController.login);
-router.delete('/logout', authenticateUser_1.default, authController.logout);
-router.post('/refresh-tokens', authController.refreshTokens);
+router.get('/', inventoryController.getAllMaterials);
+router.post('/', (0, validateBody_1.validateBody)(validateBody_1.materialSchema), inventoryController.createMaterial);
+router.get('/:id', inventoryController.getOneMaterial);
+router.put('/:id', (0, validateBody_1.validateBody)(validateBody_1.materialSchema), inventoryController.updateMaterial);
 exports.default = router;
-//# sourceMappingURL=authRoutes.js.map
+//# sourceMappingURL=inventoryRoutes.js.map
