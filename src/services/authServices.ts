@@ -1,4 +1,4 @@
-import { UserCredentials, Error } from '../types';
+import { UserCredentials, Error } from '../types/types';
 import updateTokens from './auth-utils/updateTokens';
 import isValidCredentials from './auth-utils/isValidCredentials';
 

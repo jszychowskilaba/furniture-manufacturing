@@ -1,4 +1,4 @@
-import { UserCredentials } from '../../types';
+import { UserCredentials } from '../../types/types';
 import * as Credentials from '../../databases/Credentials';
 
 /**

@@ -1,5 +1,5 @@
 import { createClient } from 'redis';
-import { Error } from '../types';
+import { Error } from '../types/types';
 import 'dotenv/config';
 
 // Create redis TokensDB client

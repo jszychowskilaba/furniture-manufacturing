@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { UserCredentials } from '../../types';
+import { UserCredentials } from '../../types/types';
 import * as Auth from '../../databases/Auth';
 
 /**

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { Error } from '../types';
-import * as Auth from '../databases/Auth';
+import { Error } from '../../types/types';
+import * as Auth from '../../databases/Auth';
 /**
  * Authenticate a user by its request token. If token is not valid,
  * response with 401.

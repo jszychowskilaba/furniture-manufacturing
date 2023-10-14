@@ -1,4 +1,4 @@
-import { UserCredentials, Error } from '../types';
+import { UserCredentials, Error } from '../types/types';
 
 // For testing proposes
 const DB = [
