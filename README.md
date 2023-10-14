@@ -211,7 +211,8 @@ Returns all inventory stored in DB.
         "quantity": 24,
         "pricePerUnit": 15,
         "unit": "m2",
-        "purchaseTime": 5
+        "purchaseTime": 5,
+        "internalNotes": "some notes
       },
       {
         "id": "6f69f3d7-7d7f-4cac-b0c1-82fa337d797c",
@@ -221,7 +222,8 @@ Returns all inventory stored in DB.
         "quantity": 1000,
         "pricePerUnit": 0.12,
         "unit": "unit",
-        "purchaseTime": 1
+        "purchaseTime": 1,
+        "internalNotes": "some notes
       }
     ]
     ```
@@ -296,7 +298,8 @@ Returns a material by material ID stored in the DB.
       "quantity": 24,
       "pricePerUnit": 15,
       "unit": "m2",
-      "purchaseTime": 5
+      "purchaseTime": 5,
+      "internalNotes": "some notes
     }
     ```
 
@@ -644,7 +647,7 @@ Return a manufacture order stored in DB by its ID.
     }
     ```
 
-  - 204 No Found. (The manufacture order does not exist).
+  - 404 No Found. (The manufacture order does not exist).
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
@@ -665,7 +668,7 @@ Update a stored manufacture order in the DB.
   // Header
   Content-Type: application/json; charset=utf-8
   Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
-  
+
   // Body
   {
     "internalCode": "AT-3",
@@ -688,6 +691,7 @@ Update a stored manufacture order in the DB.
   ```
 
 - **Responses**
+  - 204 No Content. (Successful update).
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 404 Not Found. (Manufacture order ID not found in DB). Response body with a JSON informative message.
