@@ -60,6 +60,10 @@ This API **streamlines the process** for estimating production time, materials c
 
 ### **`authentication`** authentication operations
 
+<details>
+  <summary>Click here</summary>
+
+
 ![](./images/post-colour.png) **`POST`** `/api/v1/auth/login` Login the user.
 
 <details>
@@ -181,7 +185,12 @@ Server side generates a new token and a new refresh token, update the old ones i
 
 </details>
 
+</details>
+
 ### **`inventory`** inventory operations
+
+<details>
+  <summary>Click here</summary>
 
 ![](./images/get-colour.png) **`GET`** `/v1/inventory` Returns all inventory
 
@@ -351,7 +360,12 @@ Returns a material by material ID stored in the DB.
 
 </details>
 
+</details>
+
 ### **`labor:`** labor operations
+
+<details>
+  <summary>Click here</summary>
 
 ![](./images/get-colour.png) **`GET`** `/v1/labors` Returns all labors
 
@@ -516,7 +530,12 @@ Updates labor by its ID and update the DB.
 
 </details>
 
+</details>
+
 ### **`orders:`** orders operations
+
+<details>
+  <summary>Click here</summary>
 
 ![](./images/get-colour.png) **`GET`** `/v1/orders` Returns all manufacture orders
 
@@ -735,6 +754,8 @@ Delete an unplaced manufacture order from the DB.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 404 Not Found. (Manufacture order ID not found in DB). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
+
+</details>
 
 </details>
 
