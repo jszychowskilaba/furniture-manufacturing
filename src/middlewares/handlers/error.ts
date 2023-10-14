@@ -9,3 +9,5 @@ const errorHandler = (
 ) => {
   res.status(error.status).json(error.message);
 };
+
+export default errorHandler;
