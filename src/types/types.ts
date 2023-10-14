@@ -26,5 +26,5 @@ export interface Labor {
   pricePerUnit: number;
   timePerUnit: number;
   unit: string;
-  internalNote: string;
+  internalNotes: string;
 }
