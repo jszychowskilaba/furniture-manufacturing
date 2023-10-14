@@ -340,6 +340,7 @@ Returns a material by material ID stored in the DB.
 - **Responses**
   - 204 No Content. (Successful update)
   - 400 Bad Request. Response body with a JSON informative message.
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 404 Not Found. (Material ID not found in DB). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
@@ -488,6 +489,7 @@ Updates labor by its ID and update the DB.
 - **Responses**
   - 204 No Content. (Successful update)
   - 400 Bad Request. Response body with a JSON informative message.
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 404 Not Found. (Labor ID not found in DB). Response body with a JSON informative message
   - 500 Internal Server Error. Response body with a JSON informative message.
 
