@@ -388,6 +388,7 @@ Return all created labors from DB
         "id": "cfb4b8ec-fea7-41c1-aa00-a88456ddf7c0",
         "createdAt": "2/10/2023, 1:23:54 PM",
         "status": "inactive",
+        "internalCode": "S-23",
         "description": "sanding board surface",
         "pricePerUnit": 30, // USD
         "timePerUnit": 3600, // seconds
@@ -560,7 +561,7 @@ Return all manufacture orders stored in the DB.
     {
       "id": "26cfc6a8-3b4f-462c-bac7-5225e8586797",
       "createdAt": "2/10/2023, 1:23:54 PM",
-      "internalCode": "AT-01",
+      "internalCode": "AT-02",
       "description": "antique chair",
       "status": "in production",
       "manufactured": 40,
