@@ -18,3 +18,13 @@ export interface Material {
   purchaseTime: number;
   internalNotes: string;
 }
+
+export interface Labor {
+  status?: 'active' | 'inactive';
+  internalCode: string;
+  description: string;
+  pricePerUnit: number;
+  timePerUnit: number;
+  unit: string;
+  internalNote: string;
+}
