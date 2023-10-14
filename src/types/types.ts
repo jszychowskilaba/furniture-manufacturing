@@ -9,6 +9,7 @@ export interface Error {
 }
 
 export interface Material {
+  status?: 'active' | 'inactive';
   internalCode: string;
   description: string;
   quantity: number;
