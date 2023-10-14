@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as authServices from '../services/authServices';
-import { UserCredentials, Error } from '../types';
+import { UserCredentials, Error } from '../types/types';
 import 'dotenv/config';
 
 /**
@@ -27,13 +27,11 @@ const login = async (req: Request, res: Response) => {
     const [newToken, newRefreshToken] = await authServices.login(
       userCredentials
     );
-    res
-      .status(200)
-      .json({
-        access_token: newToken,
-        refresh_token: newRefreshToken,
-        expires_in: Number(process.env.TOKEN_EXPIRATION) || 300,
-      });
+    res.status(200).json({
+      access_token: newToken,
+      refresh_token: newRefreshToken,
+      expires_in: Number(process.env.TOKEN_EXPIRATION) || 300,
+    });
   } catch (error) {
     res.status((error as Error).status).json((error as Error).message);
   }
