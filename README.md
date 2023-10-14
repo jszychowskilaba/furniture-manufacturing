@@ -67,7 +67,7 @@ This API **streamlines the process** for estimating production time, materials c
 
 Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
-- Request
+- **Request**
 
   ```
   // Example
@@ -80,7 +80,7 @@ Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
   ```
 
-- **Responses:**
+- **Responses**
 
   - 201 OK. Response with a **access_token**, **refresh_token** and **expires_in** (expiration time of access_token in seconds). Tokens must be stored by client.
 
@@ -114,7 +114,7 @@ Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
 Server side delete the OAuth 2.0 tokens from the DB.
 
-- Request
+- **Request**
 
   ```
   // Example
@@ -123,7 +123,7 @@ Server side delete the OAuth 2.0 tokens from the DB.
   Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
   ```
 
-- **Responses:**
+- **Responses**
 
   - 204 No Content. (Successful logout).
 
@@ -142,7 +142,7 @@ Server side delete the OAuth 2.0 tokens from the DB.
 
 Server side generates a new token and a new refresh token, update the old ones in the DB side and response with the new tokens.
 
-- Request
+- **Request**
 
   ```
   // Example
@@ -154,7 +154,7 @@ Server side generates a new token and a new refresh token, update the old ones i
   refresh_token=1ea0e31e-2fc8-429b-9038-827f35e42dc3
   ```
 
-- **Responses:**
+- **Responses**
 
   - 200 OK. Response with a **new token** and a **new refresh token**. Tokens must be stored by client.
 
@@ -190,7 +190,7 @@ Server side generates a new token and a new refresh token, update the old ones i
 
 Returns all inventory stored in DB.
 
-- **Responses:**
+- **Responses**
 
   - 200 OK
 
@@ -260,7 +260,7 @@ Creates a new material and store it in DB.
   }
   ```
 
-- **Responses:**
+- **Responses**
   - 204 No Content. The material has been created and stored in DB.
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
@@ -276,7 +276,7 @@ Creates a new material and store it in DB.
 
 Returns a material by material ID stored in the DB.
 
-- **Responses:**
+- **Responses**
 
   - 200 OK
 
@@ -334,7 +334,7 @@ Returns a material by material ID stored in the DB.
   }
   ```
 
-- **Responses:**
+- **Responses**
   - 204 No Content. (Successful update)
   - 400 Bad Request. Response body with a JSON informative message.
   - 404 Not Found. (Material ID not found in DB). Response body with a JSON informative message.
@@ -351,7 +351,7 @@ Returns a material by material ID stored in the DB.
 
 Return all created labors from DB
 
-- **Responses:**
+- **Responses**
 
   - 200 OK
 
@@ -414,7 +414,7 @@ Creates a new labor and stores it in DB.
   }
   ```
 
-- **Responses:**
+- **Responses**
   - 201 No Content. The resource has been created and stored in DB
   - 400 Bad Request. Response body with a JSON informative message
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
@@ -429,7 +429,7 @@ Creates a new labor and stores it in DB.
 
 Returns a labor stored in the DB by its ID
 
-- **Responses:**
+- **Responses**
 
   - 200 OK
 
@@ -457,26 +457,36 @@ Returns a labor stored in the DB by its ID
 
 </details>
 
-![](./images/patch-colour.png) **`PATCH`** `/v1/labors/{laborID}` Updates a labor by labor ID
+![](./images/put-colour.png) **`PUT`** `/v1/labors/{laborID}` Updates a labor by labor ID
 
 <details>
   <summary>Click here</summary>
 
-- **Example**
+Updates labor by its ID and update the DB.
 
-```json
-{
-  "description": "screw a leg",
-  "pricePerUnit": 1, // USD
-  "timePerUnit": 2, // seconds
-  "unit": "unit"
-}
-```
+- **Request**
 
-- **Responses:**
-  - 204, updated resource
-  - 400, bad request
-  - 404, not found
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json; charset=utf-8
+  Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
+
+  // Body
+  {
+    "description": "screw a leg",
+    "pricePerUnit": 1,
+    "timePerUnit": 2,
+    "unit": "unit"
+  }
+  ```
+
+- **Responses**
+  - 204 No Content. (Successful update)
+  - 400 Bad Request. Response body with a JSON informative message.
+  - 404 Not Found. (Labor ID not found in DB). Response body with a JSON informative message
+  - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
 
@@ -487,19 +497,132 @@ Returns a labor stored in the DB by its ID
 <details>
   <summary>Click here</summary>
 
-- **Responses:**
+Return all manufacture orders stored in the DB.
 
-- 200, successful operation
+- **Responses**
 
-  - **Example**
+  - 200, successful operation
 
-  ```json
-  HTTP 200 OK
+    - 200 OK
+
+    ```
+    // Example
+
+    // Header
+    HTTP 200 OK
     Content-Type: application/json
-  [
+
+    // Body
+    [
+      {
+        "id": "54c42fec-f0a5-4e39-b9f6-e42e2a3c0222",
+        "createdAt": "4/10/2023, 1:55:56 PM",
+        "internalCode": "AT-01",
+        "description": "antique table",
+        "status": "pending",
+        "manufactured": 0,
+        "price": 450,
+        "totalProductionTime": 143,
+        "unitsToManufacture": 25,
+        "materials": [
+          { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
+          { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 8 }
+        ],
+        "labors": [
+          { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
+          { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
+        ],
+        "internalNote": "some special instructions about the order"
+      },
+      {
+        "id": "26cfc6a8-3b4f-462c-bac7-5225e8586797",
+        "createdAt": "2/10/2023, 1:23:54 PM",
+        "internalCode": "AT-01",
+        "description": "antique chair",
+        "status": "in production",
+        "manufactured": 40,
+        "price": 3000,
+        "totalProductionTime": 15,
+        "unitsToManufacture": 100,
+        "materials": [
+          { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
+          { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 1450 }
+        ],
+        "labors": [
+          { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
+          { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 100 }
+        ],
+        "internalNote": "some special instructions about the order"
+      }
+    ]
+    ```
+
+  - 204 No Content. (Manufacture order list is empty).
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
+
+</details>
+
+![](./images/post-colour.png) **`POST`** `/v1/order` Creates a new manufacture order
+
+<details>
+  <summary>Click here</summary>
+
+Creates a new manufacture order and stores it in DB.
+
+- **Request**
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json; charset=utf-8
+  Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
+
+  // Body
+  {
+    "internalCode": "AT-01",
+    "description": "antique table",
+    "unitsToManufacture": 25,
+    "materials": [
+      { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
+      { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 8 }
+    ],
+    "labors": [
+      { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
+      { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
+    ],
+    "internalNote": "some internal note"
+  }
+  ```
+
+- **Responses**
+  - 204 No Content. The manufacture order has been created and stored in DB.
+  - 400 Bad Request. Response body with a JSON informative message.
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 409 Conflict. (Internal code already used in another material). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
+
+</details>
+
+![](./images/get-colour.png) **`GET`** `/v1/orders/{orderID}` Returns a manufacture order by manufacture order ID
+
+<details>
+  <summary>Click here</summary>
+
+Return a manufacture order stored in DB by its ID.
+
+- **Responses**
+
+  - 200 OK
+
+    ```
+    HTTP 200 OK
+    Content-Type: application/json
     {
       "id": "54c42fec-f0a5-4e39-b9f6-e42e2a3c0222",
       "createdAt": "4/10/2023, 1:55:56 PM",
+      "internalCode": "AT-01",
       "description": "antique table",
       "status": "pending",
       "manufactured": 0,
@@ -513,79 +636,29 @@ Returns a labor stored in the DB by its ID
       "labors": [
         { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
         { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
-      ]
-    },
-    {
-      "id": "26cfc6a8-3b4f-462c-bac7-5225e8586797",
-      "createdAt": "2/10/2023, 1:23:54 PM",
-      "description": "antique chair",
-      "status": "in production",
-      "manufactured": 40,
-      "price": 3000,
-      "totalProductionTime": 15,
-      "unitsToManufacture": 100,
-      "materials": [
-        { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
-        { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 1450 }
       ],
-      "labors": [
-        { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
-        { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 100 }
-      ]
+      "internalNote": "some internal note"
     }
-  ]
+    ```
+
+  - 204 No Found. (The manufacture order does not exist).
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
+
+</details>
+
+![](./images/put-colour.png) **`PUT** `/v1/orders/{orderID}` Update a manufacture order by manufacture order ID
+
+<details>
+  <summary>Click here</summary>
+
+Update a stored manufacture order in the DB.
+
+- **Request**
+
   ```
-
-- 204, no content
-
-</details>
-
-![](./images/post-colour.png) **`POST`** `/v1/order` Creates a new manufacture order
-
-<details>
-  <summary>Click here</summary>
-
-- **Example**
-
-```json
-{
-  "description": "antique table",
-  "unitsToManufacture": 25,
-  "materials": [
-    { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
-    { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 8 }
-  ],
-  "labors": [
-    { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
-    { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
-  ]
-}
-```
-
-- **Responses:**
-  - 201, created resource
-  - 400, bad request
-  - 409, conflict
-
-</details>
-
-![](./images/get-colour.png) **`GET`** `/v1/orders/{orderID}` Returns a manufacture order by manufacture order ID
-
-<details>
-  <summary>Click here</summary>
-
-**Responses:**
-
-- 200, successful operation
-
-  - **Example**
-
-  ```json
-  HTTP 200 OK
-    Content-Type: application/json
   {
-    "id": "54c42fec-f0a5-4e39-b9f6-e42e2a3c0222",
-    "createdAt": "4/10/2023, 1:55:56 PM",
+    "internalCode": "AT-3",
     "description": "antique table",
     "status": "pending",
     "manufactured": 0,
@@ -599,44 +672,16 @@ Returns a labor stored in the DB by its ID
     "labors": [
       { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
       { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
-    ]
+    ],
+    "internalNote": "updating internal notes"
   }
   ```
 
-- 404, not found
-
-</details>
-
-![](./images/patch-colour.png) **`PATCH`** `/v1/orders/{orderID}` Update a manufacture order by manufacture order ID
-
-<details>
-  <summary>Click here</summary>
-
-- **Example**
-
-```json
-{
-  "description": "antique table",
-  "status": "pending",
-  "manufactured": 0,
-  "price": 450,
-  "totalProductionTime": 143,
-  "unitsToManufacture": 25,
-  "materials": [
-    { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
-    { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 8 }
-  ],
-  "labors": [
-    { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
-    { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
-  ]
-}
-```
-
-- **Responses:**
-  - 204, updated resource
-  - 400, bad request
-  - 404, not found
+- **Responses**
+  - 400 Bad Request. Response body with a JSON informative message.
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 404 Not Found. (Manufacture order ID not found in DB). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
 
@@ -645,9 +690,13 @@ Returns a labor stored in the DB by its ID
 <details>
   <summary>Click here</summary>
 
-- **Responses:**
-  - 204, deleted resource
-  - 404, not found
+Delete an unplaced manufacture order from the DB.
+
+- **Responses**
+  - 204 No Content. (Successful deletion)
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 404 Not Found. (Manufacture order ID not found in DB). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
 
