@@ -9,17 +9,17 @@ client_id=juan
 ### Entering secret area with valid token
 POST http://localhost:3000/secret-area
 Content-Type: application/json
-Authorization: 32523292-6c97-434f-821f-1845e82d1a9a
+Authorization: ad816805-032c-4c21-a9ff-91bac315c93f
 
 ### Refresh tokens with a valid refresh token
 POST http://localhost:3000/api/v1/auth/refresh-tokens
 Content-Type: application/x-www-form-urlencoded
 
-refresh_token=1e6b26a4-8f90-4850-bd02-fa26150c8d28
+refresh_token=39ecd655-a014-4969-8709-2c32a901aa2c
 
 ### Log out with a valid token
 DELETE http://localhost:3000/api/v1/auth/logout
-Authorization: 32523292-6c97-434f-821f-1845e82d1a9a
+Authorization: 052edf08-9aa4-4c40-9bfd-1cc70b1c4879
 
 
 ### Entering secret area with valid token
