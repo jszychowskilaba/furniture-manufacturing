@@ -501,61 +501,59 @@ Return all manufacture orders stored in the DB.
 
 - **Responses**
 
-  - 200, successful operation
+  - 200 OK
 
-    - 200 OK
+  ```
+  // Example
 
-    ```
-    // Example
+  // Header
+  HTTP 200 OK
+  Content-Type: application/json
 
-    // Header
-    HTTP 200 OK
-    Content-Type: application/json
-
-    // Body
-    [
-      {
-        "id": "54c42fec-f0a5-4e39-b9f6-e42e2a3c0222",
-        "createdAt": "4/10/2023, 1:55:56 PM",
-        "internalCode": "AT-01",
-        "description": "antique table",
-        "status": "pending",
-        "manufactured": 0,
-        "price": 450,
-        "totalProductionTime": 143,
-        "unitsToManufacture": 25,
-        "materials": [
-          { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
-          { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 8 }
-        ],
-        "labors": [
-          { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
-          { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
-        ],
-        "internalNote": "some special instructions about the order"
-      },
-      {
-        "id": "26cfc6a8-3b4f-462c-bac7-5225e8586797",
-        "createdAt": "2/10/2023, 1:23:54 PM",
-        "internalCode": "AT-01",
-        "description": "antique chair",
-        "status": "in production",
-        "manufactured": 40,
-        "price": 3000,
-        "totalProductionTime": 15,
-        "unitsToManufacture": 100,
-        "materials": [
-          { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
-          { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 1450 }
-        ],
-        "labors": [
-          { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
-          { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 100 }
-        ],
-        "internalNote": "some special instructions about the order"
-      }
-    ]
-    ```
+  // Body
+  [
+    {
+      "id": "54c42fec-f0a5-4e39-b9f6-e42e2a3c0222",
+      "createdAt": "4/10/2023, 1:55:56 PM",
+      "internalCode": "AT-01",
+      "description": "antique table",
+      "status": "pending",
+      "manufactured": 0,
+      "price": 450,
+      "totalProductionTime": 143,
+      "unitsToManufacture": 25,
+      "materials": [
+        { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
+        { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 8 }
+      ],
+      "labors": [
+        { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
+        { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
+      ],
+      "internalNote": "some special instructions about the order"
+    },
+    {
+      "id": "26cfc6a8-3b4f-462c-bac7-5225e8586797",
+      "createdAt": "2/10/2023, 1:23:54 PM",
+      "internalCode": "AT-01",
+      "description": "antique chair",
+      "status": "in production",
+      "manufactured": 40,
+      "price": 3000,
+      "totalProductionTime": 15,
+      "unitsToManufacture": 100,
+      "materials": [
+        { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
+        { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 1450 }
+      ],
+      "labors": [
+        { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
+        { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 100 }
+      ],
+      "internalNote": "some special instructions about the order"
+    }
+  ]
+  ```
 
   - 204 No Content. (Manufacture order list is empty).
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
@@ -617,8 +615,13 @@ Return a manufacture order stored in DB by its ID.
   - 200 OK
 
     ```
+    // Example
+
+    // Header
     HTTP 200 OK
     Content-Type: application/json
+
+    // Body
     {
       "id": "54c42fec-f0a5-4e39-b9f6-e42e2a3c0222",
       "createdAt": "4/10/2023, 1:55:56 PM",
@@ -647,7 +650,7 @@ Return a manufacture order stored in DB by its ID.
 
 </details>
 
-![](./images/put-colour.png) **`PUT** `/v1/orders/{orderID}` Update a manufacture order by manufacture order ID
+![](./images/put-colour.png) **`PUT`**/v1/orders/{orderID}` Update a manufacture order by manufacture order ID
 
 <details>
   <summary>Click here</summary>
@@ -657,6 +660,13 @@ Update a stored manufacture order in the DB.
 - **Request**
 
   ```
+  // Example
+
+  // Header
+  Content-Type: application/json; charset=utf-8
+  Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
+  
+  // Body
   {
     "internalCode": "AT-3",
     "description": "antique table",
