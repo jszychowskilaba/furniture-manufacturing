@@ -8,4 +8,4 @@ router.post('/', inventoryController.createMaterial);
 router.get('/:id', inventoryController.getOneMaterial);
 router.put('/:id', inventoryController.updateMaterial);
 
-export { router };
+export default router;
