@@ -5,5 +5,6 @@ export const getOneMaterial = (
   res: Response,
   next: NextFunction
 ) => {
-  res.status(200).json('I want to get one material');
+  const id = req.params.id;
+  res.status(200).json(`I want to get one material. The material ID is: ${id}`);
 };

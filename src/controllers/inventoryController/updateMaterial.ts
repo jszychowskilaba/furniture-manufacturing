@@ -5,5 +5,8 @@ export const updateMaterial = (
   res: Response,
   next: NextFunction
 ) => {
-  res.status(200).json('I want to update a material');
+  const id = req.params.id;
+  res
+    .status(200)
+    .json(`I want to update a material. The material ID is: ${id}`);
 };
