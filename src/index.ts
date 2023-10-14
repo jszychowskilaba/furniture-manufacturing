@@ -1,5 +1,6 @@
 import express from 'express';
 import v1AuthRouter from './v1/routes/authRoutes';
+import v1InventoryRouter from './v1/routes/inventoryRoutes';
 import 'dotenv/config';
 import authenticateUser from './middlewares/authenticateUser/authenticateUser';
 
@@ -12,6 +13,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Handling routes
 app.use('/api/v1/auth', v1AuthRouter);
+app.use('/api/v1/inventory', v1InventoryRouter);
+
 // For testing middleware
 app.use('/secret-area', authenticateUser, (req, res) => {
   res.status(200).json('I am inside the secret area');
