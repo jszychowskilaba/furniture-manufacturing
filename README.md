@@ -188,19 +188,25 @@ Server side generates a new token and a new refresh token, update the old ones i
 <details>
   <summary>Click here</summary>
 
+Returns all inventory stored in DB.
+
 - **Responses:**
 
-  - 200, successful operation
+  - 200 OK
 
-    - **Example**
+    ```
+    // Example
 
-    ```json
+    // Header
     HTTP 200 OK
-      Content-Type: application/json
+    Content-Type: application/json
+
+    // Body
     [
       {
         "id": "a7cbefaf-b451-4a40-8e77-753bf1f5f639",
         "createdAt": "4/10/2023, 3:58:56 PM",
+        "internalCode": "w-01",
         "description": "wood",
         "quantity": 24,
         "pricePerUnit": 15,
@@ -210,6 +216,7 @@ Server side generates a new token and a new refresh token, update the old ones i
       {
         "id": "6f69f3d7-7d7f-4cac-b0c1-82fa337d797c",
         "createdAt": "3/10/2023, 2:58:56 PM",
+        "internalCode" "n-01",
         "description": "nails",
         "quantity": 1000,
         "pricePerUnit": 0.12,
@@ -219,7 +226,9 @@ Server side generates a new token and a new refresh token, update the old ones i
     ]
     ```
 
-  - 204, no content
+  - 204 No Content. (Inventory is empty).
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
 
@@ -265,18 +274,24 @@ Creates a new material and store it in DB.
 <details>
   <summary>Click here</summary>
 
-**Responses:**
+Returns a material by material ID stored in the DB.
 
-- 200, successful operation
+- **Responses:**
 
-  - **Example**
+- 200 OK
 
-  ```json
+  ```
+  // Example
+
+  // Header
   HTTP 200 OK
-    Content-Type: application/json
+  Content-Type: application/json
+
+  // Body
   {
     "id": "a7cbefaf-b451-4a40-8e77-753bf1f5f639",
     "createdAt": "4/10/2023, 3:58:56 PM",
+    "internalCode": "w-01",
     "description": "wood",
     "quantity": 24,
     "pricePerUnit": 15,
@@ -284,32 +299,45 @@ Creates a new material and store it in DB.
     "purchaseTime": 5
   }
   ```
-
-- 404, not found
+- 204 No Content. (The material does not exist).
+- 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+- 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
 
-![](./images/patch-colour.png) **`PATCH`** `/v1/inventory/{materialID}` Updates a material by material ID
+![](./images/put-colour.png) **`PUT`** `/v1/inventory/{materialID}` Updates a material by material ID
 
 <details>
   <summary>Click here</summary>
+  
+  Updates a material by material ID and update the DB.
 
-- **Example**
+- **Request**
 
-```json
-{
-  "description": "wood",
-  "quantity": 24,
-  "pricePerUnit": 15,
-  "unit": "m2",
-  "purchaseTime": 5
-}
-```
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json; charset=utf-8
+  Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
+
+  // Body
+  {
+    "internalCode": "new internal code",
+    "description": "new description",
+    "quantity": 3,
+    "pricePerUnit": 2,
+    "unit": "new unit",
+    "purchaseTime": 3
+    "internalNotes": "new internal note"
+  }
+  ```
 
 - **Responses:**
-  - 204, updated resource
-  - 400, bad request
-  - 404, not found
+  - 204 No Content. (Successful update)
+  - 400 Bad Request. Response body with a JSON informative message.
+  - 404 Not Found. (Material ID not found in DB). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
 
