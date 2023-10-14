@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
-import * as inventoryServices from '../../services/inventoryServices/inventoryServices';
+import { createMaterial } from './createMaterial';
+import { getAllMaterials } from './getAllMaterials';
+import { getOneMaterial } from './getOneMaterial';
+import { updateMaterial } from './updateMaterial';
 
-const createMaterial = async (req: Request, res: Response): Promise<void> => {
-   
-};
+export { createMaterial, getAllMaterials, getOneMaterial, updateMaterial };
