@@ -261,8 +261,8 @@ Creates a new material and store it in DB.
   ```
 
 - **Responses:**
-  - 201 Created. The material has been created and stored in DB.
-  - 400 Bad Request. (Missing argument). Response body with a JSON informative message.
+  - 204 No Content. The material has been created and stored in DB.
+  - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 409 Conflict. (Internal code already used in another material). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
@@ -278,30 +278,31 @@ Returns a material by material ID stored in the DB.
 
 - **Responses:**
 
-- 200 OK
+  - 200 OK
 
-  ```
-  // Example
+    ```
+    // Example
 
-  // Header
-  HTTP 200 OK
-  Content-Type: application/json
+    // Header
+    HTTP 200 OK
+    Content-Type: application/json
 
-  // Body
-  {
-    "id": "a7cbefaf-b451-4a40-8e77-753bf1f5f639",
-    "createdAt": "4/10/2023, 3:58:56 PM",
-    "internalCode": "w-01",
-    "description": "wood",
-    "quantity": 24,
-    "pricePerUnit": 15,
-    "unit": "m2",
-    "purchaseTime": 5
-  }
-  ```
-- 204 No Content. (The material does not exist).
-- 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
-- 500 Internal Server Error. Response body with a JSON informative message.
+    // Body
+    {
+      "id": "a7cbefaf-b451-4a40-8e77-753bf1f5f639",
+      "createdAt": "4/10/2023, 3:58:56 PM",
+      "internalCode": "w-01",
+      "description": "wood",
+      "quantity": 24,
+      "pricePerUnit": 15,
+      "unit": "m2",
+      "purchaseTime": 5
+    }
+    ```
+
+  - 404 No Found. (The material does not exist).
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
 
@@ -348,36 +349,43 @@ Returns a material by material ID stored in the DB.
 <details>
   <summary>Click here</summary>
 
+Return all created labors from DB
+
 - **Responses:**
 
-- 200, successful operation
+  - 200 OK
 
-  - **Example**
+    ```
+    // Example
 
-  ```json
-  HTTP 200 OK
-    Content-Type: application/json
-  [
-    {
-      "id": "7b45ccd1-e1c3-4e75-99ed-aa41bcc98dd1",
-      "createdAt": "4/10/2023, 1:55:56 PM",
-      "description": "screw a leg",
-      "pricePerUnit": 1, // USD
-      "timePerUnit": 2, // seconds
-      "unit": "unit"
-    },
-    {
-      "id": "cfb4b8ec-fea7-41c1-aa00-a88456ddf7c0",
-      "createdAt": "2/10/2023, 1:23:54 PM",
-      "description": "sanding board surface",
-      "pricePerUnit": 30, // USD
-      "timePerUnit": 3600, // seconds
-      "unit": "m2"
-    }
-  ]
-  ```
+    // Header
+    HTTP 200 OK
+      Content-Type: application/json
 
-- 204, no content
+    // Body
+    [
+      {
+        "id": "7b45ccd1-e1c3-4e75-99ed-aa41bcc98dd1",
+        "createdAt": "4/10/2023, 1:55:56 PM",
+        "description": "screw a leg",
+        "pricePerUnit": 1, // USD
+        "timePerUnit": 2, // seconds
+        "unit": "unit"
+      },
+      {
+        "id": "cfb4b8ec-fea7-41c1-aa00-a88456ddf7c0",
+        "createdAt": "2/10/2023, 1:23:54 PM",
+        "description": "sanding board surface",
+        "pricePerUnit": 30, // USD
+        "timePerUnit": 3600, // seconds
+        "unit": "m2"
+      }
+    ]
+    ```
+
+  - 204 No Content. (Labor list is empty).
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
 
@@ -386,21 +394,31 @@ Returns a material by material ID stored in the DB.
 <details>
   <summary>Click here</summary>
 
-- **Example**
+Creates a new labor and stores it in DB.
 
-```json
-{
-  "description": "screw a leg",
-  "pricePerUnit": 24, // USD
-  "timePerUnit": 2, // seconds
-  "unit": "unit"
-}
-```
+- **Request**
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json; charset=utf-8
+  Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
+
+  // Body
+  {
+    "description": "screw a leg",
+    "pricePerUnit": 24, // USD
+    "timePerUnit": 2, // seconds
+    "unit": "unit"
+  }
+  ```
 
 - **Responses:**
-  - 201, created resource
-  - 400, bad request
-  - 409, conflict
+  - 201 No Content. The resource has been created and stored in DB
+  - 400 Bad Request. Response body with a JSON informative message
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
 
@@ -409,26 +427,33 @@ Returns a material by material ID stored in the DB.
 <details>
   <summary>Click here</summary>
 
-**Responses:**
+Returns a labor stored in the DB by its ID
 
-- 200, successful operation
+- **Responses:**
 
-  - **Example**
+  - 200 OK
 
-  ```json
+  ```
+  // Example
+
+  // Header
   HTTP 200 OK
-    Content-Type: application/json
+  Content-Type: application/json
+
+  // Body
   {
     "id": "7b45ccd1-e1c3-4e75-99ed-aa41bcc98dd1",
     "createdAt": "4/10/2023, 1:55:56 PM",
     "description": "screw a leg",
-    "pricePerUnit": 1, // USD
-    "timePerUnit": 2, // seconds
+    "pricePerUnit": 1,
+    "timePerUnit": 2,
     "unit": "unit"
   }
   ```
 
-- 404, not found
+  - 404 Not Found. (The labor is not stored in the DB).
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
 
@@ -586,7 +611,7 @@ Returns a material by material ID stored in the DB.
 
 <details>
   <summary>Click here</summary>
-  
+
 - **Example**
 
 ```json
@@ -653,3 +678,7 @@ docker compose up
 ```
 
 5. `Have fun`
+
+```
+
+```
