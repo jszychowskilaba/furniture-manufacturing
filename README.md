@@ -446,7 +446,7 @@ Creates a new labor and stores it in DB.
   ```
 
 - **Responses**
-  - 201 No Content. The resource has been created and stored in DB
+  - 204 No Content. The resource has been created and stored in DB
   - 400 Bad Request. Response body with a JSON informative message
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 409 Conflict. (Internal code already used). Response body with a JSON informative message.
