@@ -34,8 +34,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.refreshTokens = exports.logout = exports.login = void 0;
 const authServices = __importStar(require("../services/authServices"));
+require("dotenv/config");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { body } = req;
+    const body = req.body;
     if (!body.client_id || !body.client_secret) {
         res.status(400).json('Missing keys. "client_id" or "client_secret"');
         return;
@@ -46,7 +47,13 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     };
     try {
         const [newToken, newRefreshToken] = yield authServices.login(userCredentials);
-        res.status(200).json({ newToken, newRefreshToken });
+        res
+            .status(200)
+            .json({
+            access_token: newToken,
+            refresh_token: newRefreshToken,
+            expires_in: Number(process.env.TOKEN_EXPIRATION) || 300,
+        });
     }
     catch (error) {
         res.status(error.status).json(error.message);
@@ -68,7 +75,7 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.logout = logout;
 const refreshTokens = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const oldRefreshToken = req.header('authorization');
+    const oldRefreshToken = req.body.refresh_token;
     if (!oldRefreshToken) {
         const error = {
             status: 400,
@@ -79,7 +86,11 @@ const refreshTokens = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     try {
         const [newToken, newRefreshToken] = yield authServices.refreshTokens(oldRefreshToken);
-        res.status(200).json({ newToken, newRefreshToken });
+        res.status(200).json({
+            access_token: newToken,
+            refresh_token: newRefreshToken,
+            expires_in: Number(process.env.TOKEN_EXPIRATION) || 300,
+        });
     }
     catch (error) {
         res.status(error.status).json(error.message);
