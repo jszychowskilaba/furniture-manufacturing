@@ -5,5 +5,5 @@ export const createMaterial = (
   res: Response,
   next: NextFunction
 ) => {
-  res.status(204);
+  res.status(200).json('I want to create a material');
 };

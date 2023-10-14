@@ -5,5 +5,5 @@ export const getAllMaterials = (
   res: Response,
   next: NextFunction
 ) => {
-  res.status(204);
+  res.status(200).json('I want to get all materials');
 };
