@@ -257,7 +257,7 @@ Creates a new material and store it in DB.
     "quantity": 24,
     "pricePerUnit": 15,
     "unit": "m2",
-    "purchaseTime": 5
+    "purchaseTime": 5409
     "internalNotes": "used for tables top"
   }
   ```
@@ -342,6 +342,7 @@ Returns a material by material ID stored in the DB.
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 404 Not Found. (Material ID not found in DB). Response body with a JSON informative message.
+  - 409 Conflict. (Internal code already used). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
@@ -371,18 +372,23 @@ Return all created labors from DB
       {
         "id": "7b45ccd1-e1c3-4e75-99ed-aa41bcc98dd1",
         "createdAt": "4/10/2023, 1:55:56 PM",
+        "status": "active",
+        "internalCode": "S-01",
         "description": "screw a leg",
         "pricePerUnit": 1, // USD
         "timePerUnit": 2, // seconds
-        "unit": "unit"
+        "unit": "unit",
+        "internalNote": "some internal note",
       },
       {
         "id": "cfb4b8ec-fea7-41c1-aa00-a88456ddf7c0",
         "createdAt": "2/10/2023, 1:23:54 PM",
+        "status": "inactive",
         "description": "sanding board surface",
         "pricePerUnit": 30, // USD
         "timePerUnit": 3600, // seconds
-        "unit": "m2"
+        "unit": "m2",
+        "internalNote": "some internal note",
       }
     ]
     ```
@@ -411,10 +417,12 @@ Creates a new labor and stores it in DB.
 
   // Body
   {
+    "internalCode": "S-01",
     "description": "screw a leg",
     "pricePerUnit": 24, // USD
     "timePerUnit": 2, // seconds
     "unit": "unit"
+    "internalNote": "some internal note"
   }
   ```
 
@@ -422,6 +430,7 @@ Creates a new labor and stores it in DB.
   - 201 No Content. The resource has been created and stored in DB
   - 400 Bad Request. Response body with a JSON informative message
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 409 Conflict. (Internal code already used). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
@@ -448,10 +457,13 @@ Returns a labor stored in the DB by its ID
   {
     "id": "7b45ccd1-e1c3-4e75-99ed-aa41bcc98dd1",
     "createdAt": "4/10/2023, 1:55:56 PM",
+    "status": "inactive",
+    "internalNote": "S-01",
     "description": "screw a leg",
     "pricePerUnit": 1,
     "timePerUnit": 2,
-    "unit": "unit"
+    "unit": "unit",
+    "internalNote": "some internal note"
   }
   ```
 
@@ -479,10 +491,13 @@ Updates labor by its ID and update the DB.
 
   // Body
   {
+    "internalCode": "S-01"
+    "status": "active,
     "description": "screw a leg",
     "pricePerUnit": 1,
     "timePerUnit": 2,
-    "unit": "unit"
+    "unit": "unit",
+    "internalNote": "new internal note"
   }
   ```
 
@@ -491,6 +506,7 @@ Updates labor by its ID and update the DB.
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 404 Not Found. (Labor ID not found in DB). Response body with a JSON informative message
+  - 409 Conflict. (Internal code already used). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
@@ -697,6 +713,7 @@ Update a stored manufacture order in the DB.
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 404 Not Found. (Manufacture order ID not found in DB). Response body with a JSON informative message.
+  - 409 Conflict. (Internal code already used). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
