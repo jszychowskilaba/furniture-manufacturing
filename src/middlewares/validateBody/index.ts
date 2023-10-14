@@ -1,6 +1,7 @@
 import Ajv, { JSONSchemaType } from 'ajv';
 import { Request, Response, NextFunction } from 'express';
 import { materialSchema } from './schemas/materialSchema';
+import { laborSchema } from './schemas/laborSchema';
 import { Error } from '../../types/types';
 
 /**
@@ -27,4 +28,4 @@ export const validateBody = (schema: JSONSchemaType<any>) => {
   };
 };
 
-export { materialSchema };
+export { materialSchema, laborSchema };
