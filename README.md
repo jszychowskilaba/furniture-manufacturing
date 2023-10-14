@@ -206,6 +206,7 @@ Returns all inventory stored in DB.
       {
         "id": "a7cbefaf-b451-4a40-8e77-753bf1f5f639",
         "createdAt": "4/10/2023, 3:58:56 PM",
+        "status": "active",
         "internalCode": "w-01",
         "description": "wood",
         "quantity": 24,
@@ -217,6 +218,7 @@ Returns all inventory stored in DB.
       {
         "id": "6f69f3d7-7d7f-4cac-b0c1-82fa337d797c",
         "createdAt": "3/10/2023, 2:58:56 PM",
+        "status": "active",
         "internalCode" "n-01",
         "description": "nails",
         "quantity": 1000,
@@ -293,6 +295,7 @@ Returns a material by material ID stored in the DB.
     {
       "id": "a7cbefaf-b451-4a40-8e77-753bf1f5f639",
       "createdAt": "4/10/2023, 3:58:56 PM",
+      "status": "active",
       "internalCode": "w-01",
       "description": "wood",
       "quantity": 24,
@@ -327,6 +330,7 @@ Returns a material by material ID stored in the DB.
 
   // Body
   {
+    "status": "inactive",
     "internalCode": "new internal code",
     "description": "new description",
     "quantity": 3,
@@ -491,8 +495,8 @@ Updates labor by its ID and update the DB.
 
   // Body
   {
+    "status": "active",
     "internalCode": "S-01"
-    "status": "active,
     "description": "screw a leg",
     "pricePerUnit": 1,
     "timePerUnit": 2,
