@@ -1,6 +1,9 @@
 import { JSONSchemaType } from 'ajv';
 import { Material, PartialMaterial } from '../../../types/types';
 
+/**
+ * Material schema for post method
+ */
 export const materialSchema: JSONSchemaType<Material> = {
   type: 'object',
   properties: {
@@ -25,6 +28,9 @@ export const materialSchema: JSONSchemaType<Material> = {
   additionalProperties: false,
 };
 
+/**
+ * Partial material schema for patch method
+ */
 export const partialMaterialSchema: JSONSchemaType<PartialMaterial> = {
   type: 'object',
   properties: {

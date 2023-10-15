@@ -1,6 +1,9 @@
 import { JSONSchemaType } from 'ajv';
 import { Labor, PartialLabor } from '../../../types/types';
 
+/**
+ * Labor schema for post method
+ */
 export const laborSchema: JSONSchemaType<Labor> = {
   type: 'object',
   properties: {
@@ -23,6 +26,9 @@ export const laborSchema: JSONSchemaType<Labor> = {
   additionalProperties: false,
 };
 
+/**
+ * Partial labor schema for patch method
+ */
 export const partialLaborSchema: JSONSchemaType<PartialLabor> = {
   type: 'object',
   properties: {
