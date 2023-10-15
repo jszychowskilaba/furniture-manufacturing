@@ -9,7 +9,7 @@ export interface Error {
 }
 
 export interface Material {
-  status?: 'active' | 'inactive';
+  status: 'active' | 'inactive';
   internalCode: string;
   description: string;
   quantity: number;
@@ -19,8 +19,10 @@ export interface Material {
   internalNotes: string;
 }
 
+export interface PartialMaterial extends Partial<Material>{}
+
 export interface Labor {
-  status?: 'active' | 'inactive';
+  status: 'active' | 'inactive';
   internalCode: string;
   description: string;
   pricePerUnit: number;
@@ -28,3 +30,5 @@ export interface Labor {
   unit: string;
   internalNotes: string;
 }
+
+export interface PartialLabor extends Partial<Labor>{}
