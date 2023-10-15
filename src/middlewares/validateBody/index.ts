@@ -10,7 +10,7 @@ import { Error } from '../../types/types';
  * @param schema The predefined schema
  * @returns The middleware
  */
-export const validateBody = (schema: JSONSchemaType<any>) => {
+export const validateBody = (schema: JSONSchemaType<unknown>) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const data = req.body;
     const ajv = new Ajv();
