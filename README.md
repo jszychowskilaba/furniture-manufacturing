@@ -321,7 +321,7 @@ Returns a material by material ID stored in the DB.
 
 </details>
 
-![](./images/put-colour.png) **`PUT`** `/v1/inventory/{materialID}` Updates a material by material ID
+![](./images/patch-colour.png) **`PATCH`** `/v1/inventory/{materialID}` Updates a material by material ID
 
 <details>
   <summary>Click here</summary>
@@ -492,7 +492,7 @@ Returns a labor stored in the DB by its ID
 
 </details>
 
-![](./images/put-colour.png) **`PUT`** `/v1/labors/{laborID}` Updates a labor by labor ID
+![](./images/patch-colour.png) **`PATCH`** `/v1/labors/{laborID}` Updates a labor by labor ID
 
 <details>
   <summary>Click here</summary>
@@ -695,7 +695,7 @@ Return a manufacture order stored in DB by its ID.
 
 </details>
 
-![](./images/put-colour.png) **`PUT`**/v1/orders/{orderID}` Update a manufacture order by manufacture order ID
+![](./images/patch-colour.png) **`PATCH`** `/v1/orders/{orderID}` Update a manufacture order by manufacture order ID
 
 <details>
   <summary>Click here</summary>
