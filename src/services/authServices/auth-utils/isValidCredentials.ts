@@ -8,12 +8,8 @@ import * as Credentials from '../../../databases/Credentials';
  * @returns true if valid, error if not
  */
 const isValidCredentials = (userCredentials: UserCredentials): boolean => {
-  try {
-    const isValid = Credentials.isValidCredentials(userCredentials);
-    return isValid;
-  } catch (error) {
-    throw error;
-  }
+  const isValid = Credentials.isValidCredentials(userCredentials);
+  return isValid;
 };
 
 export default isValidCredentials;
