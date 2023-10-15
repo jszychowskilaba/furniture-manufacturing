@@ -1,10 +1,7 @@
+/* eslint-env node */
 module.exports = {
-  env: {
-    node: true,
-  },
-  extends: ['airbnb-base'],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  root: true,
 };
