@@ -1,6 +1,10 @@
 import express, { Router } from 'express';
 import * as inventoryController from '../../controllers/inventoryController';
-import { validateBody, materialSchema } from '../../middlewares/validateBody';
+import {
+  validateBody,
+  materialSchema,
+  partialMaterialSchema,
+} from '../../middlewares/validateBody';
 
 const router: Router = express.Router();
 
@@ -11,9 +15,9 @@ router.post(
   inventoryController.createMaterial
 );
 router.get('/:id', inventoryController.getOneMaterial);
-router.put(
+router.patch(
   '/:id',
-  validateBody(materialSchema),
+  validateBody(partialMaterialSchema),
   inventoryController.updateMaterial
 );
 
