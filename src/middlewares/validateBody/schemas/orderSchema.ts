@@ -9,17 +9,33 @@ export const orderSchema: JSONSchemaType<Order> = {
   properties: {
     internalCode: { type: 'string', minLength: 0, maxLength: 255 },
     description: { type: 'string', minLength: 1, maxLength: 255 },
+
     materials: {
       type: 'array',
       items: {
         type: 'object',
         properties: {
-          id: { type: 'string' },
+          id: { type: 'string', minLength: 1, maxLength: 255 },
           quantity: { type: 'number', minimum: 0 },
-          required: ['id', 'quantity'],
         },
+        required: ['id', 'quantity'],
+        additionalProperties: false,
       },
     },
+
+    labors: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', minLength: 1, maxLength: 255 },
+          quantity: { type: 'number', minimum: 0 },
+        },
+        required: ['id', 'quantity'],
+        additionalProperties: false,
+      },
+    },
+
     unitsToManufacture: { type: 'number', minimum: 0 },
     internalNotes: { type: 'string', minLength: 1, maxLength: 255 },
   },
@@ -27,6 +43,7 @@ export const orderSchema: JSONSchemaType<Order> = {
     'internalCode',
     'description',
     'materials',
+    'labors',
     'unitsToManufacture',
     'internalNotes',
   ],
