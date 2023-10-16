@@ -18,8 +18,7 @@ export interface Material {
   purchaseTime: number;
   internalNotes: string;
 }
-
-export interface PartialMaterial extends Partial<Material>{}
+export interface PartialMaterial extends Partial<Material> {}
 
 export interface Labor {
   status: 'active' | 'inactive';
@@ -30,5 +29,14 @@ export interface Labor {
   unit: string;
   internalNotes: string;
 }
+export interface PartialLabor extends Partial<Labor> {}
 
-export interface PartialLabor extends Partial<Labor>{}
+export interface Order {
+  internalCode: string;
+  description: string;
+  unitsToManufacture: number;
+  materials: Array<{ id: string; quantity: number }>;
+  labors: Array<{ id: string; quantity: number }>;
+  internalNotes: string;
+}
+export interface PartialOrder extends Partial<Order> {}
