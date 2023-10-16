@@ -35,7 +35,8 @@ export interface Order {
   internalCode: string;
   description: string;
   unitsToManufacture: number;
-  materials: Array<object>; // {id: number, quantity: number}
+  materials: Array<{ id: string; quantity: number }>;
+  labors: Array<{ id: string; quantity: number }>;
   internalNotes: string;
 }
 
