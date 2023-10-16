@@ -39,5 +39,4 @@ export interface Order {
   labors: Array<{ id: string; quantity: number }>;
   internalNotes: string;
 }
-
 export interface PartialOrder extends Partial<Order> {}
