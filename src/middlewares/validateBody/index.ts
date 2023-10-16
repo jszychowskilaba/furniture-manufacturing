@@ -4,7 +4,7 @@ import {
   materialSchema,
   partialMaterialSchema,
 } from './schemas/materialSchema';
-import { orderSchema } from './schemas/orderSchema';
+import { orderSchema, partialOrderSchema } from './schemas/orderSchema';
 import { laborSchema, partialLaborSchema } from './schemas/laborSchema';
 import { Error } from '../../types/types';
 
@@ -38,4 +38,5 @@ export {
   laborSchema,
   partialLaborSchema,
   orderSchema,
+  partialOrderSchema,
 };
