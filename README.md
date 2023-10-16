@@ -606,7 +606,7 @@ Return all manufacture orders stored in the DB.
 
 </details>
 
-![](./images/post-colour.png) **`POST`** `/v1/order` Creates a new manufacture order
+![](./images/post-colour.png) **`POST`** `/v1/orders` Creates a new manufacture order
 
 <details>
   <summary>Click here</summary>
