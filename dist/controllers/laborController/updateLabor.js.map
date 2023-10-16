@@ -1,1 +1,0 @@
-{"version":3,"file":"updateLabor.js","sourceRoot":"","sources":["../../../src/controllers/laborController/updateLabor.ts"],"names":[],"mappings":";;;AAEO,MAAM,WAAW,GAAG,CACzB,GAAY,EACZ,GAAa,EACb,IAAkB,EAClB,EAAE;IACF,MAAM,EAAE,GAAG,GAAG,CAAC,MAAM,CAAC,EAAE,CAAC;IACzB,GAAG;SACA,MAAM,CAAC,GAAG,CAAC;SACX,IAAI,CAAC,8CAA8C,EAAE,EAAE,CAAC,CAAC;AAC9D,CAAC,CAAC;AATW,QAAA,WAAW,eAStB"}

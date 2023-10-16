@@ -1,1 +1,0 @@
-{"version":3,"file":"getOneLabor.js","sourceRoot":"","sources":["../../../src/controllers/laborController/getOneLabor.ts"],"names":[],"mappings":";;;AAEO,MAAM,WAAW,GAAG,CACzB,GAAY,EACZ,GAAa,EACb,IAAkB,EAClB,EAAE;IACF,MAAM,EAAE,GAAG,GAAG,CAAC,MAAM,CAAC,EAAE,CAAC;IACzB,GAAG,CAAC,MAAM,CAAC,GAAG,CAAC,CAAC,IAAI,CAAC,6CAA6C,EAAE,EAAE,CAAC,CAAC;AAC1E,CAAC,CAAC;AAPW,QAAA,WAAW,eAOtB"}
