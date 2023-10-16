@@ -3,6 +3,7 @@ import 'dotenv/config';
 import v1AuthRouter from './v1/routes/authRoutes';
 import v1InventoryRouter from './v1/routes/inventoryRoutes';
 import v1LaborRouter from './v1/routes/laborRoutes';
+import v1OrderController from './v1/routes/orderRoutes';
 import authenticateUser from './middlewares/authenticateUser/authenticateUser';
 import errorHandler from './middlewares/handlers/error';
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/v1/auth', v1AuthRouter);
 app.use('/api/v1/inventory', authenticateUser, v1InventoryRouter);
 app.use('/api/v1/labor', authenticateUser, v1LaborRouter);
+app.use('/api/v1/orders', authenticateUser, v1OrderController);
 
 // For testing middleware
 app.use('/secret-area', authenticateUser, (req, res) => {
