@@ -1,8 +1,5 @@
 # Data base architecture
 
-  ![](../images/EER_diagram.png)
-
-
 ## Brief explanation
 
 ### user_role
@@ -84,3 +81,6 @@ Table that contains all the materials present in a manufacture order.
 - **material_id**: the material id present in the manufacture order
 - **quantity**: the material quantity.
 
+## EER diagram
+
+![](../images/EER_diagram.png)
