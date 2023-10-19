@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as authServices from '../../services/authServices';
 import { Error } from '../../types/types';
 import 'dotenv/config';
@@ -9,7 +9,7 @@ import 'dotenv/config';
  * @param res The response
  * @returns
  */
-const logout = async (req: Request, res: Response) => {
+const logout = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('authorization');
 
   try {
@@ -21,7 +21,11 @@ const logout = async (req: Request, res: Response) => {
       return;
     }
   } catch (error) {
-    res.status((error as Error).status).json((error as Error).message);
+    const err: Error = {
+      status: (error as Error).status,
+      message: (error as Error).message,
+    };
+    next(err);
   }
 };
 

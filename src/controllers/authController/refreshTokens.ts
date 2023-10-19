@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as authServices from '../../services/authServices';
 import { Error } from '../../types/types';
 import 'dotenv/config';
@@ -9,14 +9,18 @@ import 'dotenv/config';
  * @param req The request
  * @param res The response
  */
-const refreshTokens = async (req: Request, res: Response) => {
+const refreshTokens = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const oldRefreshToken = req.body.refresh_token;
   if (!oldRefreshToken) {
     const error: Error = {
       status: 400,
       message: 'Missing refresh token',
     };
-    res.status(error.status).json(error.message);
+    next(error);
     return;
   }
 
@@ -30,7 +34,11 @@ const refreshTokens = async (req: Request, res: Response) => {
       expires_in: Number(process.env.TOKEN_EXPIRATION) || 300,
     });
   } catch (error) {
-    res.status((error as Error).status).json((error as Error).message);
+    const err: Error = {
+      status: (error as Error).status,
+      message: (error as Error).message,
+    };
+    next(err);
   }
 };
 
