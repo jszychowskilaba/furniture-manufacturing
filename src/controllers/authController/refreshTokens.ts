@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as authServices from '../../services/authServices/authServices';
+import * as authServices from '../../services/authServices';
 import { Error } from '../../types/types';
 import 'dotenv/config';
 
