@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as authServices from '../../services/authServices';
 import { UserCredentials, Error } from '../../types/types';
 import 'dotenv/config';
@@ -9,11 +9,15 @@ import 'dotenv/config';
  * @param req The request
  * @param res The response
  */
-const login = async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response, next: NextFunction) => {
   const body = req.body;
 
   if (!body.client_id || !body.client_secret) {
-    res.status(400).json('Missing keys. "client_id" or "client_secret"');
+    const error: Error = {
+      status: 400,
+      message: 'Missing keys. "client_id" or "client_secret"',
+    };
+    next(error);
     return;
   }
 
@@ -33,7 +37,11 @@ const login = async (req: Request, res: Response) => {
       expires_in: Number(process.env.TOKEN_EXPIRATION) || 300,
     });
   } catch (error) {
-    res.status((error as Error).status).json((error as Error).message);
+    const error2: Error = {
+      status: (error as Error).status,
+      message: (error as Error).message,
+    };
+    next(error2);
   }
 };
 
