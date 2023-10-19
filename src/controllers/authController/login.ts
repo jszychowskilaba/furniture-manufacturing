@@ -10,7 +10,6 @@ import 'dotenv/config';
  * @param res The response
  */
 const login = async (req: Request, res: Response) => {
-  console.log("entre")
   const body = req.body;
 
   if (!body.client_id || !body.client_secret) {
