@@ -6,6 +6,18 @@
 
 Table that contains user information.
 
+- **username**
+- **email**
+- **password**: the hashed password
+- **created_at:** creation date of the resource
+- **name**
+- **last_name**
+- **role**: the user can have one of the following roles.
+  - **sales**: can create and update a production order.
+  - **inventory administrator**: can create and update materials.
+  - **production manager**: can create and update labors, can update manufactured quantity and status in a production order.
+  - **admin**: can perform all actions.
+
 ### labor
 
 Table that contains information about labors.
@@ -21,19 +33,14 @@ Table that contains information about labors.
 - **time_per_unit:** time in minutes to perform a unit of labor.
 - **unit:** the unit of labor. Example: "per square meter", "per unit", "per hole", "per nailed nail".
 - **internal_note**
-- **created_by:** user that created the resource.
-- **role**: the user can have one of the following roles.
-  - **sales**: can create and update a production order.
-  - **inventory administrator**: can create and update materials.
-  - **production manager**: can create and update labors, can update manufactured quantity and status in a production order.
-  - **admin**: can perform all actions.
+- **user_id:** user that created the resource.
 
 ### order
 
 Table that contains information about production order.
 
-- **created_by:** user that created the resource
-  **updated_at:** update date of the resource
+- **created_at:** creation date of the resource
+- **updated_at:** update date of the resource
 - **internal_code:** identification code for the company, it is not stored as primary key so it can be modified.
 - **description**
 - **status:**
@@ -45,6 +52,7 @@ Table that contains information about production order.
 - **total_price:** total price of the order in euros. Calculated as `sum(quantity_labor_i * price_labor_i) + sum(quantity_material_i * price_material_i)`
 - **total_production_time:** production time to complete the order in minutes. Calculated as `sum(quantity_labor_i * time_labor_i) + sum(quantity_material_i * time_material_i) + bigger_purchase_time_of_inexistent_material`
 - **units_to_manufacture:** total quantity to manufacture.
+- **user_id:** user that created the resource.
 
 ### material
 
@@ -63,7 +71,7 @@ Table that contains information about the materials.
 - **unit:** the unit of material. Example: "meters", "kilograms", "pounds".
 - **purchase_time:** necessary time in minutes for having the material available when it runs out of stock.
 - **internal_note**
-- **created_by:** user that created the resource.
+- **user_id:** user that created the resource.
 
 ### order_has_labor
 
