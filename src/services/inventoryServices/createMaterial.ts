@@ -5,10 +5,10 @@ import { throwError } from '../../utils/throwError';
 interface CreatedMaterial extends Material {
   createdAt: string;
   updatedAt: string;
-  userID: string;
+  username: string;
 }
 
-export const createMaterial = (material: Material) => {
+export const createMaterial = (material: Material, username: string) => {
   try {
     // Create DB code
 
@@ -16,22 +16,20 @@ export const createMaterial = (material: Material) => {
     const materialExists = 0;
     if (materialExists) throwError(409, 'Material already exists.');
 
-    // Store material in DB. Make logic for obtaining userID
+    // Store material in DB
     const date = getCurrentISODate();
     const createdMaterial: CreatedMaterial = {
       ...material,
       createdAt: date,
       updatedAt: date,
-      userID: 'jose.id',
+      username: username,
     };
 
     return createdMaterial;
   } catch (e) {
-    const error: Error = {
-      status: (e as Error).status || 500,
-      message:
-        (e as Error).message || 'Unexpected error in createMaterial service.',
-    };
-    throw error;
+    throwError(
+      (e as Error).status || 500,
+      (e as Error).message || `Unexpected error in createMaterial service. ${e}`
+    );
   }
 };
