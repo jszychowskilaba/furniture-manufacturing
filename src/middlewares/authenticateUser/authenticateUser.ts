@@ -2,8 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { Error } from '../../types/types';
 import * as Auth from '../../databases/Auth';
 /**
- * Authenticate a user by its request token. If token is not valid,
- * response with 401.
+ * Authenticate a user by its request token and add username
+ * property in request header with username.
+ * If token is not valid, response with 401.
  * @param req The request
  * @param res The response
  * @param next The next middleware
@@ -19,6 +20,7 @@ const authenticateUser = async (
     if (token) {
       const tokenType = await Auth.getTokenType(token);
       if (tokenType === 'token') {
+        req.headers['username'] = await Auth.getUsernameFromToken(token);
         next();
         return;
       }
