@@ -8,8 +8,12 @@ export const createMaterial = (
   next: NextFunction
 ) => {
   try {
-    const postedMaterial: Material = req.body;
-    const createdMaterial = inventoryServices.createMaterial(postedMaterial);
+    const username = req.headers.username as string;
+    const postedMaterial = req.body as Material;
+    const createdMaterial = inventoryServices.createMaterial(
+      postedMaterial,
+      username
+    );
     res.status(201).json(createdMaterial);
   } catch (error) {
     next(error);
