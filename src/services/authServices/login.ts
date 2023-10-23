@@ -10,6 +10,7 @@ import isValidCredentials from './auth-utils/isValidCredentials';
  */
 const login = async (userCredentials: UserCredentials): Promise<string[]> => {
   isValidCredentials(userCredentials);
+
   return updateTokens(userCredentials);
 };
 

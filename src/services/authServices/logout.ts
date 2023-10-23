@@ -1,5 +1,5 @@
-import { Error } from '../../types/types';
 import * as Auth from '../../databases/Auth';
+import { throwError } from '../../utils/throwError';
 
 /**
  * Delete tokens from Auth Data Base if incoming token is valid
@@ -7,13 +7,9 @@ import * as Auth from '../../databases/Auth';
  */
 const logout = async (token: string): Promise<void> => {
   const username = await Auth.getUsernameFromToken(token);
-  if (!username) {
-    const error: Error = {
-      status: 401,
-      message: 'Invalid refresh token',
-    };
 
-    throw error;
+  if (!username) {
+    throwError('Invalid token', 401);
   }
 
   const refreshToken = await Auth.getAsync(`${username}.refreshToken`);
@@ -21,6 +17,7 @@ const logout = async (token: string): Promise<void> => {
   // Deleting tokens
   await Auth.deleteAsync(token);
   await Auth.deleteAsync(`${username}.token`);
+
   if (refreshToken) {
     await Auth.deleteAsync(refreshToken);
     await Auth.deleteAsync(`${username}.refreshToken`);
