@@ -11,7 +11,8 @@ export interface Material {
   status: 'active' | 'inactive';
   internalCode: string;
   description: string;
-  quantity: number;
+  stock: number;
+  reservedStock: number;
   pricePerUnit: number;
   unit: string;
   purchaseTime: number;

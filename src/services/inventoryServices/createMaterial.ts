@@ -1,8 +1,10 @@
 import { Material } from '../../types/types';
 import { getCurrentISODate } from '../utils/getCurrentISODate';
 import { throwError } from '../../utils/throwError';
+import { v4 as uuid } from 'uuid';
 
 interface CreatedMaterial extends Material {
+  id: string,
   createdAt: string;
   updatedAt: string;
   username: string;
@@ -18,9 +20,10 @@ export const createMaterial = (material: Material, username: string) => {
   // Store material in DB
   const date = getCurrentISODate();
   const createdMaterial: CreatedMaterial = {
-    ...material,
+    id: uuid(),
     createdAt: date,
     updatedAt: date,
+    ...material,
     username: username,
   };
 
