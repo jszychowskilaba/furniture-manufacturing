@@ -1,7 +1,6 @@
 import { createClient } from 'redis';
-import { Error } from '../types/types';
 import 'dotenv/config';
-import { throwError } from '../utils/throwError';
+import { throwError } from '../../utils/throwError';
 
 // Create redis TokensDB client
 const TokensDB = createClient({
@@ -22,17 +21,12 @@ const storeAsync = async (
   value: string,
   expirationTime: number
 ): Promise<void> => {
-  try {
-    const isCreated = await TokensDB.set(key, value);
-    await TokensDB.expire(key, expirationTime);
-    if (!isCreated) {
-      throwError(500, 'Cannot store key value.');
-    }
-  } catch (e) {
-    throwError(
-      (e as Error).status || 500,
-      (e as Error).message || `Unexpected error in storeAsync ${e}.`
-    );
+  const isCreated = await TokensDB.set(key, value);
+
+  await TokensDB.expire(key, expirationTime);
+
+  if (!isCreated) {
+    throwError('Cannot store key value.', 500);
   }
 };
 
@@ -43,13 +37,8 @@ const storeAsync = async (
  * @returns The value
  */
 const getAsync = async (key: string): Promise<string | null | void> => {
-  try {
-    const token = await TokensDB.get(key);
-    return token;
-  } catch (e) {
-    throwError(500, `Unexpected error in getAsync. ${e}`);
-    return;
-  }
+  const token = await TokensDB.get(key);
+  return token;
 };
 
 /**
@@ -57,11 +46,7 @@ const getAsync = async (key: string): Promise<string | null | void> => {
  * @param key The key
  */
 const deleteAsync = async (key: string): Promise<void> => {
-  try {
-    await TokensDB.del(key);
-  } catch (e) {
-    throwError(500, `Unexpected error in deleteAsync. ${e}`);
-  }
+  await TokensDB.del(key);
 };
 
 /**
