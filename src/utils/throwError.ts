@@ -1,15 +1,15 @@
 import { Error } from '../types/types';
 
 /**
- * Throws a error with the correct shape in order to 
- * be handled by the corresponding error handler.
- * @param status The status code
+ * Throws a error object with the correct shape in order to
+ * be handled by the corresponding error middleware.
  * @param message The error message
+ * @param status The HTTP status code
  */
-export const throwError = (status: number, message: string) => {
+export const throwError = (message: string, status: number | null = null) => {
   const error: Error = {
-    status: status || 500,
     message: message || 'Unexpected error',
+    status: status || 500,
   };
 
   throw error;
