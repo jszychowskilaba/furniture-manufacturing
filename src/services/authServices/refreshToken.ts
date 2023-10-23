@@ -10,9 +10,7 @@ import { throwError } from '../../utils/throwError';
  * @param refreshToken The refresh token
  * @returns The new tokens
  */
-const refreshTokens = async (
-  refreshToken: string
-): Promise<string[] | void> => {
+const refreshTokens = async (refreshToken: string): Promise<string[]> => {
   const tokenType = await Auth.getTokenType(refreshToken);
 
   if (tokenType === 'refreshToken') {
@@ -29,6 +27,7 @@ const refreshTokens = async (
   }
 
   throwError('Refresh token not valid', 401);
+  throw 'error';
 };
 
 export { refreshTokens };

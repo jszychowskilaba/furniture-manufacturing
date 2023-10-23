@@ -1,4 +1,6 @@
-class CustomError extends Error {
+import { ICustomError } from '../types/types';
+
+class CustomError extends Error implements ICustomError {
   status: number;
   constructor(message: string, status: number) {
     super(message || 'Unexpected error');

@@ -3,9 +3,8 @@ export interface UserCredentials {
   client_secret: string | null;
 }
 
-export interface Error {
+export interface ICustomError extends Error {
   status: number;
-  message: string;
 }
 
 export interface Material {

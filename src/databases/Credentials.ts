@@ -1,4 +1,5 @@
-import { UserCredentials, Error } from '../types/types';
+import { UserCredentials } from '../types/types';
+import { throwError } from '../utils/throwError';
 
 // For testing proposes
 const DB = [
@@ -19,11 +20,8 @@ const isValidCredentials = (userCredentials: UserCredentials): boolean => {
 
   if (isValid) return true;
 
-  const error: Error = {
-    status: 404,
-    message: 'Invalid user or password',
-  };
-  throw error;
+  throwError('Invalid user or password', 404);
+  return false;
 };
 
 export { isValidCredentials };

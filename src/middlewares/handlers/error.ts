@@ -1,4 +1,5 @@
-import { Error } from '../../types/types';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ICustomError } from '../../types/types';
 import { Request, Response, NextFunction } from 'express';
 
 /**
@@ -10,7 +11,7 @@ import { Request, Response, NextFunction } from 'express';
  * @param next The next function
  */
 const errorHandler = (
-  error: Error,
+  error: ICustomError,
   req: Request,
   res: Response,
   next: NextFunction
