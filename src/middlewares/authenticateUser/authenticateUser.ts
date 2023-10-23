@@ -27,7 +27,7 @@ const authenticateUser = async (
     }
   } catch (error) {
     // If database error
-    res.status((error as Error).status).json((error as Error).message);
+    next((error as Error));
     return;
   }
 

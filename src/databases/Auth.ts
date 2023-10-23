@@ -1,6 +1,7 @@
 import { createClient } from 'redis';
 import { Error } from '../types/types';
 import 'dotenv/config';
+import { throwError } from '../utils/throwError';
 
 // Create redis TokensDB client
 const TokensDB = createClient({
@@ -11,6 +12,7 @@ const TokensDB = createClient({
 
 /**
  * Set a pair of key value on Auth Data Base with a given expiration time
+ * in the Auth data base.
  * @param key The key
  * @param value The value
  * @param value The expiration time
@@ -24,20 +26,13 @@ const storeAsync = async (
     const isCreated = await TokensDB.set(key, value);
     await TokensDB.expire(key, expirationTime);
     if (!isCreated) {
-      const error: Error = {
-        status: 500,
-        message: 'Can not create token',
-      };
-
-      throw error;
+      throwError(500, 'Cannot store key value.');
     }
-  } catch (err) {
-    const error: Error = {
-      status: (err as Error).status || 500,
-      message: (err as Error).message || `${err}`,
-    };
-
-    throw { error };
+  } catch (e) {
+    throwError(
+      (e as Error).status || 500,
+      (e as Error).message || `Unexpected error in storeAsync ${e}.`
+    );
   }
 };
 
@@ -47,16 +42,13 @@ const storeAsync = async (
  * @param key The key
  * @returns The value
  */
-const getAsync = async (key: string): Promise<string | null> => {
+const getAsync = async (key: string): Promise<string | null | void> => {
   try {
     const token = await TokensDB.get(key);
     return token;
-  } catch (err) {
-    const error: Error = {
-      status: 500,
-      message: `Can not get token. ${err}`,
-    };
-    throw error;
+  } catch (e) {
+    throwError(500, `Unexpected error in getAsync. ${e}`);
+    return;
   }
 };
 
@@ -67,12 +59,8 @@ const getAsync = async (key: string): Promise<string | null> => {
 const deleteAsync = async (key: string): Promise<void> => {
   try {
     await TokensDB.del(key);
-  } catch (err) {
-    const error: Error = {
-      status: 500,
-      message: `Can not get token. ${err}`,
-    };
-    throw { error };
+  } catch (e) {
+    throwError(500, `Unexpected error in deleteAsync. ${e}`);
   }
 };
 
