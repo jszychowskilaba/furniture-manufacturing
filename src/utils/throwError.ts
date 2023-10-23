@@ -1,4 +1,10 @@
-import { Error } from '../types/types';
+class CustomError extends Error {
+  status: number;
+  constructor(message: string, status: number) {
+    super(message || 'Unexpected error');
+    this.status = status || 500;
+  }
+}
 
 /**
  * Throws a error object with the correct shape in order to
@@ -7,10 +13,6 @@ import { Error } from '../types/types';
  * @param status The HTTP status code
  */
 export const throwError = (message: string, status: number) => {
-  const error: Error = {
-    message: message || 'Unexpected error',
-    status: status || 500,
-  };
-
-  throw error;
+  const customError = new CustomError(message, status);
+  throw customError;
 };
