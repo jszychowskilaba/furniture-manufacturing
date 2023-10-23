@@ -6,7 +6,7 @@ import { Error } from '../types/types';
  * @param message The error message
  * @param status The HTTP status code
  */
-export const throwError = (message: string, status: number | null = null) => {
+export const throwError = (message: string, status: number) => {
   const error: Error = {
     message: message || 'Unexpected error',
     status: status || 500,
