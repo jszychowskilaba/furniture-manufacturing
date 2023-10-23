@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import * as authServices from '../../services/authServices';
-import { UserCredentials, Error } from '../../types/types';
+import { UserCredentials } from '../../types/types';
 import 'dotenv/config';
+import { throwError } from '../../utils/throwError';
 
 /**
  * Perform user login given user credentials in a request. If
@@ -11,23 +12,16 @@ import 'dotenv/config';
  */
 const login = async (req: Request, res: Response, next: NextFunction) => {
   const body = req.body;
-
-  if (!body.client_id || !body.client_secret) {
-    const error: Error = {
-      status: 400,
-      message: 'Missing keys. "client_id" or "client_secret"',
-    };
-    next(error);
-    return;
-  }
-
-  const userCredentials: UserCredentials = {
-    client_id: body.client_id,
-    client_secret: body.client_secret,
-  };
-
-  // Updating tokens
   try {
+    if (!body.client_id || !body.client_secret) {
+      throwError('Missing keys. "client_id" or "client_secret"', 400);
+    }
+
+    const userCredentials: UserCredentials = {
+      client_id: body.client_id,
+      client_secret: body.client_secret,
+    };
+
     const [newToken, newRefreshToken] = await authServices.login(
       userCredentials
     );
@@ -37,11 +31,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       expires_in: Number(process.env.TOKEN_EXPIRATION) || 300,
     });
   } catch (error) {
-    const error2: Error = {
-      status: (error as Error).status,
-      message: (error as Error).message,
-    };
-    next(error2);
+    next(error);
   }
 };
 
