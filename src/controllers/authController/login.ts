@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import * as authServices from '../../services/authServices';
 import { UserCredentials } from '../../types/types';
 import 'dotenv/config';
-import { throwError } from '../../utils/throwError';
+import { CustomError } from '../../utils/CustomError';
 
 /**
  * Perform user login given user credentials in a request. If
@@ -14,7 +14,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   const body = req.body;
   try {
     if (!body.client_id || !body.client_secret) {
-      throwError('Missing keys. "client_id" or "client_secret"', 400);
+      throw new CustomError('Missing keys. "client_id" or "client_secret"', 400);
     }
 
     const userCredentials: UserCredentials = {

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as authServices from '../../services/authServices';
 import 'dotenv/config';
-import { throwError } from '../../utils/throwError';
+import { CustomError } from '../../utils/CustomError';
 
 /**
  * Response with new authentication tokens given a valid refresh token
@@ -17,7 +17,7 @@ const refreshTokens = async (
   try {
     const oldRefreshToken = req.body.refresh_token;
     if (!oldRefreshToken) {
-      throwError('Missing refresh token', 400);
+      throw new CustomError('Missing refresh token', 400);
     }
 
     const [newToken, newRefreshToken] = await authServices.refreshTokens(

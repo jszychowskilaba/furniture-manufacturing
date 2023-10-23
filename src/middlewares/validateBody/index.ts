@@ -6,7 +6,7 @@ import {
 } from './schemas/materialSchema';
 import { orderSchema, partialOrderSchema } from './schemas/orderSchema';
 import { laborSchema, partialLaborSchema } from './schemas/laborSchema';
-import { throwError } from '../../utils/throwError';
+import { CustomError } from '../../utils/CustomError';
 
 /**
  * High order function that returns a middleware validating request body
@@ -20,17 +20,15 @@ export const validateBody = (schema: JSONSchemaType<unknown>) => {
     const ajv = new Ajv();
     const validate = ajv.compile(schema);
 
-    try {
-      if (validate(data)) {
-        next();
-      } else {
-        throwError(
+    if (validate(data)) {
+      next();
+    } else {
+      next(
+        new CustomError(
           `Error in request body. ${JSON.stringify(validate.errors)}`,
           400
-        );
-      }
-    } catch (error) {
-      next(error);
+        )
+      );
     }
   };
 };

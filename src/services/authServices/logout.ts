@@ -1,5 +1,5 @@
 import * as Auth from '../../databases/Auth';
-import { throwError } from '../../utils/throwError';
+import { CustomError } from '../../utils/CustomError';
 
 /**
  * Delete tokens from Auth Data Base if incoming token is valid
@@ -9,7 +9,7 @@ const logout = async (token: string): Promise<void> => {
   const username = await Auth.getUsernameFromToken(token);
 
   if (!username) {
-    throwError('Invalid token', 401);
+    throw new CustomError('Invalid token', 401);
   }
 
   const refreshToken = await Auth.getAsync(`${username}.refreshToken`);

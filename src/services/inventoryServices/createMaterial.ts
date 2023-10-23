@@ -1,10 +1,10 @@
 import { Material } from '../../types/types';
 import { getCurrentISODate } from '../utils/getCurrentISODate';
-import { throwError } from '../../utils/throwError';
+import { CustomError } from '../../utils/CustomError';
 import { v4 as uuid } from 'uuid';
 
 interface CreatedMaterial extends Material {
-  id: string,
+  id: string;
   createdAt: string;
   updatedAt: string;
   username: string;
@@ -15,7 +15,7 @@ export const createMaterial = (material: Material, username: string) => {
 
   // Check if material exist in DB
   const materialExists = 0;
-  if (materialExists) throwError('Material already exists.', 409);
+  if (materialExists) throw new CustomError('Material already exists.', 409);
 
   // Store material in DB
   const date = getCurrentISODate();

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as authServices from '../../services/authServices';
 import 'dotenv/config';
-import { throwError } from '../../utils/throwError';
+import { CustomError } from '../../utils/CustomError';
 
 /**
  * Performs user log out. If logout successful, responds with status 204.
@@ -17,7 +17,7 @@ const logout = async (req: Request, res: Response, next: NextFunction) => {
       await authServices.logout(token);
       res.status(204).json('');
     } else {
-      throwError('Missing token', 400);
+      throw new CustomError('Missing token', 400);
     }
   } catch (error) {
     next(error);

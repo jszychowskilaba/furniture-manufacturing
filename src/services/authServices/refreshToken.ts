@@ -2,7 +2,7 @@ import { UserCredentials } from '../../types/types';
 import updateTokens from './auth-utils/updateTokens';
 
 import * as Auth from '../../databases/Auth';
-import { throwError } from '../../utils/throwError';
+import { CustomError } from '../../utils/CustomError';
 
 /**
  * Refresh the token and refresh token if the incoming
@@ -26,8 +26,7 @@ const refreshTokens = async (refreshToken: string): Promise<string[]> => {
     }
   }
 
-  throwError('Refresh token not valid', 401);
-  throw 'error';
+  throw new CustomError('Refresh token not valid', 401);
 };
 
 export { refreshTokens };

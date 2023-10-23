@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import * as Auth from '../../databases/Auth';
-import { throwError } from '../../utils/throwError';
+import { CustomError } from '../../utils/CustomError';
 /**
  * Authenticate a user by its request token and add username
  * property in request header with username.
@@ -16,31 +16,27 @@ const authenticateUser = async (
 ): Promise<void> => {
   const token = req.header('authorization');
 
-  try {
-    if (token) {
-      const tokenType = await Auth.getTokenType(token);
-      if (tokenType === 'token') {
-        req.headers['username'] = await Auth.getUsernameFromToken(token);
-        next();
-        return;
-      }
+  if (token) {
+    const tokenType = await Auth.getTokenType(token);
+    if (tokenType === 'token') {
+      req.headers['username'] = await Auth.getUsernameFromToken(token);
+      next();
+      return;
     }
-
-    let status;
-    let message;
-
-    if (token === undefined) {
-      status = 400;
-      message = 'Missing token';
-    } else {
-      status = 401;
-      message = 'Token is not valid for authentication';
-    }
-
-    throwError(message, status);
-  } catch (error) {
-    next(error);
   }
+
+  let status;
+  let message;
+
+  if (token === undefined) {
+    status = 400;
+    message = 'Missing token';
+  } else {
+    status = 401;
+    message = 'Token is not valid for authentication';
+  }
+
+  next(new CustomError(message, status));
 };
 
 export default authenticateUser;

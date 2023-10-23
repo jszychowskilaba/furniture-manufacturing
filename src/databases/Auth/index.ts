@@ -1,6 +1,6 @@
 import { createClient } from 'redis';
 import 'dotenv/config';
-import { throwError } from '../../utils/throwError';
+import { CustomError } from '../../utils/CustomError';
 
 // Create redis TokensDB client
 const TokensDB = createClient({
@@ -26,7 +26,7 @@ const storeAsync = async (
   await TokensDB.expire(key, expirationTime);
 
   if (!isCreated) {
-    throwError('Cannot store key value.', 500);
+    throw new CustomError('Cannot store key value.', 500);
   }
 };
 
