@@ -16,7 +16,29 @@ const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  res.status(error.status).json(error.message);
+  const productionMessage = {
+    error: {
+      status: error.status,
+      message: error.message,
+    },
+  };
+
+  const developmentMessage = {
+    error: {
+      status: error.status,
+      message: error.message,
+      stack: error.stack,
+      body: req.body,
+      headers: req.headers,
+    },
+  };
+
+  const message =
+    process.env.NODE_ENV == 'production'
+      ? productionMessage
+      : developmentMessage;
+      
+  res.status(error.status).json(message);
 };
 
 export default errorHandler;
