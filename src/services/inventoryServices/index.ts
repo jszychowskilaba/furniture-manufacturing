@@ -1,3 +1,8 @@
-import { createMaterial } from './createMaterial';
+import { Material } from "../../types/types";
 
-export { createMaterial };
+class CreateMaterials{
+    createMaterial(material: Material, username: string){
+        
+    }
+
+}
