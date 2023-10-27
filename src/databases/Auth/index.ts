@@ -1,6 +1,6 @@
 import { createClient } from 'redis';
 import 'dotenv/config';
-import { CustomError } from '../../utils/CustomError';
+import { CustomError } from '../../helpers/CustomError';
 
 // Create redis TokensDB client
 const TokensDB = createClient({

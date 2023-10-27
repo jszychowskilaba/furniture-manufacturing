@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as authServices from '../../services/authServices';
 import 'dotenv/config';
-import { CustomError } from '../../utils/CustomError';
+import { CustomError } from '../../helpers/CustomError';
 
 /**
  * Response with new authentication tokens given a valid refresh token

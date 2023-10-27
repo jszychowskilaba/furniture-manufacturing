@@ -1,5 +1,5 @@
 import * as Auth from '../../databases/Auth';
-import { CustomError } from '../../utils/CustomError';
+import { CustomError } from '../../helpers/CustomError';
 
 /**
  * Delete tokens from Auth Data Base if incoming token is valid

@@ -1,5 +1,5 @@
 import { UserCredentials } from '../types/types';
-import { CustomError } from '../utils/CustomError';
+import { CustomError } from '../helpers/CustomError';
 
 // For testing proposes
 const DB = [
@@ -21,7 +21,6 @@ const isValidCredentials = (userCredentials: UserCredentials): boolean => {
   if (isValid) return true;
 
   throw new CustomError('Invalid user or password', 404);
- 
 };
 
 export { isValidCredentials };

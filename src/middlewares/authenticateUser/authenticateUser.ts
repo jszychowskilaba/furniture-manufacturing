@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import * as Auth from '../../databases/Auth';
-import { CustomError } from '../../utils/CustomError';
+import { CustomError } from '../../helpers/CustomError';
 /**
  * Authenticate a user by its request token and add username
  * property in request header with username.

@@ -6,7 +6,7 @@ import {
 } from './schemas/materialSchema';
 import { orderSchema, partialOrderSchema } from './schemas/orderSchema';
 import { laborSchema, partialLaborSchema } from './schemas/laborSchema';
-import { CustomError } from '../../utils/CustomError';
+import { CustomError } from '../../helpers/CustomError';
 
 /**
  * High order function that returns a middleware validating request body

@@ -2,7 +2,7 @@ import { UserCredentials } from '../../types/types';
 import updateTokens from './auth-utils/updateTokens';
 
 import * as Auth from '../../databases/Auth';
-import { CustomError } from '../../utils/CustomError';
+import { CustomError } from '../../helpers/CustomError';
 
 /**
  * Refresh the token and refresh token if the incoming

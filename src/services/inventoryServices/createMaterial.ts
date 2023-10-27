@@ -1,6 +1,6 @@
 import { Material } from '../../types/types';
 import { getCurrentISODate } from '../utils/getCurrentISODate';
-import { CustomError } from '../../utils/CustomError';
+import { CustomError } from '../../helpers/CustomError';
 import { v4 as uuid } from 'uuid';
 
 interface CreatedMaterial extends Material {
