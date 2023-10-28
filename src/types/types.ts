@@ -7,18 +7,12 @@ export interface ICustomError extends Error {
   status: number;
 }
 
-export interface Material {
-  status: 'active' | 'inactive';
-  internalCode: string;
-  description: string;
-  stock: number;
-  reservedStock: number;
-  pricePerUnit: number;
-  unit: string;
-  purchaseTime: number;
-  internalNotes: string;
+export interface ICreationStamp {
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  username: string;
 }
-export interface PartialMaterial extends Partial<Material> {}
 
 export interface Labor {
   status: 'active' | 'inactive';
