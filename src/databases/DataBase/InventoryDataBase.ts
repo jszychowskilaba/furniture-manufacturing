@@ -1,6 +1,7 @@
-import { createSelectByQuery } from './helpers/createSelectByQuery';
-import { createInsertQuery } from './helpers/createInsertQuery';
+import { selectByTableColumnValueQuery } from './helpers/selectByQuery';
+import { selectByRowQuery } from './helpers/selectByRowQuery';
 import { CreatedMaterial } from '../../types/Material';
+import { insertQuery } from './helpers/insertQuery';
 import { pool } from './Pool';
 
 class InventoryDataBase {
@@ -9,16 +10,20 @@ class InventoryDataBase {
     this.tableName = 'material';
   }
   async createMaterial(material: CreatedMaterial): Promise<void> {
-    const query = createInsertQuery(this.tableName, material);
+    const query = insertQuery(this.tableName, material);
     await pool.query(query);
   }
 
   async hasMaterialWith(column: string, value: string): Promise<boolean> {
     const result = await pool.query(
-      createSelectByQuery(this.tableName, column),
-      [value]
+      selectByTableColumnValueQuery(this.tableName, column, value)
     );
     return !(result.rows[0] === undefined);
+  }
+
+  async getAllMaterials(): Promise<CreatedMaterial[]> {
+    const query = selectByRowQuery(this.tableName, '*');
+    return (await pool.query(query)).rows;
   }
 }
 
