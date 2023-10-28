@@ -4,6 +4,12 @@ import { CreationStamp } from '../helpers/CreationStamp';
 import { CustomError } from '../../helpers/CustomError';
 
 class InventoryServices {
+  /**
+   * Creates a new material and stores it in database
+   * @param material The material to create
+   * @param username The user material creator username
+   * @returns The created material
+   */
   async createMaterial(
     material: Material,
     username: string
@@ -30,7 +36,11 @@ class InventoryServices {
     return createdMaterial;
   }
 
-  async getAllMaterials() {
+  /**
+   * Get all stored materials in the database
+   * @returns The materials
+   */
+  async getAllMaterials(): Promise<CreatedMaterial[]> {
     const allMaterials = await InventoryDataBase.getAllMaterials();
     return allMaterials;
   }

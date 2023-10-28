@@ -9,6 +9,10 @@ class InventoryDataBase {
   constructor() {
     this.tableName = 'material';
   }
+  /**
+   * Stores a created material in the database
+   * @param material The material
+   */
   async createMaterial(material: CreatedMaterial): Promise<void> {
     const query = insertQuery(this.tableName, material);
     await pool.query(query);
@@ -21,6 +25,10 @@ class InventoryDataBase {
     return !(result.rows[0] === undefined);
   }
 
+  /**
+   * Get all materials from database
+   * @returns The materials
+   */
   async getAllMaterials(): Promise<CreatedMaterial[]> {
     const query = selectByRowQuery(this.tableName, '*');
     return (await pool.query(query)).rows;
