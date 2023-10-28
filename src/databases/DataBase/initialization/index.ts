@@ -4,9 +4,9 @@ import { createPublicSchema } from './createPublicSchema';
 /**
  * Initialize the database.
  */
-const initializeDB = async (): Promise<void> => {
+const initializeDataBase = async (): Promise<void> => {
   await createDB();
   await createPublicSchema();
 };
 
-initializeDB();
+export {initializeDataBase};
