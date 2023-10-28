@@ -320,9 +320,6 @@ Returns all users stored in the DB.
 
 </details>
 
-<details>
-  <summary>Click here</summary>
-
 ![](./images/patch-colour.png) **`PATCH`** `/api/v1/user/{username}` Update a new user.
 
 <details>
