@@ -1,19 +1,10 @@
-import { Client } from 'pg';
-import { config } from '../config';
+import { pool } from '../Pool';
 
 /**
  * Create public schema if it does no exists.
  */
 export const createPublicSchema = async (): Promise<void> => {
-  const client = new Client({
-    host: config.host,
-    user: config.user,
-    database: config.database,
-    password: config.password,
-    port: config.port,
-  });
-
-  await client.connect();
+  const client = await pool.connect();
 
   try {
     await client.query('BEGIN');
@@ -62,8 +53,8 @@ export const createPublicSchema = async (): Promise<void> => {
             status material_labor_status NOT NULL,
             internalCode VARCHAR(30) UNIQUE NOT NULL,
             description VARCHAR(255) NOT NULL,
-            pricePerUnit NUMERIC(9,4) NOT NULL CHECK (pricePerUnit >= 0),
-            timePerUnit NUMERIC(9,4) NOT NULL CHECK (timePerUnit >= 0 ),
+            pricePerUnit NUMERIC(9,2) NOT NULL CHECK (pricePerUnit >= 0),
+            timePerUnit NUMERIC(9,2) NOT NULL CHECK (timePerUnit >= 0 ),
             unit VARCHAR(50) NOT NULL,
             internalNotes VARCHAR(255) NOT NULL,
             username VARCHAR(16) REFERENCES appUser (username) NOT NULL
@@ -79,8 +70,8 @@ export const createPublicSchema = async (): Promise<void> => {
             internalCode VARCHAR(30) UNIQUE NOT NULL,
             description VARCHAR(255) NOT NULL,
             manufactured NUMERIC(9) NOT NULL,
-            totalPrice NUMERIC(9,4) NOT NULL CHECK (totalPrice >= 0),
-            totalProductionTime NUMERIC(3,4),
+            totalPrice NUMERIC(9,2) NOT NULL CHECK (totalPrice >= 0),
+            totalProductionTime NUMERIC(4,1),
             unitsToManufacture NUMERIC(9) NOT NULL CHECK (unitsToManufacture >= 0),
             username VARCHAR(16) REFERENCES appUser (username) NOT NULL
         );`);
@@ -94,11 +85,11 @@ export const createPublicSchema = async (): Promise<void> => {
             status material_labor_status NOT NULL,
             internalCode VARCHAR(30) UNIQUE NOT NULL,
             description VARCHAR(255) NOT NULL,
-            stock NUMERIC(9,4) NOT NULL CHECK (stock >= 0),
-            reservedStock NUMERIC(9,4) NOT NULL CHECK (reservedStock >= 0),
-            pricePerUnit NUMERIC(9,4) NOT NULL CHECK (pricePerUnit >= 0),
+            stock NUMERIC(9,2) NOT NULL CHECK (stock >= 0),
+            reservedStock NUMERIC(9,2) NOT NULL CHECK (reservedStock >= 0),
+            pricePerUnit NUMERIC(9,2) NOT NULL CHECK (pricePerUnit >= 0),
             unit VARCHAR(50) NOT NULL,
-            purchaseTime NUMERIC(3,4) NOT NULL CHECK (purchaseTime >= 0),
+            purchaseTime NUMERIC(4,1) NOT NULL CHECK (purchaseTime >= 0),
             internalNotes VARCHAR(255) NOT NULL,
             username VARCHAR(16) REFERENCES appUser (username) NOT NULL
         );`);
@@ -110,7 +101,7 @@ export const createPublicSchema = async (): Promise<void> => {
             updatedAt TIMESTAMP NOT NULL,
             manufactureOrderId CHAR(36) REFERENCES manufactureOrder (id),
             laborId CHAR(36) REFERENCES labor (id),
-            quantity NUMERIC(9,4) NOT NULL CHECK (quantity >= 0),
+            quantity NUMERIC(9,2) NOT NULL CHECK (quantity >= 0),
             PRIMARY KEY (manufactureOrderId, laborId));`);
 
     // Creating orderHasMaterial table
@@ -120,7 +111,7 @@ export const createPublicSchema = async (): Promise<void> => {
             updatedAt TIMESTAMP NOT NULL,
             manufactureOrderId CHAR(36) REFERENCES manufactureOrder (id),
             materialId CHAR(36) REFERENCES material (id),
-            quantity NUMERIC(9,4) NOT NULL CHECK (quantity >= 0),
+            quantity NUMERIC(9,2) NOT NULL CHECK (quantity >= 0),
             PRIMARY KEY (manufactureOrderId, materialId));`);
 
     console.log('Public schema has been loaded.');
@@ -132,6 +123,6 @@ export const createPublicSchema = async (): Promise<void> => {
     await client.query('ROLLBACK');
     throw error;
   } finally {
-    await client.end();
+    await client.release();
   }
 };
