@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { Material, PartialMaterial } from '../../../types/types';
+import { Material, PartialMaterial } from '../../../types/Material';
 
 /**
  * Material schema for post method
@@ -38,14 +38,29 @@ export const partialMaterialSchema: JSONSchemaType<PartialMaterial> = {
   type: 'object',
   properties: {
     status: { type: 'string', enum: ['active', 'inactive'], nullable: true },
-    internalCode: { type: 'string', minLength: 0, maxLength: 255, nullable: true },
-    description: { type: 'string', minLength: 1, maxLength: 255, nullable: true },
+    internalCode: {
+      type: 'string',
+      minLength: 0,
+      maxLength: 255,
+      nullable: true,
+    },
+    description: {
+      type: 'string',
+      minLength: 1,
+      maxLength: 255,
+      nullable: true,
+    },
     stock: { type: 'number', minimum: 0, nullable: true },
     reservedStock: { type: 'number', minimum: 0, nullable: true },
     pricePerUnit: { type: 'number', minimum: 0, nullable: true },
     unit: { type: 'string', minLength: 1, maxLength: 255, nullable: true },
     purchaseTime: { type: 'number', minimum: 0, nullable: true },
-    internalNotes: { type: 'string', minLength: 1, maxLength: 255, nullable: true },
+    internalNotes: {
+      type: 'string',
+      minLength: 1,
+      maxLength: 255,
+      nullable: true,
+    },
   },
   additionalProperties: false,
 };
