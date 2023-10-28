@@ -29,6 +29,11 @@ class InventoryServices {
 
     return createdMaterial;
   }
+
+  async getAllMaterials(){
+    const allMaterials = InventoryDataBase.getAllMaterials();
+    return allMaterials;
+  }
 }
 
 export default new InventoryServices();
