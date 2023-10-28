@@ -15,8 +15,13 @@ class InventoryController {
     }
   }
 
-  getAllMaterials = (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json('I want to get all materials');
+  getAllMaterials = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const material = await inventoryServices.getAllMaterials();
+      res.status(200).json(material);
+    } catch (error) {
+      next(error);
+    }
   };
 
   getOneMaterial = (req: Request, res: Response, next: NextFunction) => {
