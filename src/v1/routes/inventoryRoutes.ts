@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import * as inventoryController from '../../controllers/inventoryController';
+import inventoryController from '../../controllers/inventoryController';
 import {
   validateBody,
   materialSchema,
