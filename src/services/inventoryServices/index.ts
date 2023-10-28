@@ -30,8 +30,8 @@ class InventoryServices {
     return createdMaterial;
   }
 
-  async getAllMaterials(){
-    const allMaterials = InventoryDataBase.getAllMaterials();
+  async getAllMaterials() {
+    const allMaterials = await InventoryDataBase.getAllMaterials();
     return allMaterials;
   }
 }
