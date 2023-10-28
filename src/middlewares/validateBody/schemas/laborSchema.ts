@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { Labor, PartialLabor } from '../../../types/types';
+import { Labor, PartialLabor } from '../../../types/Labor';
 
 /**
  * Labor schema for post method
@@ -16,6 +16,7 @@ export const laborSchema: JSONSchemaType<Labor> = {
     internalNotes: { type: 'string', minLength: 1, maxLength: 255 },
   },
   required: [
+    'status',
     'internalCode',
     'description',
     'pricePerUnit',
