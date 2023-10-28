@@ -14,16 +14,7 @@ export interface ICreationStamp {
   username: string;
 }
 
-export interface Labor {
-  status: 'active' | 'inactive';
-  internalCode: string;
-  description: string;
-  pricePerUnit: number;
-  timePerUnit: number;
-  unit: string;
-  internalNotes: string;
-}
-export interface PartialLabor extends Partial<Labor> {}
+
 
 export interface Order {
   internalCode: string;
