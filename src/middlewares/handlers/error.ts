@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { CustomError } from '../../helpers/CustomError';
 import { ICustomError } from '../../types/types';
 import { Request, Response, NextFunction } from 'express';
 
@@ -18,14 +19,14 @@ const errorHandler = (
 ) => {
   const productionMessage = {
     error: {
-      status: error.status,
+      status: error.status || 422,
       message: error.message,
     },
   };
 
   const developmentMessage = {
     error: {
-      status: error.status,
+      status: error.status || 422,
       message: error.message,
       stack: error.stack,
       body: req.body,
@@ -37,8 +38,10 @@ const errorHandler = (
     process.env.NODE_ENV == 'production'
       ? productionMessage
       : developmentMessage;
-      
-  res.status(error.status).json(message);
+
+  if (error instanceof CustomError) res.status(error.status).json(message);
+
+  res.status(message.error.status).json({ ...message, detailedError: { ...error } });
 };
 
 export default errorHandler;
