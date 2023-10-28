@@ -2,6 +2,7 @@ import inventoryServices from '../../services/inventoryServices';
 import { Request, Response, NextFunction } from 'express';
 import { Material } from '../../types/Material';
 
+
 class InventoryController {
   async createMaterial(req: Request, res: Response, next: NextFunction) {
     try {
@@ -24,11 +25,14 @@ class InventoryController {
     }
   };
 
-  getOneMaterial = (req: Request, res: Response, next: NextFunction) => {
-    const id = req.params.id;
-    res
-      .status(200)
-      .json(`I want to get one material. The material ID is: ${id}`);
+  getOneMaterial = async (req: Request, res: Response, next: NextFunction) => {
+    const materialId = req.params.id;
+    try {
+      const material = await inventoryServices.getOneMaterial(materialId);
+      res.status(200).json(material);
+    } catch (error) {
+      next(error);
+    }
   };
 
   updateMaterial = (req: Request, res: Response, next: NextFunction) => {
