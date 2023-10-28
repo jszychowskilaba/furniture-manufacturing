@@ -207,39 +207,43 @@ Returns all inventory stored in DB.
     // Example
 
     // Header
-    HTTP 200 OK
-    Content-Type: application/json
+    Content-Type: application/json; charset=utf-8
 
     // Body
     [
       {
-        "id": "a7cbefaf-b451-4a40-8e77-753bf1f5f639",
-        "createdAt": "4/10/2023, 3:58:56 PM",
-        "status": "active",
-        "internalCode": "w-01",
-        "description": "wood",
-        "quantity": 24,
-        "pricePerUnit": 15,
-        "unit": "m2",
-        "purchaseTime": 5,
-        "internalNotes": "some notes
+          "id": "5449a66f-2265-45bd-9c98-a352cf6659ad",
+          "createdat": "2023-10-28T15:58:24.048Z",
+          "updatedat": "2023-10-28T15:58:24.048Z",
+          "status": "active",
+          "internalcode": "w-039",
+          "description": "Light ocher reflective wood board of 2 inches wide",
+          "stock": "24.00",
+          "reservedstock": "4.00",
+          "priceperunit": "15.00",
+          "unit": "m2",
+          "purchasetime": "4.0",
+          "internalnotes": "used for tables top",
+          "username": "juan"
       },
       {
-        "id": "6f69f3d7-7d7f-4cac-b0c1-82fa337d797c",
-        "createdAt": "3/10/2023, 2:58:56 PM",
-        "status": "active",
-        "internalCode" "n-01",
-        "description": "nails",
-        "quantity": 1000,
-        "pricePerUnit": 0.12,
-        "unit": "unit",
-        "purchaseTime": 1,
-        "internalNotes": "some notes
+          "id": "c0052b38-06a9-4f56-8c48-58c782c8fa06",
+          "createdat": "2023-10-28T15:58:34.893Z",
+          "updatedat": "2023-10-28T15:58:34.893Z",
+          "status": "active",
+          "internalcode": "w-031",
+          "description": "Light ocher reflective wood board of 2 inches wide",
+          "stock": "24.00",
+          "reservedstock": "4.00",
+          "priceperunit": "15.00",
+          "unit": "m2",
+          "purchasetime": "4.0",
+          "internalnotes": "used for tables top",
+          "username": "juan"
       }
     ]
     ```
 
-  - 204 No Content. (Inventory is empty).
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
