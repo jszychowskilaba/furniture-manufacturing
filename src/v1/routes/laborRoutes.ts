@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import * as laborController from '../../controllers/laborController';
+import laborController from '../../controllers/laborController';
 import {
   validateBody,
   laborSchema,
