@@ -230,6 +230,41 @@ Server side creates a new user and stores it into data base.
 
   // Body
   {
+    "username": "superSystem",
+    "email": "bespokeSystems@gmail.com",
+    "name": "John",
+    "lastname": "Doe",
+    "role": "admin",
+    "createdat": "2023-10-28T16:20:29.601Z",
+    "updatedat": "2023-10-28T16:20:29.601Z"
+  }
+  ```
+
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 404 Not Found. (The material does not exist).
+  - 500 Internal Server Error. Response body with a JSON informative message.
+
+</details>
+
+![](./images/get-colour.png) **`GET`** `/api/v1/user/{username}` Returns a user by username.
+
+<details>
+  <summary>Click here</summary>
+
+Returns a user by username stored in the DB.
+
+- **Responses**
+
+  - 200 OK. Password is not returned.
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json
+
+  // Body
+  {
     username: "superSystem",
     email: "bespokeSystems@gmail.com",
     name: "John",
@@ -240,8 +275,47 @@ Server side creates a new user and stores it into data base.
 
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
-  - 409 Conflict. (Username already used in another account). Response body with a JSON informative message.
-  - 422 Unprocessable entity. Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
+
+</details>
+
+![](./images/get-colour.png) **`GET`** `/api/v1/user` Returns all users.
+
+<details>
+  <summary>Click here</summary>
+
+Returns all users stored in the DB.
+
+- **Responses**
+
+  - 200 OK. Passwords are not returned.
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json
+
+  // Body
+  [
+    {
+      username: "superSystem",
+      email: "bespokeSystems@gmail.com",
+      name: "John",
+      lastName: "Doe",
+      role: "admin",
+    },
+    {
+      username: "anotherSuperUser",
+      email: "bespokeSystems2@gmail.com",
+      name: "Cynthia",
+      lastName: "Martin",
+      role: "sales",
+    }
+  ]
+  ```
+
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
