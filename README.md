@@ -63,7 +63,6 @@ This API **streamlines the process** for estimating production time, materials c
 <details>
   <summary>Click here</summary>
 
-
 ![](./images/post-colour.png) **`POST`** `/api/v1/auth/login` Login the user.
 
 <details>
@@ -264,7 +263,7 @@ Creates a new material and store it in DB.
   // Header
   Content-Type: application/json
   Authorization: 214985e1-45d4-4698-8e28-22741ff5a631
-  
+
   // Body
   {
     "status": "active",
@@ -280,15 +279,15 @@ Creates a new material and store it in DB.
   ```
 
 - **Responses**
+
   - 201 Created. The material has been created and stored in DB.
 
-  
   ```
   // Example
 
   // Header
   Content-Type: application/json; charset=utf-8
-  
+
   // Body
   {
     "createdAt": "2023-10-28T12:21:10.276Z",
@@ -306,6 +305,7 @@ Creates a new material and store it in DB.
     "internalNotes": "used for tables top"
   }
   ```
+
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 409 Conflict. (Internal code already used in another material). Response body with a JSON informative message.
@@ -329,24 +329,26 @@ Returns a material by material ID stored in the DB.
     // Example
 
     // Header
-    HTTP 200 OK
-    Content-Type: application/json
+    Content-Type: application/json; charset=utf-8
 
     // Body
     {
-      "id": "a7cbefaf-b451-4a40-8e77-753bf1f5f639",
-      "createdAt": "4/10/2023, 3:58:56 PM",
+      "id": "fae43b5f-15b3-44f5-ad35-ea92880fa216",
+      "createdat": "2023-10-28T16:20:29.601Z",
+      "updatedat": "2023-10-28T16:20:29.601Z",
       "status": "active",
-      "internalCode": "w-01",
-      "description": "wood",
-      "quantity": 24,
-      "pricePerUnit": 15,
+      "internalcode": "w-0131",
+      "description": "Light ocher reflective wood board of 2 inches wide",
+      "stock": "24.00",
+      "reservedstock": "4.00",
+      "priceperunit": "15.00",
       "unit": "m2",
-      "purchaseTime": 5,
-      "internalNotes": "some notes
+      "purchasetime": "4.0",
+      "internalnotes": "used for tables top",
+      "username": "juan"
     }
     ```
-
+    
   - 404 No Found. (The material does not exist).
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
