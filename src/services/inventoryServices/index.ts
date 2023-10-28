@@ -1,7 +1,13 @@
 import InventoryDataBase from '../../databases/DataBase/InventoryDataBase';
-import { Material, CreatedMaterial } from '../../types/Material';
+import {
+  Material,
+  CreatedMaterial,
+  PartialMaterial,
+  PartialCreatedMaterial,
+} from '../../types/Material';
 import { CreationStamp } from '../helpers/CreationStamp';
 import { CustomError } from '../../helpers/CustomError';
+import { UpdateStamp } from '../helpers/UpdateStamp';
 
 class InventoryServices {
   /**
@@ -52,8 +58,31 @@ class InventoryServices {
    */
   async getOneMaterial(materialId: string): Promise<CreatedMaterial> {
     const material = await InventoryDataBase.getOneMaterial(materialId);
+
     if (!material) throw new CustomError('Material not found', 404);
+
     return material;
+  }
+
+  /**
+   * Updates material in database given a object with updates.
+   * @param materialId The material Id to updated
+   * @param materialChanges The object with updates
+   * @returns The updated material
+   */
+  async updateMaterial(
+    materialId: string,
+    materialChanges: PartialMaterial
+  ): Promise<CreatedMaterial> {
+    await this.getOneMaterial(materialId); // Throws error if material not exists
+
+    const materialUpdates: PartialCreatedMaterial = {
+      ...materialChanges,
+      ...new UpdateStamp(),
+    };
+
+    await InventoryDataBase.updateMaterial(materialId, materialUpdates);
+    return this.getOneMaterial(materialId);
   }
 }
 
