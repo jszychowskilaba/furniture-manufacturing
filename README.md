@@ -348,7 +348,7 @@ Returns a material by material ID stored in the DB.
       "username": "juan"
     }
     ```
-    
+
   - 404 No Found. (The material does not exist).
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
@@ -368,28 +368,49 @@ Returns a material by material ID stored in the DB.
   // Example
 
   // Header
-  Content-Type: application/json; charset=utf-8
-  Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
+  Content-Type: application/json
+  Authorization: 9e2240d3-2491-4346-9f4b-d087d15c7149
 
   // Body
   {
-    "status": "inactive",
-    "internalCode": "new internal code",
-    "description": "new description",
-    "quantity": 3,
-    "pricePerUnit": 2,
-    "unit": "new unit",
-    "purchaseTime": 3
-    "internalNotes": "new internal note"
+    "description": "New description",
+    "stock": 203,
+    "pricePerUnit": 3.34,
+    "unit": "m3"
   }
   ```
 
 - **Responses**
-  - 204 No Content. (Successful update)
+
+  - 200 OK. (Successful update)
+
+    ```
+    // Example
+
+    // Header
+    Content-Type: application/json; charset=utf-8
+
+    // Body
+    {
+      "id": "c0052b38-06a9-4f56-8c48-58c782c8fa06",
+      "createdat": "2023-10-28T15:58:34.893Z",
+      "updatedat": "2023-10-28T22:48:26.302Z",
+      "status": "active",
+      "internalcode": "w-031",
+      "description": "New description",
+      "stock": "203.00",
+      "reservedstock": "4.00",
+      "priceperunit": "3.34",
+      "unit": "m3",
+      "purchasetime": "4.0",
+      "internalnotes": "used for tables top",
+      "username": "juan"
+    }
+    ```
+
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 404 Not Found. (Material ID not found in DB). Response body with a JSON informative message.
-  - 409 Conflict. (Internal code already used). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
