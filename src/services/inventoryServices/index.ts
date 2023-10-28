@@ -44,6 +44,17 @@ class InventoryServices {
     const allMaterials = await InventoryDataBase.getAllMaterials();
     return allMaterials;
   }
+
+  /**
+   * Get one material from the database given a material Id
+   * @param materialId The material Id
+   * @returns The material
+   */
+  async getOneMaterial(materialId: string): Promise<CreatedMaterial> {
+    const material = await InventoryDataBase.getOneMaterial(materialId);
+    if (!material) throw new CustomError('Material not found', 404);
+    return material;
+  }
 }
 
 export default new InventoryServices();
