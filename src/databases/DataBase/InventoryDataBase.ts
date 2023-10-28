@@ -1,7 +1,8 @@
+import { CreatedMaterial, PartialCreatedMaterial } from '../../types/Material';
 import { selectByTableColumnValueQuery } from './helpers/selectByQuery';
 import { selectByRowQuery } from './helpers/selectByRowQuery';
-import { CreatedMaterial } from '../../types/Material';
 import { insertQuery } from './helpers/insertQuery';
+import { updateQuery } from './helpers/updateQuery';
 import { pool } from './Pool';
 
 class InventoryDataBase {
@@ -52,6 +53,24 @@ class InventoryDataBase {
       materialId
     );
     return (await pool.query(query)).rows[0];
+  }
+
+  /**
+   * Update a material in the database
+   * @param materialId The material to update
+   * @param materialUpdates The object that contains the updates
+   */
+  async updateMaterial(
+    materialId: string,
+    materialUpdates: PartialCreatedMaterial
+  ): Promise<void> {
+    const query = updateQuery(
+      this.tableName,
+      materialUpdates,
+      'id',
+      materialId
+    );
+    await pool.query(query);
   }
 }
 
