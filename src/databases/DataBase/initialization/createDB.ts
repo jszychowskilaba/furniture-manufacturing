@@ -1,5 +1,5 @@
 import { Client } from 'pg';
-import { config } from '../config';
+import { config } from '../config/config';
 
 /**
  * Creates database if it does not exists.
@@ -11,7 +11,6 @@ export const createDB = async (): Promise<void> => {
     password: config.password,
     port: config.port,
   });
-
   try {
     await client.connect();
 
