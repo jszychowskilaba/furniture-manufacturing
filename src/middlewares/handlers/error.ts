@@ -39,9 +39,13 @@ const errorHandler = (
       ? productionMessage
       : developmentMessage;
 
-  if (error instanceof CustomError) res.status(error.status).json(message);
-
-  res.status(message.error.status).json({ ...message, detailedError: { ...error } });
+  if (error instanceof CustomError) {
+    res.status(error.status).json(message);
+  } else {
+    res
+      .status(message.error.status)
+      .json({ ...message, detailedError: { ...error } });
+  }
 };
 
 export default errorHandler;
