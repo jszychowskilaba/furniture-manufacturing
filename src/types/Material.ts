@@ -11,7 +11,7 @@ export interface Material {
   purchaseTime: number;
   internalNotes: string;
 }
+export interface PartialMaterial extends Partial<Material> {}
 
 export interface CreatedMaterial extends Material, ICreationStamp {}
-
-export interface PartialMaterial extends Partial<Material> {}
+export interface PartialCreatedMaterial extends Partial<CreatedMaterial> {}
