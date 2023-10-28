@@ -186,6 +186,68 @@ Server side generates a new token and a new refresh token, update the old ones i
 
 </details>
 
+### **`user`** user operations
+
+<details>
+  <summary>Click here</summary>
+
+![](./images/post-colour.png) **`POST`** `/api/v1/user` Create a new user.
+
+<details>
+  <summary>Click here</summary>
+
+Server side creates a new user and stores it into data base.
+
+- **Request**
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json
+  Authorization: 214985e1-45d4-4698-8e28-22741ff5a631
+
+  // Body
+  {
+    username: "superSystem",
+    email: "bespokeSystems@gmail.com",
+    password: "pleasedonotsharepss",
+    name: "John",
+    lastName: "Doe",
+    role: "admin",
+  }
+  ```
+
+- **Responses**
+
+  - 201 Created. The user has been created and stored in DB. Response with resource with out password field.
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json
+
+  // Body
+  {
+    username: "superSystem",
+    email: "bespokeSystems@gmail.com",
+    name: "John",
+    lastName: "Doe",
+    role: "admin",
+  }
+  ```
+
+  - 400 Bad Request. Response body with a JSON informative message.
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 409 Conflict. (Username already used in another account). Response body with a JSON informative message.
+  - 422 Unprocessable entity. Response body with a JSON informative message.
+  - 500 Internal Server Error. Response body with a JSON informative message.
+
+</details>
+
+</details>
+
 ### **`inventory`** inventory operations
 
 <details>
