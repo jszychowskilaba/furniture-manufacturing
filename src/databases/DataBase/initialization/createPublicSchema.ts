@@ -12,7 +12,7 @@ export const createPublicSchema = async (): Promise<void> => {
     // Creating custom types
     await client.query(`
         DO $$ BEGIN
-            CREATE TYPE user_role AS ENUM ('sales', 'productionManager', 'inventoryAdministrator', 'admin');
+            CREATE TYPE user_role AS ENUM ('inactive', 'sales', 'productionManager', 'inventoryAdministrator', 'admin');
         EXCEPTION
             WHEN duplicate_object THEN null;
         END $$;`);
