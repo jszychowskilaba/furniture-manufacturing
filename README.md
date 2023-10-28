@@ -211,34 +211,34 @@ Returns all inventory stored in DB.
     // Body
     [
       {
-          "id": "5449a66f-2265-45bd-9c98-a352cf6659ad",
-          "createdat": "2023-10-28T15:58:24.048Z",
-          "updatedat": "2023-10-28T15:58:24.048Z",
-          "status": "active",
-          "internalcode": "w-039",
-          "description": "Light ocher reflective wood board of 2 inches wide",
-          "stock": "24.00",
-          "reservedstock": "4.00",
-          "priceperunit": "15.00",
-          "unit": "m2",
-          "purchasetime": "4.0",
-          "internalnotes": "used for tables top",
-          "username": "juan"
+        "id": "5449a66f-2265-45bd-9c98-a352cf6659ad",
+        "createdat": "2023-10-28T15:58:24.048Z",
+        "updatedat": "2023-10-28T15:58:24.048Z",
+        "status": "active",
+        "internalcode": "w-039",
+        "description": "Light ocher reflective wood board of 2 inches wide",
+        "stock": "24.00",
+        "reservedstock": "4.00",
+        "priceperunit": "15.00",
+        "unit": "m2",
+        "purchasetime": "4.0",
+        "internalnotes": "used for tables top",
+        "username": "juan"
       },
       {
-          "id": "c0052b38-06a9-4f56-8c48-58c782c8fa06",
-          "createdat": "2023-10-28T15:58:34.893Z",
-          "updatedat": "2023-10-28T15:58:34.893Z",
-          "status": "active",
-          "internalcode": "w-031",
-          "description": "Light ocher reflective wood board of 2 inches wide",
-          "stock": "24.00",
-          "reservedstock": "4.00",
-          "priceperunit": "15.00",
-          "unit": "m2",
-          "purchasetime": "4.0",
-          "internalnotes": "used for tables top",
-          "username": "juan"
+        "id": "c0052b38-06a9-4f56-8c48-58c782c8fa06",
+        "createdat": "2023-10-28T15:58:34.893Z",
+        "updatedat": "2023-10-28T15:58:34.893Z",
+        "status": "active",
+        "internalcode": "w-031",
+        "description": "Light ocher reflective wood board of 2 inches wide",
+        "stock": "24.00",
+        "reservedstock": "4.00",
+        "priceperunit": "15.00",
+        "unit": "m2",
+        "purchasetime": "4.0",
+        "internalnotes": "used for tables top",
+        "username": "juan"
       }
     ]
     ```
@@ -309,7 +309,7 @@ Creates a new material and store it in DB.
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 409 Conflict. (Internal code already used in another material). Response body with a JSON informative message.
-  - 424 Failed Dependency. Response body with a JSON informative message.
+  - 422 Unprocessable entity. Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
@@ -330,6 +330,7 @@ Returns a material by material ID stored in the DB.
 
     // Header
     Content-Type: application/json; charset=utf-8
+    Authorization: 734e744c-2932-4def-a357-ded598302bee
 
     // Body
     {
@@ -349,7 +350,7 @@ Returns a material by material ID stored in the DB.
     }
     ```
 
-  - 404 No Found. (The material does not exist).
+  - 404 Not Found. (The material does not exist).
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
@@ -437,37 +438,40 @@ Return all created labors from DB
     // Example
 
     // Header
-    HTTP 200 OK
-      Content-Type: application/json
+    Content-Type: application/json; charset=utf-8
+    Authorization: 734e744c-2932-4def-a357-ded598302bee
 
     // Body
     [
       {
-        "id": "7b45ccd1-e1c3-4e75-99ed-aa41bcc98dd1",
-        "createdAt": "4/10/2023, 1:55:56 PM",
+        "id": "99536ede-b458-45b5-bdaa-5e29c012556e",
+        "createdat": "2023-10-29T00:19:11.413Z",
+        "updatedat": "2023-10-29T00:19:11.413Z",
         "status": "active",
-        "internalCode": "S-01",
-        "description": "screw a leg",
-        "pricePerUnit": 1, // USD
-        "timePerUnit": 2, // seconds
+        "internalcode": "S-23",
+        "description": "Screw a leg",
+        "priceperunit": "4.00",
+        "timeperunit": "2.00",
         "unit": "unit",
-        "internalNote": "some internal note",
+        "internalnotes": "some internal note",
+        "username": "juan"
       },
       {
-        "id": "cfb4b8ec-fea7-41c1-aa00-a88456ddf7c0",
-        "createdAt": "2/10/2023, 1:23:54 PM",
-        "status": "inactive",
-        "internalCode": "S-23",
-        "description": "sanding board surface",
-        "pricePerUnit": 30, // USD
-        "timePerUnit": 3600, // seconds
-        "unit": "m2",
-        "internalNote": "some internal note",
+        "id": "1e542de6-2cb0-4090-899c-af1f101a9a7b",
+        "createdat": "2023-10-29T00:19:58.414Z",
+        "updatedat": "2023-10-29T00:19:58.414Z",
+        "status": "active",
+        "internalcode": "N-43",
+        "description": "Nail tabe top",
+        "priceperunit": "0.25",
+        "timeperunit": "1.00",
+        "unit": "unit",
+        "internalnotes": "be careful to not kick the table",
+        "username": "juan"
       }
     ]
     ```
 
-  - 204 No Content. (Labor list is empty).
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
@@ -487,24 +491,50 @@ Creates a new labor and stores it in DB.
 
   // Header
   Content-Type: application/json; charset=utf-8
-  Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
+  Authorization: 734e744c-2932-4def-a357-ded598302bee
 
   // Body
   {
-    "internalCode": "S-01",
-    "description": "screw a leg",
-    "pricePerUnit": 24, // USD
-    "timePerUnit": 2, // seconds
-    "unit": "unit"
-    "internalNote": "some internal note"
+    "status": "active",
+    "internalCode": "N-43",
+    "description": "Nail tabe top",
+    "pricePerUnit": 0.25,
+    "timePerUnit": 1,
+    "unit": "unit",
+    "internalNotes": "be careful to not kick the table"
   }
   ```
 
 - **Responses**
-  - 204 No Content. The resource has been created and stored in DB
-  - 400 Bad Request. Response body with a JSON informative message
+
+  - 201 Created. The material has been created and stored in DB.
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json; charset=utf-8
+
+  // Body
+  {
+    "createdAt": "2023-10-28T21:34:44.218Z",
+    "updatedAt": "2023-10-28T21:34:44.218Z",
+    "id": "10ce6c07-6dc2-4990-96c4-dfcf7c96eaf3",
+    "username": "juan",
+    "status": "active",
+    "internalCode": "N-43",
+    "description": "Nail tabe top",
+    "pricePerUnit": 0.25,
+    "timePerUnit": 1,
+    "unit": "unit",
+    "internalNotes": "be careful to not kick the table"
+  }
+  ```
+
+  - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
-  - 409 Conflict. (Internal code already used). Response body with a JSON informative message.
+  - 409 Conflict. (Internal code already used in another labor). Response body with a JSON informative message.
+  - 422 Unprocessable entity. Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
@@ -529,19 +559,21 @@ Returns a labor stored in the DB by its ID
 
   // Body
   {
-    "id": "7b45ccd1-e1c3-4e75-99ed-aa41bcc98dd1",
-    "createdAt": "4/10/2023, 1:55:56 PM",
-    "status": "inactive",
-    "internalNote": "S-01",
-    "description": "screw a leg",
-    "pricePerUnit": 1,
-    "timePerUnit": 2,
+    "id": "10ce6c07-6dc2-4990-96c4-dfcf7c96eaf3",
+    "createdat": "2023-10-29T00:34:44.218Z",
+    "updatedat": "2023-10-29T00:34:44.218Z",
+    "status": "active",
+    "internalcode": "N-43",
+    "description": "Nail tabe top",
+    "priceperunit": "0.25",
+    "timeperunit": "1.00",
     "unit": "unit",
-    "internalNote": "some internal note"
+    "internalnotes": "be careful to not kick the table",
+    "username": "juan"
   }
   ```
 
-  - 404 Not Found. (The labor is not stored in the DB).
+  - 404 Not Found. (The labor does not exist).
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
@@ -561,26 +593,47 @@ Updates labor by its ID and update the DB.
 
   // Header
   Content-Type: application/json; charset=utf-8
-  Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
+  Authorization: c326b621-167f-4192-9845-b11cc01597fb
 
   // Body
   {
     "status": "active",
-    "internalCode": "S-01"
-    "description": "screw a leg",
-    "pricePerUnit": 1,
+    "internalCode": "N-01",
+    "pricePerUnit": 3,
     "timePerUnit": 2,
-    "unit": "unit",
-    "internalNote": "new internal note"
+    "unit": "unit"
   }
   ```
 
 - **Responses**
-  - 204 No Content. (Successful update)
+
+  - 200 OK. (Successful update)
+
+    ```
+    // Example
+
+    // Header
+    Content-Type: application/json; charset=utf-8
+
+    // Body
+    {
+      "id": "10ce6c07-6dc2-4990-96c4-dfcf7c96eaf3",
+      "createdat": "2023-10-29T00:34:44.218Z",
+      "updatedat": "2023-10-29T00:38:49.688Z",
+      "status": "active",
+      "internalcode": "N-01",
+      "description": "Nail tabe top",
+      "priceperunit": "3.00",
+      "timeperunit": "2.00",
+      "unit": "unit",
+      "internalnotes": "be careful to not kick the table",
+      "username": "juan"
+    }
+    ```
+
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
-  - 404 Not Found. (Labor ID not found in DB). Response body with a JSON informative message
-  - 409 Conflict. (Internal code already used). Response body with a JSON informative message.
+  - 404 Not Found. (Labor ID not found in DB). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
 </details>
