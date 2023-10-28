@@ -1,4 +1,4 @@
-export const createInsertQuery = (tableName: string, dataObject: object) => {
+export const insertQuery = (tableName: string, dataObject: object) => {
   const columns = Object.keys(dataObject).join(', ');
   const values = Object.values(dataObject)
     .map((value) => `'${value}'`)
