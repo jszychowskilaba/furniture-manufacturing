@@ -13,6 +13,7 @@ Table that contains user information.
 - **name**
 - **lastName**
 - **role**: the user can have one of the following roles.
+  - **inactive**: do not access to the system.
   - **sales**: can create and update a production order.
   - **inventoryAdministrator**: can create and update materials.
   - **productionManager**: can create and update labors, can update manufactured quantity and status in a production order.
