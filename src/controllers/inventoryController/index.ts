@@ -1,7 +1,6 @@
 import inventoryServices from '../../services/inventoryServices';
 import { Request, Response, NextFunction } from 'express';
-import { Material } from '../../types/Material';
-
+import { Material, PartialMaterial } from '../../types/Material';
 
 class InventoryController {
   async createMaterial(req: Request, res: Response, next: NextFunction) {
@@ -35,11 +34,18 @@ class InventoryController {
     }
   };
 
-  updateMaterial = (req: Request, res: Response, next: NextFunction) => {
-    const id = req.params.id;
-    res
-      .status(200)
-      .json(`I want to update a material. The material ID is: ${id}`);
+  updateMaterial = async (req: Request, res: Response, next: NextFunction) => {
+    const materialId = req.params.id as string;
+    const materialChanges = req.body as PartialMaterial;
+    try {
+      const material = await inventoryServices.updateMaterial(
+        materialId,
+        materialChanges
+      );
+      res.status(200).json(material);
+    } catch (error) {
+      next(error);
+    }
   };
 }
 
