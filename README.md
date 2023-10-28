@@ -320,6 +320,63 @@ Returns all users stored in the DB.
 
 </details>
 
+<details>
+  <summary>Click here</summary>
+
+![](./images/patch-colour.png) **`PATCH`** `/api/v1/user/{username}` Update a new user.
+
+<details>
+  <summary>Click here</summary>
+
+Server side updates a user and stores the changes into data base.
+
+- **Request**
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json
+  Authorization: 214985e1-45d4-4698-8e28-22741ff5a631
+
+  // Body
+  {
+    email: "newEmail@gmail.com",
+    password: "newPassowrd",
+    name: "Change Name",
+    role: "sales",
+  }
+  ```
+
+- **Responses**
+
+  - 200 OK. The user has been updated and changes stored in DB. Response with resource with out password field.
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json
+
+  // Body
+  {
+    "username": "superSystem",
+    "email": "newEmail@gmail.com",
+    "name": "Change Name",
+    "lastname": "Doe",
+    "role": "sales",
+    "createdat": "2023-10-28T16:20:29.601Z",
+    "updatedat": "2023-10-28T19:24:21.601Z"
+  }
+  ```
+
+  - 400 Bad Request. Response body with a JSON informative message.
+  - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 404 Not Found. (The username does not exist).
+  - 500 Internal Server Error. Response body with a JSON informative message.
+
+</details>
+
 </details>
 
 ### **`inventory`** inventory operations
