@@ -5,7 +5,7 @@ import { Material, PartialMaterial } from '../../types/Material';
 class InventoryController {
   async createMaterial(req: Request, res: Response, next: NextFunction) {
     try {
-      const createdMaterial = await inventoryServices.createMaterial(
+      const createdMaterial = await inventoryServices.create(
         req.body as Material,
         req.headers.username as string
       );
@@ -17,7 +17,7 @@ class InventoryController {
 
   getAllMaterials = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const material = await inventoryServices.getAllMaterials();
+      const material = await inventoryServices.getAll();
       res.status(200).json(material);
     } catch (error) {
       next(error);
@@ -27,7 +27,7 @@ class InventoryController {
   getOneMaterial = async (req: Request, res: Response, next: NextFunction) => {
     const materialId = req.params.id;
     try {
-      const material = await inventoryServices.getOneMaterial(materialId);
+      const material = await inventoryServices.getOne(materialId);
       res.status(200).json(material);
     } catch (error) {
       next(error);
@@ -38,7 +38,7 @@ class InventoryController {
     const materialId = req.params.id as string;
     const materialChanges = req.body as PartialMaterial;
     try {
-      const material = await inventoryServices.updateMaterial(
+      const material = await inventoryServices.update(
         materialId,
         materialChanges
       );
