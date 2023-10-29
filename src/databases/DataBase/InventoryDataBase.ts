@@ -1,33 +1,36 @@
 import { CreatedMaterial, PartialCreatedMaterial } from '../../types/Material';
 import { CRUDOperations } from './helpers/CRUDOperations';
+import { DataBase } from '../../types/DataBase';
 
-class InventoryDataBase {
+class InventoryDataBase
+  implements DataBase<CreatedMaterial, PartialCreatedMaterial>
+{
   private operations: CRUDOperations<CreatedMaterial>;
   constructor() {
     this.operations = new CRUDOperations('material', 'id');
   }
 
-  async createMaterial(material: CreatedMaterial): Promise<void> {
+  async create(material: CreatedMaterial): Promise<void> {
     await this.operations.create(material);
   }
 
-  async hasMaterialWith(column: string, value: string): Promise<boolean> {
-    return await this.operations.hasDataWith(column, value);
+  async hasWith(column: string, value: string): Promise<boolean> {
+    return await this.operations.hasWith(column, value);
   }
 
-  async getAllMaterials(): Promise<CreatedMaterial[]> {
-    return await this.operations.getAllData();
+  async getAll(): Promise<CreatedMaterial[]> {
+    return await this.operations.getAll();
   }
 
-  async getOneMaterial(materialId: string): Promise<CreatedMaterial> {
-    return await this.operations.getOneData(materialId);
+  async getOne(materialId: string): Promise<CreatedMaterial> {
+    return await this.operations.getOne(materialId);
   }
 
-  async updateMaterial(
+  async update(
     materialId: string,
     materialUpdates: PartialCreatedMaterial
   ): Promise<void> {
-    await this.operations.updateData(materialId, materialUpdates);
+    await this.operations.update(materialId, materialUpdates);
   }
 }
 
