@@ -23,7 +23,7 @@ class QueryCreator {
    * @param value The value
    * @returns The row where there is a match
    */
-  selectRowByTableColumnValue(
+  selectByTableColumnValue(
     tableName: string,
     column: string,
     value: string
@@ -38,7 +38,7 @@ class QueryCreator {
    * @param column The column
    * @returns The row where there is a match
    */
-  selectByRowQuery(tableName: string, column: string) {
+  selectByColumn(tableName: string, column: string) {
     const query = `SELECT ${column} FROM ${tableName}`;
     return query;
   }
@@ -53,7 +53,7 @@ class QueryCreator {
    * @param idTarget The id target
    * @returns
    */
-  updateQuery(
+  update(
     tableName: string,
     dataObject: { [key: string]: unknown },
     columnTarget: string,
