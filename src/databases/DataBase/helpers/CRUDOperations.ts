@@ -25,7 +25,7 @@ class CRUDOperations<T extends object> {
    * @param value The value
    * @returns <true> if data exists | <false> if data does not exists
    */
-  async hasDataWith(column: string, value: string): Promise<boolean> {
+  async hasWith(column: string, value: string): Promise<boolean> {
     const query = queryCreator.selectByTableColumnValue(
       this.tableName,
       column,
@@ -39,7 +39,7 @@ class CRUDOperations<T extends object> {
    * Get all data from the table
    * @returns The data
    */
-  async getAllData(): Promise<T[]> {
+  async getAll(): Promise<T[]> {
     const query = queryCreator.selectByColumn(this.tableName, '*');
     return (await pool.query(query)).rows;
   }
@@ -49,7 +49,7 @@ class CRUDOperations<T extends object> {
    * @param dataId The data id
    * @returns The data
    */
-  async getOneData(dataId: string): Promise<T> {
+  async getOne(dataId: string): Promise<T> {
     const query = queryCreator.selectByTableColumnValue(
       this.tableName,
       this.primaryKeyColumnName,
@@ -63,7 +63,7 @@ class CRUDOperations<T extends object> {
    * @param dataId The data to update
    * @param dataUpdates The object that contains the updates
    */
-  async updateData(
+  async update(
     dataId: string,
     dataUpdates: { [key: string]: unknown },
   ): Promise<void> {
