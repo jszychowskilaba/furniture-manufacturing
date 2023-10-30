@@ -1,19 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
+import { IService } from '../../types/IService';
+import { ICRUDController } from '../../types/ICRUDController';
 
-interface ICRUDController {
-  create(req: Request, res: Response, next: NextFunction): Promise<void>;
-  getAll(req: Request, res: Response, next: NextFunction): Promise<void>;
-  getOne(req: Request, res: Response, next: NextFunction): Promise<void>;
-  update(req: Request, res: Response, next: NextFunction): Promise<void>;
-}
-
-interface IService<T, CreatedT, PartialT> {
-  create(data: T, username: string): Promise<CreatedT>;
-  getAll(): Promise<CreatedT[]>;
-  getAll(): Promise<CreatedT[]>;
-  getOne(dataId: string): Promise<CreatedT>;
-  update(materialId: string, materialChanges: PartialT): Promise<CreatedT>;
-}
 
 class CRUDController<T, PartialT, CreatedT> implements ICRUDController {
   private service: IService<T, CreatedT, PartialT>;
@@ -22,11 +10,11 @@ class CRUDController<T, PartialT, CreatedT> implements ICRUDController {
   }
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const createdMaterial = await this.service.create(
+      const createdData = await this.service.create(
         req.body as T,
         req.headers.username as string
       );
-      res.status(201).json(createdMaterial);
+      res.status(201).json(createdData);
     } catch (error) {
       next(error);
     }
@@ -34,18 +22,18 @@ class CRUDController<T, PartialT, CreatedT> implements ICRUDController {
 
   getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const material = await this.service.getAll();
-      res.status(200).json(material);
+      const data = await this.service.getAll();
+      res.status(200).json(data);
     } catch (error) {
       next(error);
     }
   };
 
   getOne = async (req: Request, res: Response, next: NextFunction) => {
-    const materialId = req.params.id;
+    const dataId = req.params.id;
     try {
-      const material = await this.service.getOne(materialId);
-      res.status(200).json(material);
+      const data = await this.service.getOne(dataId);
+      res.status(200).json(data);
     } catch (error) {
       next(error);
     }
