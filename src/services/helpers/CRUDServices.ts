@@ -18,16 +18,20 @@ interface ICRUDServices<T, CreatedT, PartialT> {
 class CRUDServices<T, CreatedT, PartialT, PartialCreatedT>
   implements ICRUDServices<T, CreatedT, PartialT>
 {
-  private dataBase: IDataBase<CreatedT, PartialCreatedT>;
+  public dataBase: IDataBase<CreatedT, PartialCreatedT>;
   constructor(dataBase: IDataBase<CreatedT, PartialCreatedT>) {
     this.dataBase = dataBase;
   }
 
   /**
-   * Creates a new data and stores it in database
-   * @param data The data to create
-   * @param username The user data creator username
-   * @returns The created data
+   * Adds a creation stamp to received data and stores the data
+   * in the data base. Before adding the data, it checks if the
+   * there is no previous data with the column value sent.
+   * @param data The data
+   * @param username The user name to add to creation stamp
+   * @param column The column for checking if data already exists
+   * @param value The value for checking if the data already exists
+   * @returns
    */
   async create(
     data: T,
