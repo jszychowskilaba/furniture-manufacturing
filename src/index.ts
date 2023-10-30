@@ -1,5 +1,6 @@
 import express from 'express';
 import 'dotenv/config';
+import v1UserRouter from './v1/routes/userRoutes'
 import v1AuthRouter from './v1/routes/authRoutes';
 import v1InventoryRouter from './v1/routes/inventoryRoutes';
 import v1LaborRouter from './v1/routes/laborRoutes';
@@ -19,6 +20,7 @@ app.use('/api/v1/auth', v1AuthRouter);
 app.use('/api/v1/inventory', authenticateUser, v1InventoryRouter);
 app.use('/api/v1/labor', authenticateUser, v1LaborRouter);
 app.use('/api/v1/orders', authenticateUser, v1OrderController);
+app.use('/api/v1/user', authenticateUser, v1UserRouter)
 
 // For testing middleware
 app.use('/secret-area', authenticateUser, (req, res) => {
