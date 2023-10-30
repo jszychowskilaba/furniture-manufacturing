@@ -1,13 +1,13 @@
 import { CreatedMaterial, PartialCreatedMaterial } from '../../types/Material';
-import { CRUDOperations } from './helpers/CRUDOperations';
+import { CRUDODataBase } from './helpers/CRUDODataBase';
 import { DataBase } from '../../types/DataBase';
 
 class InventoryDataBase
   implements DataBase<CreatedMaterial, PartialCreatedMaterial>
 {
-  private operations: CRUDOperations<CreatedMaterial>;
+  private operations: CRUDODataBase<CreatedMaterial>;
   constructor() {
-    this.operations = new CRUDOperations('material', 'id');
+    this.operations = new CRUDODataBase('material', 'id');
   }
 
   async create(material: CreatedMaterial): Promise<void> {
