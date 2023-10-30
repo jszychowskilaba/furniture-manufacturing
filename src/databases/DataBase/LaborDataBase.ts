@@ -1,77 +1,37 @@
 import { CreatedLabor, PartialCreatedLabor } from '../../types/Labor';
-import { selectByTableColumnValueQuery } from './helpers/selectByQuery';
-import { selectByRowQuery } from './helpers/selectByRowQuery';
-import { insertQuery } from './helpers/insertQuery';
-import { updateQuery } from './helpers/updateQuery';
-import { pool } from './Pool';
+import { CRUDODataBase } from './helpers/CRUDODataBase';
+import { IDataBase } from '../../types/IDataBase';
 
-class InventoryDataBase {
-  private tableName: string;
+class LaborDataBase
+  implements IDataBase<CreatedLabor, PartialCreatedLabor>
+{
+  private operations: CRUDODataBase<CreatedLabor>;
   constructor() {
-    this.tableName = 'labor';
-  }
-  /**
-   * Stores a created labor in the database
-   * @param labor The labor
-   */
-  async createLabor(labor: CreatedLabor): Promise<void> {
-    const query = insertQuery(this.tableName, labor);
-    await pool.query(query);
+    this.operations = new CRUDODataBase('labor', 'id');
   }
 
-  /**
-   * Check if a labor exist given a column and a value
-   * @param column  The column
-   * @param value The value
-   * @returns <true> if labor exists | <false> if labor does not exists
-   */
-  async hasLaborWith(column: string, value: string): Promise<boolean> {
-    const result = await pool.query(
-      selectByTableColumnValueQuery(this.tableName, column, value)
-    );
-    return !(result.rows[0] === undefined);
+  async create(labor: CreatedLabor): Promise<void> {
+    await this.operations.create(labor);
   }
 
-  /**
-   * Get all labors from database
-   * @returns The labors
-   */
-  async getAllLabors(): Promise<CreatedLabor[]> {
-    const query = selectByRowQuery(this.tableName, '*');
-    return (await pool.query(query)).rows;
+  async hasWith(column: string, value: string): Promise<boolean> {
+    return await this.operations.hasWith(column, value);
   }
 
-  /**
-   * Get one labor from database
-   * @param laborId The labor id
-   * @returns The labor
-   */
-  async getOneLabor(laborId: string): Promise<CreatedLabor> {
-    const query = selectByTableColumnValueQuery(
-      this.tableName,
-      'id',
-      laborId
-    );
-    return (await pool.query(query)).rows[0];
+  async getAll(): Promise<CreatedLabor[]> {
+    return await this.operations.getAll();
   }
 
-  /**
-   * Update a labor in the database
-   * @param laborId The labor to update
-   * @param laborUpdates The object that contains the updates
-   */
-  async updateLabor(
+  async getOne(laborId: string): Promise<CreatedLabor> {
+    return await this.operations.getOne(laborId);
+  }
+
+  async update(
     laborId: string,
     laborUpdates: PartialCreatedLabor
   ): Promise<void> {
-    const query = updateQuery(
-      this.tableName,
-      laborUpdates,
-      'id',
-      laborId
-    );
-    await pool.query(query);
+    await this.operations.update(laborId, laborUpdates);
   }
 }
 
-export default new InventoryDataBase();
+export default new LaborDataBase();
