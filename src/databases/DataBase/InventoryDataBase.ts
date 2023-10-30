@@ -1,9 +1,9 @@
 import { CreatedMaterial, PartialCreatedMaterial } from '../../types/Material';
 import { CRUDODataBase } from './helpers/CRUDODataBase';
-import { DataBase } from '../../types/DataBase';
+import { IDataBase } from '../../types/IDataBase';
 
 class InventoryDataBase
-  implements DataBase<CreatedMaterial, PartialCreatedMaterial>
+  implements IDataBase<CreatedMaterial, PartialCreatedMaterial>
 {
   private operations: CRUDODataBase<CreatedMaterial>;
   constructor() {
