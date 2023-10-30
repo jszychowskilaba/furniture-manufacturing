@@ -1,7 +1,19 @@
 import queryCreator from './QueryCreator';
 import { pool } from '../Pool';
 
-class CRUDODataBase<T extends object> {
+interface ICRUDODataBase<T> {
+  create(data: T): Promise<void>;
+  hasWith(column: string, value: string): Promise<boolean>;
+  hasWith(column: string, value: string): Promise<boolean>;
+  getAll(): Promise<T[]>;
+  getOne(dataId: string): Promise<T>;
+  update(
+    dataId: string,
+    dataUpdates: { [key: string]: unknown }
+  ): Promise<void>;
+}
+
+class CRUDODataBase<T extends object> implements ICRUDODataBase<T>{
   private tableName: string;
   private primaryKeyColumnName: string;
 
