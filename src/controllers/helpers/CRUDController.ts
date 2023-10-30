@@ -1,7 +1,6 @@
+import { ICRUDController } from '../../types/ICRUDController';
 import { Request, Response, NextFunction } from 'express';
 import { IService } from '../../types/IService';
-import { ICRUDController } from '../../types/ICRUDController';
-
 
 class CRUDController<T, PartialT, CreatedT> implements ICRUDController {
   private service: IService<T, CreatedT, PartialT>;
