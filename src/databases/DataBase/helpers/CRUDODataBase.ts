@@ -1,7 +1,7 @@
 import queryCreator from './QueryCreator';
 import { pool } from '../Pool';
 
-class CRUDOperations<T extends object> {
+class CRUDODataBase<T extends object> {
   private tableName: string;
   private primaryKeyColumnName: string;
 
@@ -65,7 +65,7 @@ class CRUDOperations<T extends object> {
    */
   async update(
     dataId: string,
-    dataUpdates: { [key: string]: unknown },
+    dataUpdates: { [key: string]: unknown }
   ): Promise<void> {
     const query = queryCreator.update(
       this.tableName,
@@ -77,4 +77,4 @@ class CRUDOperations<T extends object> {
   }
 }
 
-export { CRUDOperations };
+export { CRUDODataBase };
