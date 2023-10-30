@@ -1,11 +1,25 @@
 import { CustomError } from '../../helpers/CustomError';
-import { DataBase } from '../../types/DataBase';
+import { IDataBase } from '../../types/IDataBase';
 import { CreationStamp } from './CreationStamp';
 import { UpdateStamp } from './UpdateStamp';
 
-class CRUDServices<T, CreatedT, PartialT, PartialCreatedT> {
-  private dataBase: DataBase<CreatedT, PartialCreatedT>;
-  constructor(dataBase: DataBase<CreatedT, PartialCreatedT>) {
+interface ICRUDServices<T, CreatedT, PartialT> {
+  create(
+    data: T,
+    username: string,
+    column: string,
+    value: string
+  ): Promise<CreatedT>;
+  getAll(): Promise<CreatedT[]>;
+  getOne(dataId: string): Promise<CreatedT>;
+  update(dataId: string, dataChanges: PartialT): Promise<CreatedT>;
+}
+
+class CRUDServices<T, CreatedT, PartialT, PartialCreatedT>
+  implements ICRUDServices<T, CreatedT, PartialT>
+{
+  private dataBase: IDataBase<CreatedT, PartialCreatedT>;
+  constructor(dataBase: IDataBase<CreatedT, PartialCreatedT>) {
     this.dataBase = dataBase;
   }
 
