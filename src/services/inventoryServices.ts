@@ -1,11 +1,7 @@
-import InventoryDataBase from '../../databases/DataBase/InventoryDataBase';
-import {
-  Material,
-  CreatedMaterial,
-  PartialMaterial,
-} from '../../types/Material';
-import { ICRUDServices } from '../../types/ICRUDServices';
-import CRUDServices from '../helpers/CRUDServices';
+import InventoryDataBase from '../databases/DataBase/InventoryDataBase';
+import { Material, CreatedMaterial, PartialMaterial } from '../types/Material';
+import { ICRUDServices } from '../types/ICRUDServices';
+import CRUDServices from './helpers/CRUDServices';
 
 class InventoryServices {
   private crudServices: ICRUDServices<
