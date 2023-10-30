@@ -6,8 +6,14 @@ export interface User {
   password: string;
   name: string;
   lastName: string;
-  role: 'inactive | sales | productionManager | inventoryAdministrator | admin';
+  role:
+    | 'inactive'
+    | 'sales'
+    | 'productionManager'
+    | 'inventoryAdministrator'
+    | 'admin';
 }
 
 export interface CreatedUser extends User, ICreationStamp {}
-export interface PartialUser extends Partial<User>{}
+export interface PartialUser extends Partial<User> {}
+export interface PartialCreatedUser extends Partial<CreatedUser> {}
