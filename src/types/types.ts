@@ -10,7 +10,7 @@ export interface ICustomError extends Error {
 export interface ICreationStamp {
   createdAt: string;
   updatedAt: string;
-  id?: string;
+  id: string;
   username: string;
 }
 
