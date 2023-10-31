@@ -1,9 +1,5 @@
 import * as crypto from 'crypto';
-
-interface ICreatedPassword {
-  hashedPassword: string;
-  salt: string;
-}
+import { ICreatedPassword } from '../../types/User';
 
 interface ICrypto {
   createPassword(userPassword: string): ICreatedPassword;
