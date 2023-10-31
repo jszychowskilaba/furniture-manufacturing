@@ -11,6 +11,7 @@ import { IService } from '../types/IService';
 import { IDataBase } from '../types/IDataBase';
 import { CustomError } from '../helpers/CustomError';
 import { CreationStamp } from './helpers/CreationStamp';
+import { Crypto } from './helpers/Crypto';
 
 class UserCRUDServices extends CRUDServices<
   User,
@@ -28,7 +29,6 @@ class UserCRUDServices extends CRUDServices<
     column: string,
     value: string
   ): Promise<CreatedUser> {
-    console.log(column, value);
     if (await this.dataBase.hasWith(column, value)) {
       throw new CustomError('Data with same internal code already exists', 409);
     }
@@ -36,13 +36,16 @@ class UserCRUDServices extends CRUDServices<
     const createdData = {
       ...new CreationStamp(username),
       ...data,
+      ...new Crypto().createPassword(data.password as string),
     } as CreatedUser;
 
-    delete createdData.id;
+    delete (createdData as PartialCreatedUser).id;
+    delete (createdData as PartialCreatedUser).password;
 
     await this.dataBase.create(createdData);
 
-    createdData.password = '*';
+    createdData.hashedPassword = '*';
+    createdData.salt = '*';
 
     return createdData;
   }
@@ -66,7 +69,11 @@ class UserServices implements IService<User, CreatedUser, PartialUser> {
 
   async getAll(): Promise<CreatedUser[]> {
     const users = await this.crudServices.getAll();
-    users.forEach((user) => (user.password = '*'));
+    users.forEach((user) => {
+      user.password = '*www';
+      user.hashedPassword = 'tt';
+      user.salt = 'ttt*';
+    });
     return users;
   }
 
