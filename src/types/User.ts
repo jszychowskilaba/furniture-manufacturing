@@ -14,6 +14,11 @@ export interface User {
     | 'admin';
 }
 
-export interface CreatedUser extends User, ICreationStamp {}
+export interface ICreatedPassword {
+  hashedPassword: string;
+  salt: string;
+}
+
+export interface CreatedUser extends User, ICreatedPassword, ICreationStamp {}
 export interface PartialUser extends Partial<User> {}
 export interface PartialCreatedUser extends Partial<CreatedUser> {}
