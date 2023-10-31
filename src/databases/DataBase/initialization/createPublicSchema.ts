@@ -36,7 +36,8 @@ export const createPublicSchema = async (): Promise<void> => {
         CREATE TABLE IF NOT EXISTS appUser (
             username VARCHAR(16) PRIMARY KEY,
             email VARCHAR(50) UNIQUE NOT NULL,
-            password VARCHAR(32) NOT NULL,
+            hashedPassword VARCHAR(64) NOT NULL,
+            salt VARCHAR(32) NOT NULL,
             name VARCHAR(45) NOT NULL,
             lastName VARCHAR(45) NOT NULL,
             role user_role NOT NULL,
