@@ -70,9 +70,8 @@ class UserServices implements IService<User, CreatedUser, PartialUser> {
   async getAll(): Promise<CreatedUser[]> {
     const users = await this.crudServices.getAll();
     users.forEach((user) => {
-      user.password = '*www';
-      user.hashedPassword = 'tt';
-      user.salt = 'ttt*';
+      user.hashedPassword = '*';
+      user.salt = '*';
     });
     return users;
   }
@@ -84,7 +83,19 @@ class UserServices implements IService<User, CreatedUser, PartialUser> {
   }
 
   async update(userId: string, userChanges: PartialUser): Promise<CreatedUser> {
-    return await this.crudServices.update(userId, userChanges);
+    let newUserChanges = {};
+    if (userChanges.password) {
+      const password = userChanges.password;
+      delete userChanges.password;
+      newUserChanges = {
+        ...userChanges,
+        ...new Crypto().createPassword(password),
+      };
+    }
+    const updatedUser = await this.crudServices.update(userId, newUserChanges);
+    updatedUser.hashedPassword = '*';
+    updatedUser.salt = '*';
+    return updatedUser;
   }
 }
 
