@@ -80,7 +80,6 @@ class OrderDataBase {
           reservedStock:
             Number(reservedStock) + item.quantity * unitsToManufacture,
         };
-        console.log(updatedValues);
         await client.query(
           queryCreator.update('material', updatedValues, 'id', item.materialId)
         );
@@ -91,6 +90,31 @@ class OrderDataBase {
       await client.query('ROLLBACK');
       throw error;
     } finally {
+      client.release();
+    }
+  }
+
+  async produceTransaction(manufactureOrder: CreatedOrder, quantity: number) {
+    const client = await pool.connect();
+
+    await client.query('BEGIN');
+    try {
+      for (const material of manufactureOrder.materials) {
+        await client.query(
+          `UPDATE "material" SET "reservedStock" = "reservedStock" -  '${
+            material.quantity * quantity
+          }' WHERE "id" = '${material.id}'`
+        );
+      }
+
+      await client.query(
+        `UPDATE "manufactureOrder" SET "manufactured" = "manufactured" + '${quantity}' WHERE "id" = '${manufactureOrder.id}'`
+      );
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      await client.query('COMMIT');
       client.release();
     }
   }
