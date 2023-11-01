@@ -1,6 +1,7 @@
 import orderServices from '../services/orderServices';
 import { Request, Response, NextFunction } from 'express';
 import { CreatedOrder } from '../types/Order';
+import { CustomError } from '../helpers/CustomError';
 
 class OrderController {
   async createOrder(req: Request, res: Response, next: NextFunction) {
@@ -30,6 +31,21 @@ class OrderController {
     try {
       const createdOrders: CreatedOrder[] = await orderServices.getAllOrders();
       res.status(200).json(createdOrders);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async manufactureOrder(req: Request, res: Response, next: NextFunction) {
+    const orderId = req.params.id;
+
+    try {
+      const quantity = Number(req.body.quantity);
+      if (isNaN(quantity) || quantity <= 0)
+        throw new CustomError('Quantity must be > 0', 400);
+
+      await orderServices.manufactureOrder(quantity, orderId);
+      res.status(200).json(`Manufactured ${quantity} of order ${orderId}`);
     } catch (error) {
       next(error);
     }
