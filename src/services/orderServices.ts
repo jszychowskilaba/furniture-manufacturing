@@ -72,6 +72,20 @@ class OrderServices {
     return createdOrder;
   }
 
+  async getOneOrder(orderId: string): Promise<CreatedOrder> {
+    const order = await OrderDataBase.getOrder(orderId);
+    if (!order) throw new CustomError('Order not found', 404);
+    const materials = await OrderDataBase.getOrderMaterials(orderId);
+    const labors = await OrderDataBase.getOrderLabors(orderId);
+
+    const CreatedOrder = {
+      ...order,
+      materials: [...materials],
+      labors: [...labors],
+    };
+    return CreatedOrder;
+  }
+
   async getAll<T>(
     tableName: string,
     orderData: Array<{ id: string; quantity: number }>
@@ -85,7 +99,7 @@ class OrderServices {
           `Data id: ${data.id} is not stored in ${tableName}.`,
           404
         );
-      
+
       allData.push(storedData);
     }
     return allData;
@@ -179,7 +193,5 @@ class OrderServices {
     }
     return totalTime * order.unitsToManufacture;
   }
-
-
 }
 export default new OrderServices();
