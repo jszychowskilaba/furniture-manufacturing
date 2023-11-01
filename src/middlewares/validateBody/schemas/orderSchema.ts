@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { Order, PartialOrder } from '../../../types/types';
+import { Order, } from '../../../types/Order';
 
 /**
  * Material schema for post method
@@ -7,6 +7,7 @@ import { Order, PartialOrder } from '../../../types/types';
 export const orderSchema: JSONSchemaType<Order> = {
   type: 'object',
   properties: {
+    status: { type: 'string', enum: ['pending', 'inProduction', 'finished'] },
     internalCode: { type: 'string', minLength: 0, maxLength: 255 },
     description: { type: 'string', minLength: 1, maxLength: 255 },
 
@@ -40,6 +41,7 @@ export const orderSchema: JSONSchemaType<Order> = {
     internalNotes: { type: 'string', minLength: 1, maxLength: 255 },
   },
   required: [
+    'status',
     'internalCode',
     'description',
     'materials',
@@ -51,23 +53,14 @@ export const orderSchema: JSONSchemaType<Order> = {
 };
 
 /**
- * Material schema for patch method
+ * Partial Material schema for patch method
  */
-export const partialOrderSchema: JSONSchemaType<PartialOrder> = {
+export const partialOrderSchema: JSONSchemaType<Order> = {
   type: 'object',
   properties: {
-    internalCode: {
-      type: 'string',
-      minLength: 0,
-      maxLength: 255,
-      nullable: true,
-    },
-    description: {
-      type: 'string',
-      minLength: 1,
-      maxLength: 255,
-      nullable: true,
-    },
+    status: { type: 'string', enum: ['pending', 'inProduction', 'finished'] },
+    internalCode: { type: 'string', minLength: 0, maxLength: 255 },
+    description: { type: 'string', minLength: 1, maxLength: 255 },
 
     materials: {
       type: 'array',
@@ -80,7 +73,6 @@ export const partialOrderSchema: JSONSchemaType<PartialOrder> = {
         required: ['id', 'quantity'],
         additionalProperties: false,
       },
-      nullable: true,
     },
 
     labors: {
@@ -94,16 +86,11 @@ export const partialOrderSchema: JSONSchemaType<PartialOrder> = {
         required: ['id', 'quantity'],
         additionalProperties: false,
       },
-      nullable: true,
     },
 
-    unitsToManufacture: { type: 'number', minimum: 0, nullable: true },
-    internalNotes: {
-      type: 'string',
-      minLength: 1,
-      maxLength: 255,
-      nullable: true,
-    },
+    unitsToManufacture: { type: 'number', minimum: 0 },
+    internalNotes: { type: 'string', minLength: 1, maxLength: 255 },
   },
+  required: [],
   additionalProperties: false,
 };
