@@ -1,11 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { error } from 'ajv/dist/vocabularies/applicator/dependencies';
-import { CustomError } from '../../helpers/CustomError';
-import { CreatedLabor } from '../../types/Labor';
-import { CreatedMaterial, Material } from '../../types/Material';
 import {
   CreatedOrder,
-  Order,
   orderHasLabor,
   orderHasMaterial,
   PartialCreatedOrder,
@@ -20,6 +14,10 @@ class OrderDataBase {
       .join(', ');
     const query = `SELECT * FROM "${resource}" WHERE "id" IN (${values})`;
     return (await pool.query(query)).rows;
+  }
+
+  async getAllOrderIds(): Promise<Array<{ id: string }>> {
+    return (await pool.query('SELECT "id" FROM "manufactureOrder"')).rows;
   }
 
   async getOrderMaterials(
@@ -38,7 +36,9 @@ class OrderDataBase {
       )
     ).rows[0];
   }
-  async getOrderLabors(orderId: string): Promise<Array<{ id: string; quantity: number }>> {
+  async getOrderLabors(
+    orderId: string
+  ): Promise<Array<{ id: string; quantity: number }>> {
     return (
       await pool.query(
         `SELECT "laborId" AS "id", "quantity" FROM "orderHasLabor" WHERE "manufactureOrderId" = '${orderId}'`
