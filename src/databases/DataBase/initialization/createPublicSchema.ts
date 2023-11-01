@@ -74,6 +74,7 @@ export const createPublicSchema = async (): Promise<void> => {
             "totalPrice" NUMERIC(9,2) NOT NULL CHECK ("totalPrice" >= 0),
             "totalProductionTime" NUMERIC(4,1),
             "unitsToManufacture" NUMERIC(9) NOT NULL CHECK ("unitsToManufacture" >= 0),
+            "internalNotes" VARCHAR(255) NOT NULL,
             "username" VARCHAR(16) REFERENCES "appUser" ("username") NOT NULL
         );`);
 
