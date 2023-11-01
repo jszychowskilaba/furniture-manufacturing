@@ -8,9 +8,11 @@ import {
 
 const router: Router = express.Router();
 
+router.post('/:id/produce', orderController.manufactureOrder);
+router.get('/:id', orderController.getOneOrder);
 router.get('/', orderController.getAllOrders);
 router.post('/', validateBody(orderSchema), orderController.createOrder);
-router.get('/:id', orderController.getOneOrder);
+
 router.patch(
   '/:id',
   validateBody(partialOrderSchema),
