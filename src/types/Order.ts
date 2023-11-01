@@ -24,6 +24,7 @@ export interface orderHasLabor {
   updatedAt: string;
   manufactureOrderId: string;
   laborId: string;
+  quantity: number;
 }
 
 export interface orderHasMaterial {
@@ -31,4 +32,5 @@ export interface orderHasMaterial {
   updatedAt: string;
   manufactureOrderId: string;
   materialId: string;
+  quantity: number;
 }

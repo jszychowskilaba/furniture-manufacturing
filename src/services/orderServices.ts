@@ -65,7 +65,8 @@ class OrderServices {
     await OrderDataBase.createTransaction(
       partialCreatedOrder,
       orderHasLabor,
-      orderHasMaterial
+      orderHasMaterial,
+      order.unitsToManufacture
     );
 
     return createdOrder;
@@ -84,7 +85,7 @@ class OrderServices {
           `Data id: ${data.id} is not stored in ${tableName}.`,
           404
         );
-
+      
       allData.push(storedData);
     }
     return allData;
@@ -162,7 +163,7 @@ class OrderServices {
     return totalPrice * unitsToManufacture;
   }
 
-  calculateTotalProductionTime(labors: CreatedLabor[], order: Order) {
+  calculateTotalProductionTime(labors: CreatedLabor[], order: Order): number {
     const timeArray = labors.map((labor) => {
       return { id: labor.id, timePerUnit: Number(labor.timePerUnit) };
     });

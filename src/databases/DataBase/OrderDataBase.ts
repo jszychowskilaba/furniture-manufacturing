@@ -31,7 +31,8 @@ class OrderDataBase {
   async createTransaction(
     createdOrder: PartialCreatedOrder,
     orderHasLabor: orderHasLabor[],
-    orderHasMaterial: orderHasMaterial[]
+    orderHasMaterial: orderHasMaterial[],
+    unitsToManufacture: number
   ) {
     const client = await pool.connect();
 
@@ -45,6 +46,19 @@ class OrderDataBase {
 
       for (const item of orderHasMaterial) {
         await client.query(queryCreator.insert('orderHasMaterial', item));
+        const { stock, reservedStock } = (
+          await client.query(
+            `SELECT "stock", "reservedStock" FROM "material" WHERE "id" = '${item.materialId}'`
+          )
+        ).rows[0];
+        const updatedValues = {
+          stock: Number(stock) - item.quantity * unitsToManufacture,
+          reservedStock: Number(reservedStock) + item.quantity * unitsToManufacture,
+        };
+        console.log(updatedValues)
+        await client.query(
+          queryCreator.update('material', updatedValues, 'id', item.materialId)
+        );
       }
 
       await client.query('COMMIT');
