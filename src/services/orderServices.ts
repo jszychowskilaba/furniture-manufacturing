@@ -6,7 +6,7 @@ import { CustomError } from '../helpers/CustomError';
 import { CreationStamp } from './helpers/CreationStamp';
 
 class OrderServices {
-  async create(order: Order, username: string) {
+  async createOrder(order: Order, username: string) {
     const materials = await this.getAll<CreatedMaterial>(
       'material',
       order.materials
@@ -179,5 +179,7 @@ class OrderServices {
     }
     return totalTime * order.unitsToManufacture;
   }
+
+
 }
 export default new OrderServices();

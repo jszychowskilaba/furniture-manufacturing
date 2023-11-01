@@ -5,7 +5,7 @@ import { CreatedOrder } from '../types/Order';
 class OrderController {
   async createOrder(req: Request, res: Response, next: NextFunction) {
     try {
-      const createdOrder: CreatedOrder = await orderServices.create(
+      const createdOrder: CreatedOrder = await orderServices.createOrder(
         req.body,
         req.headers.username as string
       );
