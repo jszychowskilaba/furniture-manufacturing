@@ -2,7 +2,7 @@
 import { error } from 'ajv/dist/vocabularies/applicator/dependencies';
 import { CustomError } from '../../helpers/CustomError';
 import { CreatedLabor } from '../../types/Labor';
-import { CreatedMaterial } from '../../types/Material';
+import { CreatedMaterial, Material } from '../../types/Material';
 import {
   CreatedOrder,
   Order,
@@ -20,6 +20,30 @@ class OrderDataBase {
       .join(', ');
     const query = `SELECT * FROM "${resource}" WHERE "id" IN (${values})`;
     return (await pool.query(query)).rows;
+  }
+
+  async getOrderMaterials(
+    orderId: string
+  ): Promise<Array<{ id: string; quantity: number }>> {
+    return (
+      await pool.query(
+        `SELECT "materialId" AS "id", "quantity" FROM "orderHasMaterial" WHERE "manufactureOrderId" = '${orderId}'`
+      )
+    ).rows;
+  }
+  async getOrder(orderId: string): Promise<CreatedOrder> {
+    return (
+      await pool.query(
+        `SELECT * FROM "manufactureOrder" WHERE "id" = '${orderId}'`
+      )
+    ).rows[0];
+  }
+  async getOrderLabors(orderId: string): Promise<Array<{ id: string; quantity: number }>> {
+    return (
+      await pool.query(
+        `SELECT "laborId" AS "id", "quantity" FROM "orderHasLabor" WHERE "manufactureOrderId" = '${orderId}'`
+      )
+    ).rows;
   }
 
   async get<T>(tableName: string, dataId: string): Promise<T> {
@@ -53,9 +77,10 @@ class OrderDataBase {
         ).rows[0];
         const updatedValues = {
           stock: Number(stock) - item.quantity * unitsToManufacture,
-          reservedStock: Number(reservedStock) + item.quantity * unitsToManufacture,
+          reservedStock:
+            Number(reservedStock) + item.quantity * unitsToManufacture,
         };
-        console.log(updatedValues)
+        console.log(updatedValues);
         await client.query(
           queryCreator.update('material', updatedValues, 'id', item.materialId)
         );
