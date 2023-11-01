@@ -86,14 +86,40 @@ class OrderServices {
     return CreatedOrder;
   }
 
-  async getAllOrders(): Promise<CreatedOrder[]>{
+  async getAllOrders(): Promise<CreatedOrder[]> {
     const orderIds = await OrderDataBase.getAllOrderIds();
-    console.log(orderIds)
     const createdOrders = [];
-    for(const orderId of orderIds){
-      createdOrders.push(await this.getOneOrder(orderId.id))
+    for (const orderId of orderIds) {
+      createdOrders.push(await this.getOneOrder(orderId.id));
     }
     return createdOrders;
+  }
+
+  async manufactureOrder(quantity: number, orderId: string) {
+    const manufactureOrder = await this.getOneOrder(orderId);
+    if (manufactureOrder.status !== 'inProduction') {
+      throw new CustomError(
+        `Can not manufacture, order status: ${manufactureOrder.status}`,
+        403
+      );
+    }
+
+    await this.produce(manufactureOrder, quantity);
+  }
+
+  async produce(manufactureOrder: CreatedOrder, quantity: number) {
+    const nextManufacturedTotal =
+      Number(manufactureOrder.manufactured) + quantity;
+      
+    if (nextManufacturedTotal > Number(manufactureOrder.unitsToManufacture)) {
+      throw new CustomError(
+        `Exceeding quantity to manufacture by ${
+          nextManufacturedTotal - Number(manufactureOrder.unitsToManufacture)
+        }`,
+        403
+      );
+    }
+    await OrderDataBase.produceTransaction(manufactureOrder, quantity);
   }
 
   async getAll<T>(
