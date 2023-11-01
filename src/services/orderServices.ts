@@ -86,6 +86,16 @@ class OrderServices {
     return CreatedOrder;
   }
 
+  async getAllOrders(): Promise<CreatedOrder[]>{
+    const orderIds = await OrderDataBase.getAllOrderIds();
+    console.log(orderIds)
+    const createdOrders = [];
+    for(const orderId of orderIds){
+      createdOrders.push(await this.getOneOrder(orderId.id))
+    }
+    return createdOrders;
+  }
+
   async getAll<T>(
     tableName: string,
     orderData: Array<{ id: string; quantity: number }>

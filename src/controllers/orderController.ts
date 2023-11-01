@@ -26,7 +26,14 @@ class OrderController {
       next(error);
     }
   }
-  getAllOrders() {}
+  async getAllOrders(req: Request, res: Response, next: NextFunction) {
+    try {
+      const createdOrders: CreatedOrder[] = await orderServices.getAllOrders();
+      res.status(200).json(createdOrders);
+    } catch (error) {
+      next(error);
+    }
+  }
 
   updateOrder() {}
 }
