@@ -7,12 +7,14 @@ class QueryCreator {
    * @returns The query
    */
   insert(tableName: string, dataObject: object): string {
-    const columns = Object.keys(dataObject).map(column => `"${column}"`).join(', ');
+    const columns = Object.keys(dataObject)
+      .map((column) => `"${column}"`)
+      .join(', ');
     const values = Object.values(dataObject)
       .map((value) => `'${value}'`)
       .join(', ');
     const query = `INSERT INTO "${tableName}" (${columns}) VALUES (${values})`;
-    
+
     return query;
   }
 
@@ -23,11 +25,7 @@ class QueryCreator {
    * @param value The value
    * @returns The row where there is a match
    */
-  selectByTableColumnValue(
-    tableName: string,
-    column: string,
-    value: string
-  ) {
+  selectByTableColumnValue(tableName: string, column: string, value: string) {
     const query = `SELECT * FROM "${tableName}" WHERE "${column}" = '${value}' `;
     return query;
   }
@@ -39,7 +37,7 @@ class QueryCreator {
    * @returns The row where there is a match
    */
   selectByColumn(tableName: string, column: string) {
-    const newColumn = column == '*' ? '*' : `"${column}"`; 
+    const newColumn = column == '*' ? '*' : `"${column}"`;
     const query = `SELECT ${newColumn} FROM "${tableName}"`;
     return query;
   }
