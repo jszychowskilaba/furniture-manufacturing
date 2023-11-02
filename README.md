@@ -1218,7 +1218,7 @@ Delete an unplaced manufacture order from the DB.
   "pricePerUnit": 1,
   "timePerUnit": 300,
   "unit": "m",
-  "internalNotes": "Maximun saw speed: 3"
+  "internalNotes": "Maximum saw speed: 3"
 }
 ```
 
