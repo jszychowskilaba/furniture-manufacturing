@@ -116,6 +116,14 @@ export const createPublicSchema = async (): Promise<void> => {
             "quantity" NUMERIC(9,2) NOT NULL CHECK ("quantity" >= 0),
             PRIMARY KEY ("manufactureOrderId", "materialId"));`);
 
+    // Creating admin user
+    await client.query(
+      `INSERT INTO "appUser" 
+      ("hashedPassword", "salt", "username", "email", "name", "lastName", "role", "createdAt", "updatedAt") VALUES 
+      ('3b5f6d8627617410984d78015661c46959bf418cd10eaeaa0fdd6108dca8b941','71636a2eecb6a99924f7bb5e28287e53', 'admin', 'admin@system.com', 'adminName','adminLastName', 'admin', '2023-11-02T17:58:30.812Z', '2023-11-02T17:58:30.812Z')
+      ON CONFLICT DO NOTHING`
+    );
+
     console.log('Public schema has been loaded.');
 
     await client.query('COMMIT');
