@@ -1323,6 +1323,7 @@ Table that contains information about labors.
   `{ type: 'string', maxLength: 255 }`
 
 - **description**: description of the labor.
+
   `{ type: 'string',  maxLength: 255 }`
 
 - **pricePerUnit:** price in euros per unit of labor.
@@ -1359,7 +1360,7 @@ Table that contains information about production order.
 
 - **internalCode:** identification code for the company, it is not stored as primary key so it can be modified.
 
-`{ type: 'string',  maxLength: 255 }`
+  `{ type: 'string',  maxLength: 255 }`
 
 - **internalNotes**: some internal note that can be used to give more information to the labor.
 
