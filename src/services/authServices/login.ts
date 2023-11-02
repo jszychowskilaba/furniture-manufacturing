@@ -9,7 +9,7 @@ import isValidCredentials from './auth-utils/isValidCredentials';
  * @returns The tokens
  */
 const login = async (userCredentials: UserCredentials): Promise<string[]> => {
-  isValidCredentials(userCredentials);
+  await isValidCredentials(userCredentials);
 
   return updateTokens(userCredentials);
 };
