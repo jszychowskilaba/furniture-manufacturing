@@ -11,7 +11,7 @@ import { IService } from '../types/IService';
 import { IDataBase } from '../types/IDataBase';
 import { CustomError } from '../helpers/CustomError';
 import { CreationStamp } from './helpers/CreationStamp';
-import { Crypto } from './helpers/Crypto';
+import { Crypto } from '../helpers/Crypto';
 
 class UserCRUDServices extends CRUDServices<
   User,
