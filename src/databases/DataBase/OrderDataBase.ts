@@ -1,3 +1,4 @@
+import { PoolClient } from 'pg';
 import {
   CreatedOrder,
   orderHasLabor,
@@ -52,7 +53,7 @@ class OrderDataBase {
     ).rows[0];
   }
 
-  async createTransaction(
+  async createOrder(
     createdOrder: PartialCreatedOrder,
     orderHasLabor: orderHasLabor[],
     orderHasMaterial: orderHasMaterial[],
@@ -61,30 +62,76 @@ class OrderDataBase {
     const client = await pool.connect();
 
     try {
-      await client.query('BEGIN');
-      await client.query(queryCreator.insert('manufactureOrder', createdOrder));
+      client.query('BEGIN');
+      await this.createTransaction(
+        createdOrder,
+        orderHasLabor,
+        orderHasMaterial,
+        unitsToManufacture,
+        client
+      );
+    } catch (error) {
+      client.query('ROLLBACK');
+      throw error;
+    } finally {
+      await client.query('COMMIT');
+      client.release();
+    }
+  }
 
-      for (const item of orderHasLabor) {
-        await client.query(queryCreator.insert('orderHasLabor', item));
-      }
+  async createTransaction(
+    createdOrder: PartialCreatedOrder,
+    orderHasLabor: orderHasLabor[],
+    orderHasMaterial: orderHasMaterial[],
+    unitsToManufacture: number,
+    client: PoolClient
+  ) {
+    await client.query(queryCreator.insert('manufactureOrder', createdOrder));
 
-      for (const item of orderHasMaterial) {
-        await client.query(queryCreator.insert('orderHasMaterial', item));
-        const { stock, reservedStock } = (
-          await client.query(
-            `SELECT "stock", "reservedStock" FROM "material" WHERE "id" = '${item.materialId}'`
-          )
-        ).rows[0];
-        const updatedValues = {
-          stock: Number(stock) - item.quantity * unitsToManufacture,
-          reservedStock:
-            Number(reservedStock) + item.quantity * unitsToManufacture,
-        };
+    for (const item of orderHasLabor) {
+      await client.query(queryCreator.insert('orderHasLabor', item));
+    }
+
+    for (const item of orderHasMaterial) {
+      await client.query(queryCreator.insert('orderHasMaterial', item));
+      const { stock, reservedStock } = (
         await client.query(
-          queryCreator.update('material', updatedValues, 'id', item.materialId)
-        );
-      }
+          `SELECT "stock", "reservedStock" FROM "material" WHERE "id" = '${item.materialId}'`
+        )
+      ).rows[0];
+      const updatedValues = {
+        stock: Number(stock) - item.quantity * unitsToManufacture,
+        reservedStock:
+          Number(reservedStock) + item.quantity * unitsToManufacture,
+      };
+      await client.query(
+        queryCreator.update('material', updatedValues, 'id', item.materialId)
+      );
+    }
+  }
 
+  async updateOrder(
+    oldOrder: CreatedOrder,
+    createdOrder: PartialCreatedOrder,
+    orderHasLabor: orderHasLabor[],
+    orderHasMaterial: orderHasMaterial[],
+    unitsToManufacture: number
+  ) {
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      await this.restoreMaterials(oldOrder, client);
+      await this.restoreLabors(oldOrder, client);
+      await client.query(
+        `DELETE FROM "manufactureOrder" WHERE "id" = '${oldOrder.id}'`
+      );
+      await this.createTransaction(
+        createdOrder,
+        orderHasLabor,
+        orderHasMaterial,
+        unitsToManufacture,
+        client
+      );
       await client.query('COMMIT');
     } catch (error) {
       await client.query('ROLLBACK');
@@ -94,7 +141,36 @@ class OrderDataBase {
     }
   }
 
-  async produceTransaction(manufactureOrder: CreatedOrder, quantity: number) {
+  async restoreMaterials(oldOrder: CreatedOrder, client: PoolClient) {
+    // returning oldOrder materials and deleting them
+
+    for (const material of oldOrder.materials) {
+      await client.query(
+        `DELETE FROM "orderHasMaterial" WHERE "materialId" = '${material.id}' AND "manufactureOrderId" = '${oldOrder.id}' `
+      );
+      const pendingQuantity =
+        (Number(oldOrder.unitsToManufacture) - Number(oldOrder.manufactured)) *
+        Number(material.quantity);
+
+      await client.query(
+        `UPDATE "material" SET "reservedStock" = "reservedStock" - '${pendingQuantity}' WHERE "id" = '${material.id}' `
+      );
+
+      await client.query(
+        `UPDATE "material" SET "stock" = "stock" + '${pendingQuantity}' WHERE "id" = '${material.id}' `
+      );
+    }
+  }
+
+  async restoreLabors(oldOrder: CreatedOrder, client: PoolClient) {
+    for (const labor of oldOrder.labors) {
+      await client.query(
+        `DELETE FROM "orderHasLabor" WHERE "laborId" = '${labor.id}' AND "manufactureOrderId" = '${oldOrder.id}' `
+      );
+    }
+  }
+
+  async produce(manufactureOrder: CreatedOrder, quantity: number) {
     const client = await pool.connect();
 
     await client.query('BEGIN');
