@@ -1,11 +1,7 @@
-import { createClient } from 'redis';
 import 'dotenv/config';
-import { CustomError } from '../../helpers/CustomError';
+import { CustomError } from '../helpers/CustomError';
+import { TokensDB } from '../databases/Auth/Auth';
 
-// Create redis TokensDB client
-const TokensDB = createClient({
-  url: process.env.DOCKER_HOST || 'redis://localhost:6379',
-});
 // FOR DOCKER 'redis://AuthDB:6379'
 // For TypeScript 'redis://localhost:6379'
 
