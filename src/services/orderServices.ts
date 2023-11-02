@@ -4,7 +4,7 @@ import {
   PartialCreatedOrder,
   PartialOrder,
 } from '../types/Order';
-import OrderDataBase from '../databases/DataBase/OrderDataBase';
+import OrderDataBase from '../repositories/OrderDataBase';
 import { CreatedMaterial } from '../types/Material';
 import { CreatedLabor } from '../types/Labor';
 import { CustomError } from '../helpers/CustomError';

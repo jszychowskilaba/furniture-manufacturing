@@ -1,5 +1,5 @@
 import queryCreator from './QueryCreator';
-import { pool } from '../Pool';
+import { pool } from '../../databases/DataBase/Pool';
 
 interface ICRUDODataBase<T> {
   create(data: T): Promise<void>;
@@ -13,7 +13,7 @@ interface ICRUDODataBase<T> {
   ): Promise<void>;
 }
 
-class CRUDODataBase<T extends object> implements ICRUDODataBase<T>{
+class CRUDODataBase<T extends object> implements ICRUDODataBase<T> {
   private tableName: string;
   private primaryKeyColumnName: string;
 

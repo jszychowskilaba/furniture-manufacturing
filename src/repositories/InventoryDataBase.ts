@@ -1,6 +1,6 @@
-import { CreatedMaterial, PartialCreatedMaterial } from '../../types/Material';
+import { CreatedMaterial, PartialCreatedMaterial } from '../types/Material';
 import { CRUDODataBase } from './helpers/CRUDODataBase';
-import { IDataBase } from '../../types/IDataBase';
+import { IDataBase } from '../types/IDataBase';
 
 class InventoryDataBase
   implements IDataBase<CreatedMaterial, PartialCreatedMaterial>

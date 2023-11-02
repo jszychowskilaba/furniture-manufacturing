@@ -1,10 +1,8 @@
-import { CreatedLabor, PartialCreatedLabor } from '../../types/Labor';
+import { CreatedLabor, PartialCreatedLabor } from '../types/Labor';
 import { CRUDODataBase } from './helpers/CRUDODataBase';
-import { IDataBase } from '../../types/IDataBase';
+import { IDataBase } from '../types/IDataBase';
 
-class LaborDataBase
-  implements IDataBase<CreatedLabor, PartialCreatedLabor>
-{
+class LaborDataBase implements IDataBase<CreatedLabor, PartialCreatedLabor> {
   private operations: CRUDODataBase<CreatedLabor>;
   constructor() {
     this.operations = new CRUDODataBase('labor', 'id');

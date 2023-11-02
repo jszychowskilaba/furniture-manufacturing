@@ -4,7 +4,7 @@ import {
   PartialUser,
   PartialCreatedUser,
 } from '../types/User';
-import UserDataBase from '../databases/DataBase/UserDataBase';
+import UserDataBase from '../repositories/UserDataBase';
 import { ICRUDServices } from '../types/ICRUDServices';
 import CRUDServices from './helpers/CRUDServices';
 import { IService } from '../types/IService';

@@ -4,9 +4,9 @@ import {
   orderHasLabor,
   orderHasMaterial,
   PartialCreatedOrder,
-} from '../../types/Order';
+} from '../types/Order';
 import queryCreator from './helpers/QueryCreator';
-import { pool } from './Pool';
+import { pool } from '../databases/DataBase/Pool';
 
 class OrderDataBase {
   async getAllOrderResource(ids: string[], resource: string) {
