@@ -14,7 +14,7 @@ export const checkUserIs = (role: Role) => {
         )
       ).rows[0];
 
-      if (userRole === role || userRole === Role.ADMIN) {
+      if (userRole.role === role || userRole.role === Role.ADMIN) {
         next();
       } else {
         next(new CustomError('Not allowed to access to resource', 403));
