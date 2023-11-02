@@ -20,16 +20,16 @@ export interface CreatedOrder extends Order, ICreationStamp {
 export interface PartialCreatedOrder extends Partial<CreatedOrder> {}
 
 export interface orderHasLabor {
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | Date;
+  updatedAt: string |Date;
   manufactureOrderId: string;
   laborId: string;
   quantity: number;
 }
 
 export interface orderHasMaterial {
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string |Date;
+  updatedAt: string |Date;
   manufactureOrderId: string;
   materialId: string;
   quantity: number;
