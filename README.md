@@ -125,7 +125,7 @@ Server side delete the OAuth 2.0 tokens from the DB.
   // Example
 
   // Header
-  Authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
+  authorization: c326b621-167f-4192-9845-b11cc01597fb // Valid token
   ```
 
 - **Responses**
