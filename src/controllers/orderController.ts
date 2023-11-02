@@ -51,7 +51,17 @@ class OrderController {
     }
   }
 
-  updateOrder() {}
+  async updateOrder(req: Request, res: Response, next: NextFunction) {
+    try {
+      const createdOrder = await orderServices.updateOrder(
+        req.body,
+        req.params.id
+      );
+      res.status(200).json(createdOrder);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new OrderController();
