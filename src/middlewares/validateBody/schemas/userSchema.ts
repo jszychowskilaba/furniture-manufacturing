@@ -9,7 +9,7 @@ export const userSchema: JSONSchemaType<User> = {
   properties: {
     username: { type: 'string', minLength: 0, maxLength: 16 },
     email: { type: 'string', minLength: 0, maxLength: 50 },
-    password: { type: 'string', minLength: 6, maxLength: 32 },
+    password: { type: 'string', minLength: 5, maxLength: 32 },
     name: { type: 'string', minLength: 0, maxLength: 45 },
     lastName: { type: 'string', minLength: 0, maxLength: 45 },
     role: {
