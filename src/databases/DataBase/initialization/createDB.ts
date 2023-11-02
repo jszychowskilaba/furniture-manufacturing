@@ -1,5 +1,5 @@
 import { Client } from 'pg';
-import { config } from '../config/config';
+import { config } from '../../../config/DataBase';
 
 /**
  * Creates database if it does not exists.

@@ -1,5 +1,5 @@
 import app from './index';
-import { TokensDB } from './databases/Auth';
+import { TokensDB } from './repositories/AuthDataBase';
 import { initializeDataBase } from './databases/DataBase/initialization';
 
 // Starting redis client for Auth Data Base

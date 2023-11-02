@@ -1,7 +1,7 @@
 import { UserCredentials } from '../../types/types';
 import updateTokens from './auth-utils/updateTokens';
 
-import * as Auth from '../../databases/Auth';
+import * as Auth from '../../repositories/AuthDataBase';
 import { CustomError } from '../../helpers/CustomError';
 
 /**

@@ -1,4 +1,4 @@
-import * as Auth from '../../databases/Auth';
+import * as Auth from '../../repositories/AuthDataBase';
 import { CustomError } from '../../helpers/CustomError';
 
 /**

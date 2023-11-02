@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import * as Auth from '../../databases/Auth';
+import * as Auth from '../../repositories/AuthDataBase';
 import { CustomError } from '../../helpers/CustomError';
 /**
  * Authenticate a user by its request token and add username
