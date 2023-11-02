@@ -1,3 +1,3 @@
 export const config = {
-  url: process.env.DOCKER_HOST || 'redis://localhost:6379',
+  url: process.env.AUTH_DB_HOST || 'redis://localhost:6379',
 };
