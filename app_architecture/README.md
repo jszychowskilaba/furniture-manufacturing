@@ -6,13 +6,38 @@
 
 Table that contains user information.
 
-- **username**
-- **email**
-- **password**: the hashed password
-- **createdAt:** creation date of the resource
-- **name**
+- **username**: used for user identification
+
+  `{ type: 'string', maxLength: 16 }`
+
+- **email**: the user email address
+
+  `{ type: 'string', maxLength: 50 }`
+
+- **password**: the user password
+
+  `{ type: 'string', minLength: 5, maxLength: 32 }`
+
+- **createdAt:**: creation date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
+- **updatedAt:** update date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
+- **name**: the user name
+
+  `{ type: 'string', maxLength: 45 }`
+
 - **lastName**
-- **role**: the user can have one of the following roles.
+
+  `{ type: 'string', maxLength: 45 }`
+
+- **role**: the user can have one of the following roles. All roles can get all of the information.
+
+  `{ type: 'string', enum: ['inactive', 'sales', 'inventoryManager', 'productionManager', 'admin'] }`
+
   - **inactive**: do not access to the system.
   - **sales**: can create and update a production order.
   - **inventoryAdministrator**: can create and update materials.
@@ -23,18 +48,47 @@ Table that contains user information.
 
 Table that contains information about labors.
 
-- **createdAt:** creation date of the resource
-  **updatedAt:** update date of the resource
+- **createdAt:**: creation date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
+- **updatedAt:** update date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
 - **status:**
-  - active: is labor still in use
-  - inactive: labor is not in use or its want to be considered as deleted.
+
+  `{ type: 'string', enum: ['active', 'inactive'] }`
+
+  - **active**: labor still in use and can be used
+  - **inactive**: labor is not in use and can not be used in new manufacture orders.
+
 - **internalCode:** identification code for the company, it is not stored as primary key so it can be modified.
-- **description**
+
+  `{ type: 'string', maxLength: 255 }`
+
+- **description**: description of the labor.
+  `{ type: 'string',  maxLength: 255 }`
+
 - **pricePerUnit:** price in euros per unit of labor.
+
+  `{ type: 'number', minimum: 0, maximum: 9999999,99 }`
+
 - **timePerUnit:** time in minutes to perform a unit of labor.
-- **unit:** the unit of labor. Example: "per square meter", "per unit", "per hole", "per nailed nail".
-- **internalNote**
+
+  `{ type: 'number', minimum: 0, maximum: 9999999,99 }`
+
+- **unit:** the unit of labor. Example: "per square meter", "per unit", "per hole", "per nailed nail", "kg", "m".
+
+  `{ type: 'string',  maxLength: 255 }`
+
+- **internalNotes**: some internal note that can be used to give more information to the labor.
+
+  `{ type: 'string',  maxLength: 255 }`
+
 - **username:** user that created the resource.
+
+  `{ type: 'string', maxLength: 16 }`
 
 ### order
 
