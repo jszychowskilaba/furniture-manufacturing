@@ -61,7 +61,7 @@ class OrderServices {
       order.unitsToManufacture
     );
 
-    return createdOrder;
+    return this.getOneOrder(createdOrder.id);
   }
 
   async getOneOrder(orderId: string): Promise<CreatedOrder> {
@@ -147,7 +147,7 @@ class OrderServices {
       updatedOrder.unitsToManufacture
     );
 
-    return updatedOrder;
+    return this.getOneOrder(oldOrder.id);
   }
 
   async manufactureOrder(quantity: number, orderId: string) {
