@@ -8,7 +8,7 @@ export interface ICustomError extends Error {
 }
 
 export interface ICreationStamp {
-  createdAt: string;
+  createdAt: string | Date;
   updatedAt: string;
   id: string;
   username: string;
