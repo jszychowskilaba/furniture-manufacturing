@@ -1,5 +1,5 @@
 import * as crypto from 'crypto';
-import { ICreatedPassword } from '../../types/User';
+import { ICreatedPassword } from '../types/User';
 
 interface ICrypto {
   createPassword(userPassword: string): ICreatedPassword;
