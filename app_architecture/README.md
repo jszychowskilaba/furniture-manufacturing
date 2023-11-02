@@ -94,59 +94,165 @@ Table that contains information about labors.
 
 Table that contains information about production order.
 
-- **createdAt:** creation date of the resource
+- **createdAt:**: creation date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
 - **updatedAt:** update date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
 - **internalCode:** identification code for the company, it is not stored as primary key so it can be modified.
-- **description**
+
+`{ type: 'string',  maxLength: 255 }`
+
+- **internalNotes**: some internal note that can be used to give more information to the labor.
+
+  `{ type: 'string',  maxLength: 255 }`
+
+- **description**: description of the labor.
+
+  `{ type: 'string',  maxLength: 255 }`
+
 - **status:**
+
+  `{ type: 'string', enum: ['pending', 'inProduction', 'finished'] }`
+
   - pending: waiting for costumer approval
   - in production: order is in production
   - finished: order has been finished
   - canceled: order has been canceled or deleted.
+
 - **manufactured:** quantity already produced. When a unit is manufactured, the stock of the materials get updated.
-- **totalPrice:** total price of the order in euros. Calculated as `[ sum(quantity_labor_i * price_labor_i) + sum(quantity_material_i * price_material_i) ] * unitsToManufacture`
-- **totalProductionTime:** production time to complete the order in minutes. Calculated as `[ sum(quantity_labor_i * time_labor_i) + sum(quantity_material_i * time_material_i) + bigger_purchase_time_of_inexistent_material ] * unitsToManufacture`
+
+  `{ type: 'number', minimum: 0, maximum: 9999999,99 }`
+
+- **totalPrice:** total price of the order in euros.
+
+  `{ type: 'number', minimum: 0, maximum: 9999999,99 }`
+
+  - Calculated as:
+
+    `[ sum(quantity_labor_i * price_labor_i) + sum(quantity_material_i * price_material_i) ] * unitsToManufacture`
+
+- **totalProductionTime:** production time to complete the order in minutes.
+
+  `{ type: 'number', minimum: 0, maximum: 9999999,99 }`
+
+  - Calculated as:
+
+    `[ sum(quantity_labor_i * time_labor_i) + sum(quantity_material_i * time_material_i) ] * unitsToManufacture`
+
 - **unitsToManufacture:** total quantity to manufacture.
+
+  `{ type: 'number', minimum: 0, maximum: 9999999 }`
+
 - **username:** user that created the resource.
+
+  `{ type: 'string', maxLength: 16 }`
 
 ### material
 
 Table that contains information about the materials.
 
-- **createdAt:** creation date of the resource
+- **createdAt:**: creation date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
 - **updatedAt:** update date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
 - **status:**
-  - active: material still in use
-  - inactive: material is not in use or its want to be considered as deleted.
+
+  `{ type: 'string', enum: ['active', 'inactive'] }`
+
+  - **active**: labor still in use and can be used
+  - **inactive**: labor is not in use and can not be used in new manufacture orders.
+
 - **internalCode:** identification code for the company, it is not stored as primary key so it can be modified.
-- **description**
+
+  `{ type: 'string', maxLength: 255 }`
+
+- **description**: description of the labor.
+  `{ type: 'string',  maxLength: 255 }`
+
+- **pricePerUnit:** price in euros per unit of labor.
+
+  `{ type: 'number', minimum: 0, maximum: 9999999,99 }`
+
 - **stock**: available quantity of the material.
+
+  `{ type: 'number', minimum: 0, maximum: 9999999,99 }`
+
 - **reservedStock**: planed material to be used in production orders. When a production order is created, stock corresponding quantity of a material will decrease and reserved_stock will increase by the same quantity. When a furniture is manufactured, the corresponding quantity of material will be taken from reserved_Stock.
-- **pricePerUnit:** prince en euros per unit of material.
+
+  `{ type: 'number', minimum: 0, maximum: 9999999,99 }`
+
 - **unit:** the unit of material. Example: "meters", "kilograms", "pounds".
+
+  `{ type: 'string',  maxLength: 255 }`
+
 - **purchaseTime:** necessary time in minutes for having the material available when it runs out of stock.
-- **internalNote**
+
+  `{ type: 'number', minimum: 0, maximum: 999,9 }`
+
+- **internalNotes**: some internal note that can be used to give more information to the labor.
+
+  `{ type: 'string',  maxLength: 255 }`
+
 - **username:** user that created the resource.
+
+  `{ type: 'string',  maxLength: 16 }`
 
 ### orderHasLabor
 
 Table that contains all the labors present in a manufacture order.
 
-- **createdAt:** creation date of the resource
+- **createdAt:**: creation date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
 - **updatedAt:** update date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
 - **orderId**: the production order id
+
+  `{ type: string, format:  length: 32 }`
+
 - **laborId**: the labor id present in the manufacture order
+
+  `{ type: string, format:  length: 32 }`
+
 - **quantity**: the quantity of the labor.
+
+  `{ type: 'number', minimum: 0, maximum: 9999999,99 }`
 
 ### orderHasMaterial
 
 Table that contains all the materials present in a manufacture order.
 
-- **createdAt:** creation date of the resource
+- **createdAt:**: creation date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
 - **updatedAt:** update date of the resource
+
+  `{ type: Date, format:  ISO 8601 }`
+
 - **orderId**: the production order id
-- **materialId**: the material id present in the manufacture order
+
+  `{ type: string, format:  length: 32 }`
+
+- **materialId**: the material id present in the manufacture
+  order
+
+  `{ type: string, format:  length: 32 }`
+
 - **quantity**: the material quantity.
+
+  `{ type: 'number', minimum: 0, maximum: 9999999,99 }`
 
 ## Relationship between tables
 
