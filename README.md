@@ -209,12 +209,12 @@ Server side creates a new user and stores it into data base.
 
   // Body
   {
-    username: "superSystem",
-    email: "bespokeSystems@gmail.com",
-    password: "pleasedonotsharepss",
-    name: "John",
-    lastName: "Doe",
-    role: "admin",
+    "username": "superSystem",
+    "email": "bespokeSystems@gmail.com",
+    "password": "secret",
+    "name": "John",
+    "lastName": "Doe",
+    "role": "sales"
   }
   ```
 
@@ -230,13 +230,15 @@ Server side creates a new user and stores it into data base.
 
   // Body
   {
+    "createdAt": "2023-11-02T18:16:52.151Z",
+    "updatedAt": "2023-11-02T18:16:52.151Z",
     "username": "superSystem",
     "email": "bespokeSystems@gmail.com",
     "name": "John",
-    "lastname": "Doe",
-    "role": "admin",
-    "createdat": "2023-10-28T16:20:29.601Z",
-    "updatedat": "2023-10-28T16:20:29.601Z"
+    "lastName": "Doe",
+    "role": "sales",
+    "hashedPassword": "*",
+    "salt": "*"
   }
   ```
 
@@ -265,11 +267,15 @@ Returns a user by username stored in the DB.
 
   // Body
   {
-    username: "superSystem",
-    email: "bespokeSystems@gmail.com",
-    name: "John",
-    lastName: "Doe",
-    role: "admin",
+    "createdAt": "2023-11-02T18:16:52.151Z",
+    "updatedAt": "2023-11-02T18:16:52.151Z",
+    "username": "superSystem",
+    "email": "bespokeSystems@gmail.com",
+    "name": "John",
+    "lastName": "Doe",
+    "role": "sales",
+    "hashedPassword": "*",
+    "salt": "*"
   }
   ```
 
@@ -299,18 +305,26 @@ Returns all users stored in the DB.
   // Body
   [
     {
-      username: "superSystem",
-      email: "bespokeSystems@gmail.com",
-      name: "John",
-      lastName: "Doe",
-      role: "admin",
+        "username": "admin",
+        "email": "admin@system.com",
+        "hashedPassword": "*",
+        "salt": "*",
+        "name": "adminName",
+        "lastName": "adminLastName",
+        "role": "admin",
+        "createdAt": "2023-11-02T17:58:30.812Z",
+        "updatedAt": "2023-11-02T17:58:30.812Z"
     },
     {
-      username: "anotherSuperUser",
-      email: "bespokeSystems2@gmail.com",
-      name: "Cynthia",
-      lastName: "Martin",
-      role: "sales",
+        "username": "superSystem",
+        "email": "bespokeSystems@gmail.com",
+        "hashedPassword": "*",
+        "salt": "*",
+        "name": "John",
+        "lastName": "Doe",
+        "role": "sales",
+        "createdAt": "2023-11-02T18:16:52.151Z",
+        "updatedAt": "2023-11-02T18:16:52.151Z"
     }
   ]
   ```
@@ -325,12 +339,12 @@ Returns all users stored in the DB.
 <details>
   <summary>Click here</summary>
 
-Server side updates a user and stores the changes into data base.
+Server side updates a user and stores the changes into data base. Any property from user model can be updated.
 
 - **Request**
 
   ```
-  // Example
+  // Example for updating role and password.
 
   // Header
   Content-Type: application/json
@@ -338,11 +352,10 @@ Server side updates a user and stores the changes into data base.
 
   // Body
   {
-    email: "newEmail@gmail.com",
-    password: "newPassowrd",
-    name: "Change Name",
-    role: "sales",
+    "password": "newPassword",
+    "role": "admin"
   }
+
   ```
 
 - **Responses**
@@ -358,12 +371,14 @@ Server side updates a user and stores the changes into data base.
   // Body
   {
     "username": "superSystem",
-    "email": "newEmail@gmail.com",
-    "name": "Change Name",
-    "lastname": "Doe",
-    "role": "sales",
-    "createdat": "2023-10-28T16:20:29.601Z",
-    "updatedat": "2023-10-28T19:24:21.601Z"
+    "email": "bespokeSystems@gmail.com",
+    "hashedPassword": "*",
+    "salt": "*",
+    "name": "John",
+    "lastName": "Doe",
+    "role": "admin",
+    "createdAt": "2023-11-02T18:16:52.151Z",
+    "updatedAt": "2023-11-02T18:23:41.401Z"
   }
   ```
 
@@ -401,34 +416,34 @@ Returns all inventory stored in DB.
     // Body
     [
       {
-        "id": "5449a66f-2265-45bd-9c98-a352cf6659ad",
-        "createdat": "2023-10-28T15:58:24.048Z",
-        "updatedat": "2023-10-28T15:58:24.048Z",
+        "id": "77870729-e65f-4346-8833-df67a7372840",
+        "createdAt": "2023-11-02T18:24:56.999Z",
+        "updatedAt": "2023-11-02T18:24:56.999Z",
         "status": "active",
-        "internalcode": "w-039",
+        "internalCode": "w-02",
         "description": "Light ocher reflective wood board of 2 inches wide",
         "stock": "24.00",
-        "reservedstock": "4.00",
-        "priceperunit": "15.00",
+        "reservedStock": "0.00",
+        "pricePerUnit": "15.00",
         "unit": "m2",
-        "purchasetime": "4.0",
-        "internalnotes": "used for tables top",
-        "username": "juan"
+        "purchaseTime": "4.0",
+        "internalNotes": "used for tables top",
+        "username": "admin"
       },
       {
-        "id": "c0052b38-06a9-4f56-8c48-58c782c8fa06",
-        "createdat": "2023-10-28T15:58:34.893Z",
-        "updatedat": "2023-10-28T15:58:34.893Z",
+        "id": "c2d7d0f5-e916-4e88-bee5-365295e70e44",
+        "createdAt": "2023-11-02T18:26:41.486Z",
+        "updatedAt": "2023-11-02T18:26:41.486Z",
         "status": "active",
-        "internalcode": "w-031",
-        "description": "Light ocher reflective wood board of 2 inches wide",
-        "stock": "24.00",
-        "reservedstock": "4.00",
-        "priceperunit": "15.00",
-        "unit": "m2",
-        "purchasetime": "4.0",
-        "internalnotes": "used for tables top",
-        "username": "juan"
+        "internalCode": "N-01",
+        "description": "Iron 3/8' nail for enforced wood",
+        "stock": "1000.00",
+        "reservedStock": "0.00",
+        "pricePerUnit": "2.00",
+        "unit": "kg",
+        "purchaseTime": "4.0",
+        "internalNotes": "used for making union of different parts",
+        "username": "admin"
       }
     ]
     ```
@@ -480,15 +495,15 @@ Creates a new material and store it in DB.
 
   // Body
   {
-    "createdAt": "2023-10-28T12:21:10.276Z",
-    "updatedAt": "2023-10-28T12:21:10.276Z",
-    "id": "ecce6e80-d059-4298-9d8f-efbe9ba14ed9",
-    "username": "juan",
+    "createdAt": "2023-11-02T18:24:56.999Z",
+    "updatedAt": "2023-11-02T18:24:56.999Z",
+    "id": "77870729-e65f-4346-8833-df67a7372840",
+    "username": "admin",
     "status": "active",
     "internalCode": "w-02",
     "description": "Light ocher reflective wood board of 2 inches wide",
     "stock": 24,
-    "reservedStock": 4,
+    "reservedStock": 0,
     "pricePerUnit": 15,
     "unit": "m2",
     "purchaseTime": 4.03,
@@ -524,19 +539,19 @@ Returns a material by material ID stored in the DB.
 
     // Body
     {
-      "id": "fae43b5f-15b3-44f5-ad35-ea92880fa216",
-      "createdat": "2023-10-28T16:20:29.601Z",
-      "updatedat": "2023-10-28T16:20:29.601Z",
+      "id": "77870729-e65f-4346-8833-df67a7372840",
+      "createdAt": "2023-11-02T18:24:56.999Z",
+      "updatedAt": "2023-11-02T18:24:56.999Z",
       "status": "active",
-      "internalcode": "w-0131",
+      "internalCode": "w-02",
       "description": "Light ocher reflective wood board of 2 inches wide",
       "stock": "24.00",
-      "reservedstock": "4.00",
-      "priceperunit": "15.00",
+      "reservedStock": "0.00",
+      "pricePerUnit": "15.00",
       "unit": "m2",
-      "purchasetime": "4.0",
-      "internalnotes": "used for tables top",
-      "username": "juan"
+      "purchaseTime": "4.0",
+      "internalNotes": "used for tables top",
+      "username": "admin"
     }
     ```
 
@@ -551,7 +566,7 @@ Returns a material by material ID stored in the DB.
 <details>
   <summary>Click here</summary>
   
-  Updates a material by material ID and update the DB.
+  Updates a material by material ID and update the DB. Any property of the material model can be updated.
 
 - **Request**
 
@@ -564,10 +579,8 @@ Returns a material by material ID stored in the DB.
 
   // Body
   {
-    "description": "New description",
-    "stock": 203,
-    "pricePerUnit": 3.34,
-    "unit": "m3"
+    "pricePerUnit": 2,
+    "unit": "lbs"
   }
   ```
 
@@ -583,19 +596,19 @@ Returns a material by material ID stored in the DB.
 
     // Body
     {
-      "id": "c0052b38-06a9-4f56-8c48-58c782c8fa06",
-      "createdat": "2023-10-28T15:58:34.893Z",
-      "updatedat": "2023-10-28T22:48:26.302Z",
+      "id": "77870729-e65f-4346-8833-df67a7372840",
+      "createdAt": "2023-11-02T18:24:56.999Z",
+      "updatedAt": "2023-11-02T18:29:27.233Z",
       "status": "active",
-      "internalcode": "w-031",
-      "description": "New description",
-      "stock": "203.00",
-      "reservedstock": "4.00",
-      "priceperunit": "3.34",
-      "unit": "m3",
-      "purchasetime": "4.0",
-      "internalnotes": "used for tables top",
-      "username": "juan"
+      "internalCode": "w-02",
+      "description": "Light ocher reflective wood board of 2 inches wide",
+      "stock": "24.00",
+      "reservedStock": "0.00",
+      "pricePerUnit": "2.00",
+      "unit": "lbs",
+      "purchaseTime": "4.0",
+      "internalNotes": "used for tables top",
+      "username": "admin"
     }
     ```
 
@@ -634,30 +647,30 @@ Return all created labors from DB
     // Body
     [
       {
-        "id": "99536ede-b458-45b5-bdaa-5e29c012556e",
-        "createdat": "2023-10-29T00:19:11.413Z",
-        "updatedat": "2023-10-29T00:19:11.413Z",
+        "id": "3a7bf5ec-97a8-435d-8dd8-6e913768c7c7",
+        "createdAt": "2023-11-02T18:32:34.985Z",
+        "updatedAt": "2023-11-02T18:32:34.985Z",
         "status": "active",
-        "internalcode": "S-23",
-        "description": "Screw a leg",
-        "priceperunit": "4.00",
-        "timeperunit": "2.00",
-        "unit": "unit",
-        "internalnotes": "some internal note",
-        "username": "juan"
+        "internalCode": "pol-1",
+        "description": "Fine polishing of table top",
+        "pricePerUnit": "7.00",
+        "timePerUnit": "1500.00",
+        "unit": "m2",
+        "internalNotes": "Sand paper price included in the price",
+        "username": "admin"
       },
       {
-        "id": "1e542de6-2cb0-4090-899c-af1f101a9a7b",
-        "createdat": "2023-10-29T00:19:58.414Z",
-        "updatedat": "2023-10-29T00:19:58.414Z",
+        "id": "d7441d8a-7355-4e83-9e47-fe936643fe84",
+        "createdAt": "2023-11-02T18:34:28.294Z",
+        "updatedAt": "2023-11-02T18:34:28.294Z",
         "status": "active",
-        "internalcode": "N-43",
-        "description": "Nail tabe top",
-        "priceperunit": "0.25",
-        "timeperunit": "1.00",
-        "unit": "unit",
-        "internalnotes": "be careful to not kick the table",
-        "username": "juan"
+        "internalCode": "cut-1",
+        "description": "Manual wood cutting with hand saw",
+        "pricePerUnit": "10.00",
+        "timePerUnit": "600.00",
+        "unit": "m",
+        "internalNotes": "Includes edge sanding and burr removal",
+        "username": "admin"
       }
     ]
     ```
@@ -685,13 +698,15 @@ Creates a new labor and stores it in DB.
 
   // Body
   {
+    {
     "status": "active",
-    "internalCode": "N-43",
-    "description": "Nail tabe top",
-    "pricePerUnit": 0.25,
-    "timePerUnit": 1,
-    "unit": "unit",
-    "internalNotes": "be careful to not kick the table"
+    "internalCode": "pol-1",
+    "description": "Fine polishing of table top",
+    "pricePerUnit": 7,
+    "timePerUnit": 1500,
+    "unit": "m2",
+    "internalNotes": "Sand paper price included in the price"
+    }
   }
   ```
 
@@ -707,17 +722,17 @@ Creates a new labor and stores it in DB.
 
   // Body
   {
-    "createdAt": "2023-10-28T21:34:44.218Z",
-    "updatedAt": "2023-10-28T21:34:44.218Z",
-    "id": "10ce6c07-6dc2-4990-96c4-dfcf7c96eaf3",
-    "username": "juan",
+    "createdAt": "2023-11-02T18:32:34.985Z",
+    "updatedAt": "2023-11-02T18:32:34.985Z",
+    "id": "3a7bf5ec-97a8-435d-8dd8-6e913768c7c7",
+    "username": "admin",
     "status": "active",
-    "internalCode": "N-43",
-    "description": "Nail tabe top",
-    "pricePerUnit": 0.25,
-    "timePerUnit": 1,
-    "unit": "unit",
-    "internalNotes": "be careful to not kick the table"
+    "internalCode": "pol-1",
+    "description": "Fine polishing of table top",
+    "pricePerUnit": 7,
+    "timePerUnit": 1500,
+    "unit": "m2",
+    "internalNotes": "Sand paper price included in the price"
   }
   ```
 
@@ -749,17 +764,17 @@ Returns a labor stored in the DB by its ID
 
   // Body
   {
-    "id": "10ce6c07-6dc2-4990-96c4-dfcf7c96eaf3",
-    "createdat": "2023-10-29T00:34:44.218Z",
-    "updatedat": "2023-10-29T00:34:44.218Z",
+    "id": "d7441d8a-7355-4e83-9e47-fe936643fe84",
+    "createdAt": "2023-11-02T18:34:28.294Z",
+    "updatedAt": "2023-11-02T18:34:28.294Z",
     "status": "active",
-    "internalcode": "N-43",
-    "description": "Nail tabe top",
-    "priceperunit": "0.25",
-    "timeperunit": "1.00",
-    "unit": "unit",
-    "internalnotes": "be careful to not kick the table",
-    "username": "juan"
+    "internalCode": "cut-1",
+    "description": "Manual wood cutting with hand saw",
+    "pricePerUnit": "10.00",
+    "timePerUnit": "600.00",
+    "unit": "m",
+    "internalNotes": "Includes edge sanding and burr removal",
+    "username": "admin"
   }
   ```
 
@@ -774,7 +789,7 @@ Returns a labor stored in the DB by its ID
 <details>
   <summary>Click here</summary>
 
-Updates labor by its ID and update the DB.
+Updates labor by its ID and update the DB. Any property of the labor model can be updated.
 
 - **Request**
 
@@ -788,10 +803,8 @@ Updates labor by its ID and update the DB.
   // Body
   {
     "status": "active",
-    "internalCode": "N-01",
-    "pricePerUnit": 3,
-    "timePerUnit": 2,
-    "unit": "unit"
+    "internalCode": "cut-2",
+    "pricePerUnit": 6
   }
   ```
 
@@ -807,17 +820,17 @@ Updates labor by its ID and update the DB.
 
     // Body
     {
-      "id": "10ce6c07-6dc2-4990-96c4-dfcf7c96eaf3",
-      "createdat": "2023-10-29T00:34:44.218Z",
-      "updatedat": "2023-10-29T00:38:49.688Z",
+      "id": "d7441d8a-7355-4e83-9e47-fe936643fe84",
+      "createdAt": "2023-11-02T18:34:28.294Z",
+      "updatedAt": "2023-11-02T18:38:21.115Z",
       "status": "active",
-      "internalcode": "N-01",
-      "description": "Nail tabe top",
-      "priceperunit": "3.00",
-      "timeperunit": "2.00",
-      "unit": "unit",
-      "internalnotes": "be careful to not kick the table",
-      "username": "juan"
+      "internalCode": "cut-2",
+      "description": "Manual wood cutting with hand saw",
+      "pricePerUnit": "6.00",
+      "timePerUnit": "600.00",
+      "unit": "m",
+      "internalNotes": "Includes edge sanding and burr removal",
+      "username": "admin"
     }
     ```
 
@@ -922,23 +935,71 @@ Creates a new manufacture order and stores it in DB.
 
   // Body
   {
-    "internalCode": "AT-01",
-    "description": "antique table",
-    "unitsToManufacture": 25,
-    "materials": [
-      { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
-      { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 8 }
-    ],
-    "labors": [
-      { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
-      { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
-    ],
-    "internalNote": "some internal note"
+    "status": "inProduction",
+    "internalCode": "order-1",
+    "description": "Basic wood table for client Bob Doe",
+    "unitsToManufacture": 1,
+    "internalNotes": "See design sent to email @July 23",
+    "materials": [{"id": "c2d7d0f5-e916-4e88-bee5-365295e70e44", "quantity": 50}, {"id": "77870729-e65f-4346-8833-df67a7372840", "quantity": 9}],
+    "labors": [{"id": "3a7bf5ec-97a8-435d-8dd8-6e913768c7c7", "quantity": 3}, {"id": "d7441d8a-7355-4e83-9e47-fe936643fe84", "quantity": 10}, {"id": "02921b40-a654-44d5-9e21-3a9db98108cb", "quantity": 10},  {"id": "1b2094f2-912b-41fb-ada9-54ffa2632fcb", "quantity": 6}]
   }
   ```
 
 - **Responses**
-  - 204 No Content. The manufacture order has been created and stored in DB.
+
+  - 201 Created. The manufacture order has been created and stored in DB.
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json; charset=utf-8
+
+  // Body
+  {
+    "id": "02d6ba43-579f-47a1-b755-da5804d528af",
+    "createdAt": "2023-11-02T19:01:21.662Z",
+    "updatedAt": "2023-11-02T19:01:21.662Z",
+    "status": "inProduction",
+    "internalCode": "order-1",
+    "description": "Basic wood table for client Bob Doe",
+    "manufactured": "0",
+    "totalPrice": "255.00",
+    "totalProductionTime": "18300.0",
+    "unitsToManufacture": "1",
+    "internalNotes": "See design sent to email @July 23",
+    "username": "admin",
+    "materials": [
+        {
+            "id": "77870729-e65f-4346-8833-df67a7372840",
+            "quantity": "9.00"
+        },
+        {
+            "id": "c2d7d0f5-e916-4e88-bee5-365295e70e44",
+            "quantity": "50.00"
+        }
+    ],
+    "labors": [
+        {
+            "id": "02921b40-a654-44d5-9e21-3a9db98108cb",
+            "quantity": "10.00"
+        },
+        {
+            "id": "1b2094f2-912b-41fb-ada9-54ffa2632fcb",
+            "quantity": "6.00"
+        },
+        {
+            "id": "3a7bf5ec-97a8-435d-8dd8-6e913768c7c7",
+            "quantity": "3.00"
+        },
+        {
+            "id": "d7441d8a-7355-4e83-9e47-fe936643fe84",
+            "quantity": "10.00"
+        }
+      ]
+    }
+  ```
+
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 409 Conflict. (Internal code already used in another material). Response body with a JSON informative message.
@@ -961,29 +1022,50 @@ Return a manufacture order stored in DB by its ID.
     // Example
 
     // Header
-    HTTP 200 OK
-    Content-Type: application/json
+    Content-Type: application/json; charset=utf-8
 
     // Body
     {
-      "id": "54c42fec-f0a5-4e39-b9f6-e42e2a3c0222",
-      "createdAt": "4/10/2023, 1:55:56 PM",
-      "internalCode": "AT-01",
-      "description": "antique table",
-      "status": "pending",
-      "manufactured": 0,
-      "price": 450,
-      "totalProductionTime": 143,
-      "unitsToManufacture": 25,
+      "id": "02d6ba43-579f-47a1-b755-da5804d528af",
+      "createdAt": "2023-11-02T19:01:21.662Z",
+      "updatedAt": "2023-11-02T19:01:21.662Z",
+      "status": "inProduction",
+      "internalCode": "order-1",
+      "description": "Basic wood table for client Bob Doe",
+      "manufactured": "0",
+      "totalPrice": "255.00",
+      "totalProductionTime": "18300.0",
+      "unitsToManufacture": "1",
+      "internalNotes": "See design sent to email @July 23",
+      "username": "admin",
       "materials": [
-        { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
-        { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 8 }
+          {
+              "id": "77870729-e65f-4346-8833-df67a7372840",
+              "quantity": "9.00"
+          },
+          {
+              "id": "c2d7d0f5-e916-4e88-bee5-365295e70e44",
+              "quantity": "50.00"
+          }
       ],
       "labors": [
-        { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
-        { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
-      ],
-      "internalNote": "some internal note"
+        {
+            "id": "02921b40-a654-44d5-9e21-3a9db98108cb",
+            "quantity": "10.00"
+        },
+        {
+            "id": "1b2094f2-912b-41fb-ada9-54ffa2632fcb",
+            "quantity": "6.00"
+        },
+        {
+            "id": "3a7bf5ec-97a8-435d-8dd8-6e913768c7c7",
+            "quantity": "3.00"
+        },
+        {
+            "id": "d7441d8a-7355-4e83-9e47-fe936643fe84",
+            "quantity": "10.00"
+        }
+      ]
     }
     ```
 
@@ -998,7 +1080,7 @@ Return a manufacture order stored in DB by its ID.
 <details>
   <summary>Click here</summary>
 
-Update a stored manufacture order in the DB.
+Update a stored manufacture order in the DB. All properties of order model can be updated. When updating a labor or material, the entire list of the labors or materials will be changed by the new one sent.
 
 - **Request**
 
@@ -1011,27 +1093,54 @@ Update a stored manufacture order in the DB.
 
   // Body
   {
-    "internalCode": "AT-3",
-    "description": "antique table",
-    "status": "pending",
-    "manufactured": 0,
-    "price": 450,
-    "totalProductionTime": 143,
-    "unitsToManufacture": 25,
-    "materials": [
-      { "id": "4818bf86-d823-447c-8b44-314b9f3c6006", "quantity": 4 },
-      { "id": "1e763ff7-c953-4648-8662-535e2666ddb9", "quantity": 8 }
-    ],
-    "labors": [
-      { "id": "58aed305-ca17-4885-8be7-0d66160112b9", "quantity": 1 },
-      { "id": "557fa85c-08bf-48dd-a7d5-7d3df895881c", "quantity": 3 }
-    ],
-    "internalNote": "updating internal notes"
+    "unitsToManufacture": 1,
+    "labors": [{"id": "3a7bf5ec-97a8-435d-8dd8-6e913768c7c7", "quantity": 25}]
   }
   ```
 
 - **Responses**
-  - 204 No Content. (Successful update).
+
+  - 200 Ok. (Successful update).
+
+    ```
+    // Example
+
+    // Header
+    Content-Type: application/json; charset=utf-8
+
+    // Body
+    {
+      "id": "02d6ba43-579f-47a1-b755-da5804d528af",
+      "createdAt": "2023-11-02T19:01:21.662Z",
+      "updatedAt": "2023-11-02T19:16:55.332Z",
+      "status": "inProduction",
+      "internalCode": "order-1",
+      "description": "Basic wood table for client Bob Doe",
+      "manufactured": "0",
+      "totalPrice": "293.00",
+      "totalProductionTime": "37500.0",
+      "unitsToManufacture": "1",
+      "internalNotes": "See design sent to email @July 23",
+      "username": "admin",
+      "materials": [
+          {
+              "id": "77870729-e65f-4346-8833-df67a7372840",
+              "quantity": "9.00"
+          },
+          {
+              "id": "c2d7d0f5-e916-4e88-bee5-365295e70e44",
+              "quantity": "50.00"
+          }
+      ],
+      "labors": [
+          {
+              "id": "3a7bf5ec-97a8-435d-8dd8-6e913768c7c7",
+              "quantity": "25.00"
+          }
+      ]
+    }
+    ```
+
   - 400 Bad Request. Response body with a JSON informative message.
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
   - 404 Not Found. (Manufacture order ID not found in DB). Response body with a JSON informative message.
@@ -1071,7 +1180,7 @@ git clone https://github.com/jszychowskilaba/furniture-manufacturing.git
 npm install
 ```
 
-3. `Compile` code if you modify TypeScript code
+3. `Compile` the code
 
 ```bash
 npx tsc
@@ -1084,7 +1193,3 @@ docker compose up
 ```
 
 5. `Have fun`
-
-```
-
-```
