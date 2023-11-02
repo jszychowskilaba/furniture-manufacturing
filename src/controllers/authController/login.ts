@@ -28,7 +28,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const [newToken, newRefreshToken] = await authServices.login(
       userCredentials
     );
-    res.status(200).json({
+    res.status(201).json({
       access_token: newToken,
       refresh_token: newRefreshToken,
       expires_in: Number(process.env.TOKEN_EXPIRATION) || 300,
