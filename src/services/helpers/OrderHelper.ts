@@ -1,8 +1,8 @@
-import { CustomError } from '../../helpers/CustomError';
 import OrderDataBase from '../../repositories/OrderDataBase';
+import { CustomError } from '../../helpers/CustomError';
+import { CreatedOrder, Order } from '../../types/Order';
 import { CreatedMaterial } from '../../types/Material';
 import { CreatedLabor } from '../../types/Labor';
-import { CreatedOrder, Order } from '../../types/Order';
 import { CreationStamp } from './CreationStamp';
 
 class OrderHelper {
@@ -29,7 +29,7 @@ class OrderHelper {
     materials: CreatedMaterial[],
     labors: CreatedLabor[],
     order: Order
-  ) {
+  ): number {
     const laborPriceArray = labors.map((labor) => {
       return { id: labor.id, pricePerUnit: Number(labor.pricePerUnit) };
     });
@@ -52,6 +52,7 @@ class OrderHelper {
       order.materials,
       order.unitsToManufacture
     );
+
     return totalLaborPrice + totalMaterialPrice;
   }
 
@@ -83,15 +84,17 @@ class OrderHelper {
     for (const el of timeArray) {
       timeMap.set(el.id, el.timePerUnit);
     }
+
     let totalTime = 0;
 
     for (const item of order.labors) {
       totalTime += timeMap.get(item.id) * item.quantity;
     }
+
     return totalTime * order.unitsToManufacture;
   }
 
-  async checkForMissingMaterials(order: Order) {
+  async checkForMissingMaterials(order: Order): Promise<void> {
     const missingMaterials = [];
 
     for (const orderMaterial of order.materials) {
@@ -126,6 +129,7 @@ class OrderHelper {
     totalProductionTime: number,
     username: string
   ): CreatedOrder {
+    
     const createdOrder: CreatedOrder = {
       ...new CreationStamp(username),
       ...order,
