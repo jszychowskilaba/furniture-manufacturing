@@ -99,19 +99,19 @@ class OrderDataBase {
 
     for (const item of orderHasMaterial) {
       await client.query(queryCreator.insert('orderHasMaterial', item));
-     
+
       const { stock, reservedStock } = (
         await client.query(
           `SELECT "stock", "reservedStock" FROM "material" WHERE "id" = '${item.materialId}'`
         )
       ).rows[0];
-      
+
       const updatedValues = {
         stock: Number(stock) - item.quantity * unitsToManufacture,
         reservedStock:
           Number(reservedStock) + item.quantity * unitsToManufacture,
       };
-      
+
       await client.query(
         queryCreator.update('material', updatedValues, 'id', item.materialId)
       );
@@ -189,6 +189,15 @@ class OrderDataBase {
           `UPDATE "material" SET "reservedStock" = "reservedStock" -  '${
             material.quantity * quantity
           }' WHERE "id" = '${material.id}'`
+        );
+      }
+
+      if (
+        manufactureOrder.manufactured + quantity ==
+        manufactureOrder.unitsToManufacture
+      ) {
+        await client.query(
+          `UPDATE "manufactureOrder" SET "status" = 'finished' WHERE "id" = '${manufactureOrder.id}'`
         );
       }
 
