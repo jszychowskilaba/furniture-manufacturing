@@ -1308,11 +1308,11 @@ Table that contains user information.
 
   `{ type: 'string', enum: ['inactive', 'sales', 'inventoryManager', 'productionManager', 'admin'] }`
 
-  - **inactive**: do not access to the system.
-  - **sales**: can create and update a production order.
-  - **inventoryAdministrator**: can create and update materials.
-  - **productionManager**: can create and update labors, can update manufactured quantity and status in a production order.
-  - **admin**: can perform all actions.
+  - **inactive**:
+  - **sales**: can create manufacture Orders
+  - **inventoryAdministrator**: can create and edit materials
+  - **productionManager**: can create and edit labors, can produce orders, can edit orders
+  - **admin**: can perform all actions and create users.
 
 ### labor
 
