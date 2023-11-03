@@ -2,7 +2,7 @@
 
 The `Custom Furniture Manufacturing API System` provides an interface for integrating a bespoke ordering and manufacturing system into your business infrastructure.
 
-This API **streamlines the process** for estimating production time, materials cost, labor cost and order progress tracking. Additionally, the API incorporates the materials purchasing time into the production time when materials are not available.
+This API **streamlines the process** for estimating production time, materials cost, labor cost and order progress tracking.
 
 ## Table of content
 
