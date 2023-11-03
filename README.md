@@ -15,6 +15,7 @@ This API **streamlines the process** for estimating production time, materials c
 - [API models](#api-models)
 - [Data base overview](#data-base-overview)
 - [Installation](#installation)
+- [Known issues](#known-issues)
 
 ## Key features
 
@@ -1615,3 +1616,21 @@ docker compose -f docker-compose.test.yml up
 The app will not be executed after finishing the test. The only purpose of this compose is to have a isolated data base for testing and to test both, compiled JavaScript and written TypeScript in order to check that production code and dev code are in condition for further improve.
 
 </details>
+
+## Known-issues
+
+<details>
+  <summary>Click here</summary>
+
+1. ### Precision Issue with Numeric Database Type and parseFloat in Client
+
+**Summary:**
+When retrieving numeric data from the database with the Numeric() data type and subsequently using parseFloat to convert it in the client-side code, there is an issue with the precision of the numeric values. The precision is not being maintained as expected.
+
+**Description:**
+
+**Database Type:** The database column is defined with the Numeric() data type to store precise numeric values.
+
+**Client-Side Parsing:** In the client-side application, the numeric data is retrieved from the API and parsed using the parseFloat JavaScript function.
+
+  </details>
