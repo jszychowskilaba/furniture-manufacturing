@@ -13,7 +13,9 @@ class OrderDataBase {
     const values = Object.values(ids)
       .map((id) => `'${id}'`)
       .join(', ');
+
     const query = `SELECT * FROM "${resource}" WHERE "id" IN (${values})`;
+
     return (await pool.query(query)).rows;
   }
 
@@ -30,6 +32,7 @@ class OrderDataBase {
       )
     ).rows;
   }
+
   async getOrder(orderId: string): Promise<CreatedOrder> {
     return (
       await pool.query(
@@ -37,6 +40,7 @@ class OrderDataBase {
       )
     ).rows[0];
   }
+
   async getOrderLabors(
     orderId: string
   ): Promise<Array<{ id: string; quantity: number }>> {
@@ -63,6 +67,7 @@ class OrderDataBase {
 
     try {
       client.query('BEGIN');
+
       await this.createTransaction(
         createdOrder,
         orderHasLabor,
@@ -94,16 +99,19 @@ class OrderDataBase {
 
     for (const item of orderHasMaterial) {
       await client.query(queryCreator.insert('orderHasMaterial', item));
+     
       const { stock, reservedStock } = (
         await client.query(
           `SELECT "stock", "reservedStock" FROM "material" WHERE "id" = '${item.materialId}'`
         )
       ).rows[0];
+      
       const updatedValues = {
         stock: Number(stock) - item.quantity * unitsToManufacture,
         reservedStock:
           Number(reservedStock) + item.quantity * unitsToManufacture,
       };
+      
       await client.query(
         queryCreator.update('material', updatedValues, 'id', item.materialId)
       );
@@ -148,6 +156,7 @@ class OrderDataBase {
       await client.query(
         `DELETE FROM "orderHasMaterial" WHERE "materialId" = '${material.id}' AND "manufactureOrderId" = '${oldOrder.id}' `
       );
+
       const pendingQuantity =
         (Number(oldOrder.unitsToManufacture) - Number(oldOrder.manufactured)) *
         Number(material.quantity);
