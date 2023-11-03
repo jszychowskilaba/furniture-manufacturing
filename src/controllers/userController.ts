@@ -1,7 +1,7 @@
-import userServices from '../services/userServices';
-import { Request, Response, NextFunction } from 'express';
 import { ICRUDController } from '../types/ICRUDController';
+import { Request, Response, NextFunction } from 'express';
 import { CRUDController } from './helpers/CRUDController';
+import userServices from '../services/userServices';
 
 class UserController {
   private CRUDController: ICRUDController;

@@ -1,6 +1,6 @@
 import inventoryServices from '../services/inventoryServices';
-import { Request, Response, NextFunction } from 'express';
 import { ICRUDController } from '../types/ICRUDController';
+import { Request, Response, NextFunction } from 'express';
 import { CRUDController } from './helpers/CRUDController';
 
 class InventoryController {

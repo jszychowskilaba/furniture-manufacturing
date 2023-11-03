@@ -1,7 +1,8 @@
-import laborServices from '../services/laborServices';
-import { Request, Response, NextFunction } from 'express';
 import { ICRUDController } from '../types/ICRUDController';
+import { Request, Response, NextFunction } from 'express';
 import { CRUDController } from './helpers/CRUDController';
+import laborServices from '../services/laborServices';
+
 
 class LaborController {
   private CRUDController: ICRUDController;
