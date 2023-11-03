@@ -1188,7 +1188,9 @@ Manufacture a sent quantity of the manufacture order and update the materials st
 
 <details>
   <summary>Click here</summary>
-  
+
+**Please read [Data base overview](#data-base-overview) for more information**
+
 ### User
 
 - Example
@@ -1244,7 +1246,7 @@ Manufacture a sent quantity of the manufacture order and update the materials st
 
 ```
 {
-  "status": "inProduction",
+  "status": "canceled" | "pending" | "inProduction" | "finished",
   "internalCode": "order-1",
   "description": "Basic wood table for client Bob Doe",
   "unitsToManufacture": "1",
