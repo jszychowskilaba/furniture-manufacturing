@@ -1151,16 +1151,31 @@ Update a stored manufacture order in the DB. All properties of order model can b
 
 </details>
 
-![](./images/delete-colour.png) **`DELETE`** `/v1/orders/{orderID}` Delete an unplaced manufacture order by manufacture order ID
+![](./images/post-colour.png) **`POST`** `/v1/orders/{orderID}/manufactureOrder` Produce a quantity of an manufacture order
 
 <details>
   <summary>Click here</summary>
 
-Delete an unplaced manufacture order from the DB.
+Manufacture a sent quantity of the manufacture order and update the materials stock and reserved stock.
+
+- **Request**
+
+  ```
+  // Example
+
+  // Header
+  Content-Type: application/json; charset=utf-8
+
+  // Body
+  {
+    "quantity": "2"
+  }
+  ```
 
 - **Responses**
-  - 204 No Content. (Successful deletion)
+  - 200 OK. (Successful production)
   - 401 Unauthorized. (Invalid authentication token). Response body with a JSON informative message.
+  - 403 Forbidden. Exceeding quantity to manufacture.
   - 404 Not Found. (Manufacture order ID not found in DB). Response body with a JSON informative message.
   - 500 Internal Server Error. Response body with a JSON informative message.
 
