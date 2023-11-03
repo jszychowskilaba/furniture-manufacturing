@@ -97,6 +97,12 @@ class OrderServices {
   ): Promise<CreatedOrder> {
     const oldOrder = await this.getOneOrder(orderId);
 
+    if( (orderChanges.status == 'canceled')){
+      // If we cancel the order, we return the materials to recover the stock.
+      orderChanges.materials = [];
+      orderChanges.labors = [];
+    }
+
     //Updating order
     const updatedOrder: CreatedOrder = { ...oldOrder, ...orderChanges };
     
