@@ -2,6 +2,7 @@
 import { startServer } from './helpers/startServer';
 import request from 'supertest';
 import app from '../../app';
+import { generateRandomId } from './helpers/generateRandomId';
 
 beforeAll(async () => {
   console.log = jest.fn();
@@ -16,7 +17,7 @@ describe('Testing authRoutes', () => {
 
   const material1: any = {
     status: 'active',
-    internalCode: new Date().toISOString(), // to avoid unique column
+    internalCode: generateRandomId(), // to avoid unique column
     description: 'Iron 3/8 nail for enforced wood',
     stock: 1000,
     reservedStock: 0,
@@ -69,7 +70,7 @@ describe('Testing authRoutes', () => {
     // Adding extra material
     const material2: any = {
       status: 'active',
-      internalCode: new Date().toISOString(), // to avoid unique column
+      internalCode: generateRandomId(), // to avoid unique column
       description: 'Iron 3/8 nail for enforced wood',
       stock: 10,
       reservedStock: 9,
@@ -101,7 +102,7 @@ describe('Testing authRoutes', () => {
   test('Expect PATCH: /v1/inventory/{materialID} to update the material', async () => {
     const patchMaterial: any = {
       status: 'inactive',
-      internalCode: new Date().toISOString(), // to avoid unique column
+      internalCode: generateRandomId(), // to avoid unique column
       description: 'newDescription',
       stock: 0,
       reservedStock: 0,

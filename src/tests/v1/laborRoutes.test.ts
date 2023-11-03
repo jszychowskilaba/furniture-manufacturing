@@ -2,6 +2,7 @@
 import { startServer } from './helpers/startServer';
 import request from 'supertest';
 import app from '../../app';
+import { generateRandomId } from './helpers/generateRandomId';
 
 beforeAll(async () => {
   console.log = jest.fn();
@@ -16,7 +17,7 @@ describe('Testing authRoutes', () => {
 
   const labor1: any = {
     status: 'active',
-    internalCode: new Date().toISOString(),
+    internalCode: generateRandomId(),
     description: 'Cutting board for hardwood table top',
     pricePerUnit: 1,
     timePerUnit: 300,
@@ -67,7 +68,7 @@ describe('Testing authRoutes', () => {
     // Adding extra labor
     const labor2: any = {
       status: 'inactive',
-      internalCode: new Date().toISOString(),
+      internalCode: generateRandomId(),
       description: 'Cutting foam',
       pricePerUnit: 5,
       timePerUnit: 2,
@@ -95,7 +96,7 @@ describe('Testing authRoutes', () => {
   test('Expect PATCH: /v1/labor/{laborID} to update the labor', async () => {
     const patchLabor: any = {
       status: 'inactive',
-      internalCode: new Date().toISOString(),
+      internalCode: generateRandomId(),
       description: 'updatedDescription',
       pricePerUnit: 0,
       timePerUnit: 0,
