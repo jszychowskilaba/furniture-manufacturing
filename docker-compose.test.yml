@@ -1,0 +1,41 @@
+version: '4.23.0'
+services:
+  DataBase:
+    image: postgres:16
+    networks:
+      - appnet
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - '5432:5432'
+  AuthDB:
+    image: redis:7.2.1
+    networks:
+      - appnet
+    depends_on:
+      - DataBase
+  app-test-run:
+    build:
+      dockerfile: ./Dockerfile.test
+    ports:
+      - '3000:3000'
+    depends_on:
+      - AuthDB
+    networks:
+      - appnet
+    environment:
+      - AUTH_DB_HOST=redis://AuthDB:6379
+      - POSTGRES_USER=admin
+      - DATABASE_HOST=DataBase
+      - POSTGRES_PASSWORD=admin
+      - DATABASE_DB=manufacturing_system
+      - DATABASE_PORT=5432
+
+
+networks:
+  appnet:
+    driver: bridge
+
+# For compose
+# docker compose -f docker-compose.test.yml up
