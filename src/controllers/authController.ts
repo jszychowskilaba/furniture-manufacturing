@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
+import { CustomError } from '../helpers/CustomError';
 import authServices from '../services/authServices';
 import { UserCredentials } from '../types/types';
 import 'dotenv/config';
-import { CustomError } from '../helpers/CustomError';
 
 class AuthController {
   /**
@@ -29,6 +29,7 @@ class AuthController {
       const [newToken, newRefreshToken] = await authServices.login(
         userCredentials
       );
+
       res.status(201).json({
         access_token: newToken,
         refresh_token: newRefreshToken,
