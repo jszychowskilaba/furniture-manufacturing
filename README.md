@@ -1580,3 +1580,33 @@ docker compose up
 ```
 
 5. `Have fun`
+
+### Testing
+
+1. `Clone` the repository
+
+```bash
+git clone https://github.com/jszychowskilaba/furniture-manufacturing.git
+```
+
+2. `Install` dependencies
+
+```bash
+npm install
+```
+
+3. `Compile` the code
+
+```bash
+npx tsc
+```
+
+4. `Compose` docker containers
+
+```bash
+docker compose -f docker-compose.test.yml up
+```
+
+5. `Wait for the results 🤞`
+
+The app will not be executed after finishing the test. The only purpose of this compose is to have a isolated data base for testing and to test both, compiled JavaScript and written TypeScript in order to check that production code and dev code are in condition for further improve.
