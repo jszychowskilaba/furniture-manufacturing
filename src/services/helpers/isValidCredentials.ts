@@ -1,7 +1,7 @@
-import { Crypto } from '../../../helpers/Crypto';
-import { pool } from '../../../databases/DataBase/Pool';
-import { UserCredentials } from '../../../types/types';
-import { CustomError } from '../../../helpers/CustomError';
+import { Crypto } from '../../helpers/Crypto';
+import { pool } from '../../databases/DataBase/Pool';
+import { UserCredentials } from '../../types/types';
+import { CustomError } from '../../helpers/CustomError';
 
 /**
  * Checks if user credential es valid. Function will modified

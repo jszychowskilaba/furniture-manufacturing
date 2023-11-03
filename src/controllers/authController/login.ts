@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import * as authServices from '../../services/authServices';
+import authServices from '../../services/authServices';
 import { UserCredentials } from '../../types/types';
 import 'dotenv/config';
 import { CustomError } from '../../helpers/CustomError';
