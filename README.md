@@ -1331,7 +1331,7 @@ Table that contains information about labors.
   `{ type: 'string', enum: ['active', 'inactive'] }`
 
   - **active**: labor still in use and can be used
-  - **inactive**: labor is not in use and can not be used in new manufacture orders.
+  - **inactive**: labor is not in use and can not be used in new manufacture orders or for updating. Already created order can use the labor.
 
 - **internalCode:** identification code for the company, it is not stored as primary key so it can be modified.
 
@@ -1438,8 +1438,8 @@ Table that contains information about the materials.
 
   `{ type: 'string', enum: ['active', 'inactive'] }`
 
-  - **active**: labor still in use and can be used
-  - **inactive**: labor is not in use and can not be used in new manufacture orders.
+  - **active**: material still in use and can be used
+  - **inactive**: material is not in use and can not be used in new manufacture orders or for updating. Already created order can use the material.
 
 - **internalCode:** identification code for the company, it is not stored as primary key so it can be modified.
 
