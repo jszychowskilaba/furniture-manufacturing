@@ -19,6 +19,9 @@ class OrderServices {
       'labor',
       order.labors
     );
+
+    orderHelper.checkForInactiveResource(materials, labors);
+
     const totalPrice = orderHelper.calculateTotalPrice(
       materials,
       labors,
@@ -118,6 +121,8 @@ class OrderServices {
       'labor',
       updatedOrder.labors
     );
+
+    orderHelper.checkForInactiveResource(materials, labors);
 
     const totalPrice = orderHelper.calculateTotalPrice(
       materials,

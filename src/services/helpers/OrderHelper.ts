@@ -129,7 +129,6 @@ class OrderHelper {
     totalProductionTime: number,
     username: string
   ): CreatedOrder {
-    
     const createdOrder: CreatedOrder = {
       ...new CreationStamp(username),
       ...order,
@@ -171,6 +170,28 @@ class OrderHelper {
         quantity: material.quantity,
       };
     });
+  }
+
+  checkForInactiveResource(
+    materials: CreatedMaterial[],
+    labors: CreatedLabor[]
+  ): void {
+    const checkForInactiveResources = [];
+
+    for (const material of materials) {
+      if (material.status == 'inactive')
+        checkForInactiveResources.push(material.id);
+    }
+
+    for (const labor of labors) {
+      if (labor.status == 'inactive') checkForInactiveResources.push(labor.id);
+    }
+
+    if (checkForInactiveResources.length > 0)
+      throw new CustomError(
+        `Can not proceed. These resource IDs are inactive: ${JSON.stringify(checkForInactiveResources)}`,
+        422
+      );
   }
 }
 
