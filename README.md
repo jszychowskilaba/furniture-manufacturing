@@ -1549,7 +1549,7 @@ An order can contain many materials, and a material can be in many orders, the t
 
 ## EER diagram
 
-![](../images/EER_diagram.png)
+![](./images/EER_diagram.png)
 
 </details>
 
@@ -1581,8 +1581,11 @@ docker compose up
 
 5. `Have fun`
 
-### Testing
+## Testing
 
+<details>
+  <summary>Click here</summary>
+  
 1. `Clone` the repository
 
 ```bash
@@ -1610,3 +1613,5 @@ docker compose -f docker-compose.test.yml up
 5. `Wait for the results 🤞`
 
 The app will not be executed after finishing the test. The only purpose of this compose is to have a isolated data base for testing and to test both, compiled JavaScript and written TypeScript in order to check that production code and dev code are in condition for further improve.
+
+</details>
