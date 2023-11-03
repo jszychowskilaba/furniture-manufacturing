@@ -4,6 +4,7 @@ import request from 'supertest';
 import app from '../../app';
 
 beforeAll(async () => {
+  console.log = jest.fn();
   await startServer();
 });
 
