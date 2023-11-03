@@ -30,11 +30,16 @@ services:
       - POSTGRES_PASSWORD=admin
       - DATABASE_DB=manufacturing_system
       - DATABASE_PORT=5432
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
 
 
 networks:
   appnet:
     driver: bridge
+
+volumes:
+  postgres_db:
 ## Command for prepare everything
 # docker compose up
 
