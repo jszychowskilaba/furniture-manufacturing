@@ -1,4 +1,4 @@
-import { startServer } from './helpers/startServer';
+import { startServer } from '../v1/helpers/startServer';
 import request from 'supertest';
 import app from '../../app';
 

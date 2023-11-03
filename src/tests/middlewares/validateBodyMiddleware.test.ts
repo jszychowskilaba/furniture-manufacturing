@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { startServer } from './helpers/startServer';
+import { startServer } from '../v1/helpers/startServer';
 import request from 'supertest';
 import app from '../../app';
-import { generateRandomId } from './helpers/generateRandomId';
+import { generateRandomId } from '../v1/helpers/generateRandomId';
 
 beforeAll(async () => {
   console.log = jest.fn();
