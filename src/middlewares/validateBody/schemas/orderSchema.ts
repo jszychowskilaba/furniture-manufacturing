@@ -7,7 +7,7 @@ import { Order, } from '../../../types/Order';
 export const orderSchema: JSONSchemaType<Order> = {
   type: 'object',
   properties: {
-    status: { type: 'string', enum: ['pending', 'inProduction', 'finished'] },
+    status: { type: 'string', enum: ['pending', 'inProduction', 'finished', 'canceled'] },
     internalCode: { type: 'string', minLength: 0, maxLength: 255 },
     description: { type: 'string', minLength: 1, maxLength: 255 },
 
@@ -58,7 +58,7 @@ export const orderSchema: JSONSchemaType<Order> = {
 export const partialOrderSchema: JSONSchemaType<Order> = {
   type: 'object',
   properties: {
-    status: { type: 'string', enum: ['pending', 'inProduction', 'finished'] },
+    status: { type: 'string', enum: ['pending', 'inProduction', 'finished', 'canceled'] },
     internalCode: { type: 'string', minLength: 0, maxLength: 255 },
     description: { type: 'string', minLength: 1, maxLength: 255 },
 
