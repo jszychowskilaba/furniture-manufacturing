@@ -1389,10 +1389,10 @@ Table that contains information about production order.
 
   `{ type: 'string', enum: ['pending', 'inProduction', 'finished'] }`
 
-  - pending: waiting for costumer approval
-  - in production: order is in production
-  - finished: order has been finished
-  - canceled: order has been canceled or deleted.
+  - pending: waiting for costumer approval. Waiting for approval, order cannot be produced, but materials are reserved.
+  - in production: order is in production and materials are reserved. Only in this status the order can be produced.
+  - finished: order has been finished. This status changes automatically when the order completes.
+  - canceled: order has been canceled or deleted. Materials and labors are deleted from the order and materials stock and reserved stock are restored.
 
 - **manufactured:** quantity already produced. When a unit is manufactured, the stock of the materials get updated.
 
