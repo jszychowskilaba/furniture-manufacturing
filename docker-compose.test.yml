@@ -29,8 +29,9 @@ services:
       - POSTGRES_USER=admin
       - DATABASE_HOST=DataBase
       - POSTGRES_PASSWORD=admin
-      - DATABASE_DB=manufacturing_system
+      - DATABASE_DB=manufacturing_system_test
       - DATABASE_PORT=5432
+    
 
 
 networks:
