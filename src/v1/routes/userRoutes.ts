@@ -5,16 +5,24 @@ import {
   userSchema,
   partialUserSchema,
 } from '../../middlewares/validateBody/schemas/userSchema';
+import { checkUserIs } from '../../middlewares/userRole/checkUserIs';
+import { Role } from '../../middlewares/userRole/roles';
 
 const router: Router = express.Router();
 
 router.get('/', userController.getAllUsers);
-router.post('/', validateBody(userSchema), userController.createUser);
+router.post(
+  '/',
+  checkUserIs(Role.ADMIN),
+  validateBody(userSchema),
+  userController.createUser
+);
 router.get('/:id', userController.getOneUser);
 router.patch(
   '/:id',
-  validateBody(partialUserSchema),
-  userController.updateUser
+  checkUserIs(Role.ADMIN),
+  userController.updateUser,
+  validateBody(partialUserSchema)
 );
 
 export default router;
