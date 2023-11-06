@@ -1,5 +1,5 @@
 import LaborDataBase from '../repositories/LaborDataBase';
-import { Labor, CreatedLabor, PartialLabor } from '../types/Labor';
+import { Labor, CreatedLabor, PartialLabor } from '../dto/Labor';
 import { ICRUDServices } from '../types/ICRUDServices';
 import CRUDServices from './helpers/CRUDServices';
 import { IService } from '../types/IService';

@@ -1,8 +1,8 @@
 import OrderDataBase from '../../repositories/OrderDataBase';
 import { CustomError } from '../../helpers/CustomError';
-import { CreatedOrder, Order } from '../../types/Order';
-import { CreatedMaterial } from '../../types/Material';
-import { CreatedLabor } from '../../types/Labor';
+import { CreatedOrder, Order } from '../../dto/Order';
+import { CreatedMaterial } from '../../dto/Material';
+import { CreatedLabor } from '../../dto/Labor';
 import { CreationStamp } from './CreationStamp';
 
 class OrderHelper {
@@ -189,7 +189,9 @@ class OrderHelper {
 
     if (checkForInactiveResources.length > 0)
       throw new CustomError(
-        `Can not proceed. These resource IDs are inactive: ${JSON.stringify(checkForInactiveResources)}`,
+        `Can not proceed. These resource IDs are inactive: ${JSON.stringify(
+          checkForInactiveResources
+        )}`,
         422
       );
   }

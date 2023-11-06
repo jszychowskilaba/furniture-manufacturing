@@ -5,12 +5,12 @@ import { CustomError } from '../helpers/CustomError';
 import CRUDServices from './helpers/CRUDServices';
 import { Crypto } from '../helpers/Crypto';
 
-import { PartialCreatedUser } from '../types/User';
+import { PartialCreatedUser } from '../dto/User';
 import { IDataBase } from '../types/IDataBase';
 import { IService } from '../types/IService';
-import { CreatedUser } from '../types/User';
-import { PartialUser } from '../types/User';
-import { User } from '../types/User';
+import { CreatedUser } from '../dto/User';
+import { PartialUser } from '../dto/User';
+import { User } from '../dto/User';
 
 class UserCRUDServices extends CRUDServices<
   User,

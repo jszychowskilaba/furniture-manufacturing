@@ -1,5 +1,5 @@
 import { IDataBase } from '../types/IDataBase';
-import { CreatedUser, PartialCreatedUser } from '../types/User';
+import { CreatedUser, PartialCreatedUser } from '../dto/User';
 import { CRUDODataBase } from './helpers/CRUDODataBase';
 
 class UserDataBase implements IDataBase<CreatedUser, PartialCreatedUser> {

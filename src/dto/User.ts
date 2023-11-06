@@ -1,4 +1,4 @@
-import { ICreationStamp } from './types';
+import { ICreationStamp } from '../types/types';
 
 export interface User {
   username: string;

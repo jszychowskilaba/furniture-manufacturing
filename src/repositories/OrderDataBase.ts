@@ -4,7 +4,7 @@ import {
   orderHasLabor,
   orderHasMaterial,
   PartialCreatedOrder,
-} from '../types/Order';
+} from '../dto/Order';
 import queryCreator from './helpers/QueryCreator';
 import { pool } from '../databases/DataBase/Pool';
 

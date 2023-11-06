@@ -1,15 +1,14 @@
 import OrderDataBase from '../repositories/OrderDataBase';
 import { CustomError } from '../helpers/CustomError';
-import { CreatedMaterial } from '../types/Material';
+import { CreatedMaterial } from '../dto/Material';
 import orderHelper from './helpers/OrderHelper';
-import { PartialCreatedOrder } from '../types/Order';
-import { PartialOrder } from '../types/Order';
-import { CreatedLabor } from '../types/Labor';
-import { CreatedOrder } from '../types/Order';
-import { Order } from '../types/Order';
+import { PartialCreatedOrder } from '../dto/Order';
+import { PartialOrder } from '../dto/Order';
+import { CreatedLabor } from '../dto/Labor';
+import { CreatedOrder } from '../dto/Order';
+import { Order } from '../dto/Order';
 
 class OrderServices {
-
   async createOrder(order: Order, username: string) {
     const materials = await orderHelper.getAll<CreatedMaterial>(
       'material',
@@ -86,11 +85,11 @@ class OrderServices {
   async getAllOrders(): Promise<CreatedOrder[]> {
     const orderIds = await OrderDataBase.getAllOrderIds();
     const createdOrders = [];
-    
+
     for (const orderId of orderIds) {
       createdOrders.push(await this.getOneOrder(orderId.id));
     }
-    
+
     return createdOrders;
   }
 
@@ -100,7 +99,7 @@ class OrderServices {
   ): Promise<CreatedOrder> {
     const oldOrder = await this.getOneOrder(orderId);
 
-    if( (orderChanges.status == 'canceled')){
+    if (orderChanges.status == 'canceled') {
       // If we cancel the order, we return the materials to recover the stock.
       orderChanges.materials = [];
       orderChanges.labors = [];
@@ -108,7 +107,7 @@ class OrderServices {
 
     //Updating order
     const updatedOrder: CreatedOrder = { ...oldOrder, ...orderChanges };
-    
+
     updatedOrder.createdAt = new Date(updatedOrder.createdAt).toISOString();
     updatedOrder.updatedAt = new Date().toISOString();
 
@@ -116,7 +115,7 @@ class OrderServices {
       'material',
       updatedOrder.materials
     );
-    
+
     const labors = await orderHelper.getAll<CreatedLabor>(
       'labor',
       updatedOrder.labors
@@ -129,14 +128,14 @@ class OrderServices {
       labors,
       updatedOrder
     );
-    
+
     updatedOrder.totalPrice = totalPrice;
 
     const totalProductionTime = orderHelper.calculateTotalProductionTime(
       labors,
       updatedOrder
     );
-    
+
     updatedOrder.totalProductionTime = totalProductionTime;
 
     await orderHelper.checkForMissingMaterials(updatedOrder);
@@ -171,7 +170,7 @@ class OrderServices {
 
   async manufactureOrder(quantity: number, orderId: string) {
     const manufactureOrder = await this.getOneOrder(orderId);
-    
+
     if (manufactureOrder.status !== 'inProduction') {
       throw new CustomError(
         `Can not manufacture, order status: ${manufactureOrder.status}`,
@@ -197,7 +196,7 @@ class OrderServices {
     await OrderDataBase.produce(manufactureOrder, quantity);
 
     if (nextManufacturedTotal == Number(manufactureOrder.unitsToManufacture)) {
-      console.log(6)
+      console.log(6);
     }
   }
 }

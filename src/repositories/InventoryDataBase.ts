@@ -1,4 +1,4 @@
-import { CreatedMaterial, PartialCreatedMaterial } from '../types/Material';
+import { CreatedMaterial, PartialCreatedMaterial } from '../dto/Material';
 import { CRUDODataBase } from './helpers/CRUDODataBase';
 import { IDataBase } from '../types/IDataBase';
 
