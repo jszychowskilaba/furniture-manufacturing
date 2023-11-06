@@ -21,8 +21,8 @@ router.get('/:id', userController.getOneUser);
 router.patch(
   '/:id',
   checkUserIs(Role.ADMIN),
-  userController.updateUser,
-  validateBody(partialUserSchema)
+  validateBody(partialUserSchema),
+  userController.updateUser
 );
 
 export default router;
