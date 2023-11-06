@@ -1,4 +1,4 @@
-import { User } from '../../../dto/User';
+import { User } from '../../../types/User';
 import { JSONSchemaType } from 'ajv';
 
 /**
@@ -48,9 +48,10 @@ export const partialUserSchema: JSONSchemaType<User> = {
         'admin',
       ],
     },
+    
   },
   not: {
-    required: ['username'],
+    required: ["username"]
   },
   required: [],
   additionalProperties: false,

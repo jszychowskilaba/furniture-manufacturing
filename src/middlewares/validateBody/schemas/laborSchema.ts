@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { Labor, PartialLabor } from '../../../dto/Labor';
+import { Labor, PartialLabor } from '../../../types/Labor';
 
 /**
  * Labor schema for post method

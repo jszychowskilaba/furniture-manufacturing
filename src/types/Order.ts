@@ -1,4 +1,4 @@
-import { ICreationStamp } from '../types/types';
+import { ICreationStamp } from './types';
 
 export interface Order {
   status: 'pending' | 'inProduction' | 'finished' | 'canceled';
@@ -21,15 +21,15 @@ export interface PartialCreatedOrder extends Partial<CreatedOrder> {}
 
 export interface orderHasLabor {
   createdAt: string | Date;
-  updatedAt: string | Date;
+  updatedAt: string |Date;
   manufactureOrderId: string;
   laborId: string;
   quantity: number;
 }
 
 export interface orderHasMaterial {
-  createdAt: string | Date;
-  updatedAt: string | Date;
+  createdAt: string |Date;
+  updatedAt: string |Date;
   manufactureOrderId: string;
   materialId: string;
   quantity: number;

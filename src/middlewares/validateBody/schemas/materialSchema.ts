@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { Material, PartialMaterial } from '../../../dto/Material';
+import { Material, PartialMaterial } from '../../../types/Material';
 
 /**
  * Material schema for post method

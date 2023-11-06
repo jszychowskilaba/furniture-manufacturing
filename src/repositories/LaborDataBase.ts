@@ -1,4 +1,4 @@
-import { CreatedLabor, PartialCreatedLabor } from '../dto/Labor';
+import { CreatedLabor, PartialCreatedLabor } from '../types/Labor';
 import { CRUDODataBase } from './helpers/CRUDODataBase';
 import { IDataBase } from '../types/IDataBase';
 

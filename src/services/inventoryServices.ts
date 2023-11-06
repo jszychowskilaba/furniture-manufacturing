@@ -1,5 +1,5 @@
 import InventoryDataBase from '../repositories/InventoryDataBase';
-import { Material, CreatedMaterial, PartialMaterial } from '../dto/Material';
+import { Material, CreatedMaterial, PartialMaterial } from '../types/Material';
 import { ICRUDServices } from '../types/ICRUDServices';
 import CRUDServices from './helpers/CRUDServices';
 import { IService } from '../types/IService';

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import orderServices from '../services/orderServices';
 import { CustomError } from '../helpers/CustomError';
-import { CreatedOrder } from '../dto/Order';
+import { CreatedOrder } from '../types/Order';
 
 class OrderController {
   async createOrder(req: Request, res: Response, next: NextFunction) {
