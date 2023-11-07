@@ -1,11 +1,13 @@
 import { CreatedMaterialDto } from '../dtos/inventory/CreatedMaterialDto';
 import { PartialMaterialDto } from '../dtos/inventory/PartialMaterialDto';
-import { MaterialDto } from '../dtos/inventory/PartialCreatedMaterial';
+import { MaterialDto } from '../dtos/inventory/MaterialDto';
 import inventoryDataBase from '../repositories/InventoryDataBase';
 import { CreationStamp } from './helpers/CreationStamp';
 import { CustomError } from '../helpers/CustomError';
 import { UpdateStamp } from './helpers/UpdateStamp';
 import { IService } from '../types/IService';
+import { PartialCreatedMaterial } from '../types/Material';
+import { PartialMaterial } from '../types/Material';
 
 class InventoryServices
   implements IService<MaterialDto, CreatedMaterialDto, PartialMaterialDto>
@@ -45,14 +47,14 @@ class InventoryServices
 
   async update(
     materialId: string,
-    materialChanges: PartialMaterialDto
+    materialChanges: PartialMaterial
   ): Promise<CreatedMaterialDto> {
     await this.getOne(materialId); // Throws error if data not exists
 
     const dataUpdates = {
       ...materialChanges,
       ...new UpdateStamp(),
-    };
+    } as PartialCreatedMaterial;
 
     await inventoryDataBase.update(materialId, dataUpdates);
     return this.getOne(materialId);
