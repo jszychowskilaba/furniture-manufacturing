@@ -1,6 +1,6 @@
 import { CreatedMaterialDto } from '../dtos/inventory/CreatedMaterialDto';
 import { PartialMaterialDto } from '../dtos/inventory/PartialMaterialDto';
-import { MaterialDto } from '../dtos/inventory/PartialCreatedMaterial';
+import { MaterialDto } from '../dtos/inventory/MaterialDto';
 import inventoryServices from '../services/inventoryServices';
 import { Request, Response, NextFunction } from 'express';
 
