@@ -1,44 +1,61 @@
-import InventoryDataBase from '../repositories/InventoryDataBase';
-import { Material, CreatedMaterial, PartialMaterial } from '../types/Material';
-import { ICRUDServices } from '../types/ICRUDServices';
-import CRUDServices from './helpers/CRUDServices';
+import { CreatedMaterialDto } from '../dtos/inventory/CreatedMaterialDto';
+import { PartialMaterialDto } from '../dtos/inventory/PartialMaterialDto';
+import { MaterialDto } from '../dtos/inventory/PartialCreatedMaterial';
+import inventoryDataBase from '../repositories/InventoryDataBase';
+import { CreationStamp } from './helpers/CreationStamp';
+import { CustomError } from '../helpers/CustomError';
+import { UpdateStamp } from './helpers/UpdateStamp';
 import { IService } from '../types/IService';
 
 class InventoryServices
-  implements IService<Material, CreatedMaterial, PartialMaterial>
+  implements IService<MaterialDto, CreatedMaterialDto, PartialMaterialDto>
 {
-  private crudServices: ICRUDServices<
-    Material,
-    CreatedMaterial,
-    PartialMaterial
-  >;
+  async create(
+    material: MaterialDto,
+    username: string
+  ): Promise<CreatedMaterialDto> {
+    if (
+      await inventoryDataBase.hasWith('internalCode', material.internalCode)
+    ) {
+      throw new CustomError('Data with same internal code already exists', 409);
+    }
 
-  constructor() {
-    this.crudServices = new CRUDServices(InventoryDataBase);
+    const createdMaterial = {
+      ...new CreationStamp(username),
+      ...material,
+    };
+
+    await inventoryDataBase.create(new CreatedMaterialDto(createdMaterial));
+
+    return createdMaterial;
   }
 
-  async create(material: Material, username: string): Promise<CreatedMaterial> {
-    return await this.crudServices.create(
-      material,
-      username,
-      'internalCode',
-      material.internalCode
-    );
+  async getAll(): Promise<CreatedMaterialDto[]> {
+    const allMaterials: CreatedMaterialDto[] = await inventoryDataBase.getAll();
+    return allMaterials;
   }
 
-  async getAll(): Promise<CreatedMaterial[]> {
-    return await this.crudServices.getAll();
-  }
+  async getOne(materialId: string): Promise<CreatedMaterialDto> {
+    const data: CreatedMaterialDto = await inventoryDataBase.getOne(materialId);
 
-  async getOne(materialId: string): Promise<CreatedMaterial> {
-    return await this.crudServices.getOne(materialId);
+    if (!data) throw new CustomError('Data not found', 404);
+
+    return data;
   }
 
   async update(
     materialId: string,
-    materialChanges: PartialMaterial
-  ): Promise<CreatedMaterial> {
-    return await this.crudServices.update(materialId, materialChanges);
+    materialChanges: PartialMaterialDto
+  ): Promise<CreatedMaterialDto> {
+    await this.getOne(materialId); // Throws error if data not exists
+
+    const dataUpdates = {
+      ...materialChanges,
+      ...new UpdateStamp(),
+    };
+
+    await inventoryDataBase.update(materialId, dataUpdates);
+    return this.getOne(materialId);
   }
 }
 

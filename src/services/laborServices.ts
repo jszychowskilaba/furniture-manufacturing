@@ -1,38 +1,56 @@
-import LaborDataBase from '../repositories/LaborDataBase';
-import { Labor, CreatedLabor, PartialLabor } from '../types/Labor';
-import { ICRUDServices } from '../types/ICRUDServices';
-import CRUDServices from './helpers/CRUDServices';
+import { PartialLaborDto } from '../dtos/labor/PartialLaborDto';
+import { CreatedLaborDto } from '../dtos/labor/CreatedLaborDto';
+import laborDataBase from '../repositories/LaborDataBase';
+import { CreationStamp } from './helpers/CreationStamp';
+import { CustomError } from '../helpers/CustomError';
+import { UpdateStamp } from './helpers/UpdateStamp';
+import { LaborDto } from '../dtos/labor/LaborDto';
 import { IService } from '../types/IService';
 
-class LaborServices implements IService<Labor, CreatedLabor, PartialLabor> {
-  private crudServices: ICRUDServices<Labor, CreatedLabor, PartialLabor>;
+class LaborServices
+  implements IService<LaborDto, CreatedLaborDto, PartialLaborDto>
+{
+  async create(labor: LaborDto, username: string): Promise<CreatedLaborDto> {
+    if (await laborDataBase.hasWith('internalCode', labor.internalCode)) {
+      throw new CustomError('Data with same internal code already exists', 409);
+    }
 
-  constructor() {
-    this.crudServices = new CRUDServices(LaborDataBase);
+    const createdLabor = {
+      ...new CreationStamp(username),
+      ...labor,
+    };
+
+    await laborDataBase.create(new CreatedLaborDto(createdLabor));
+
+    return createdLabor;
   }
 
-  async create(labor: Labor, username: string): Promise<CreatedLabor> {
-    return await this.crudServices.create(
-      labor,
-      username,
-      'internalCode',
-      labor.internalCode
-    );
+  async getAll(): Promise<CreatedLaborDto[]> {
+    const allLabors: CreatedLaborDto[] = await laborDataBase.getAll();
+    return allLabors;
   }
 
-  async getAll(): Promise<CreatedLabor[]> {
-    return await this.crudServices.getAll();
-  }
+  async getOne(laborId: string): Promise<CreatedLaborDto> {
+    const data: CreatedLaborDto = await laborDataBase.getOne(laborId);
 
-  async getOne(laborId: string): Promise<CreatedLabor> {
-    return await this.crudServices.getOne(laborId);
+    if (!data) throw new CustomError('Data not found', 404);
+
+    return data;
   }
 
   async update(
     laborId: string,
-    laborChanges: PartialLabor
-  ): Promise<CreatedLabor> {
-    return await this.crudServices.update(laborId, laborChanges);
+    laborChanges: PartialLaborDto
+  ): Promise<CreatedLaborDto> {
+    await this.getOne(laborId); // Throws error if data not exists
+
+    const dataUpdates = {
+      ...laborChanges,
+      ...new UpdateStamp(),
+    };
+
+    await laborDataBase.update(laborId, dataUpdates);
+    return this.getOne(laborId);
   }
 }
 

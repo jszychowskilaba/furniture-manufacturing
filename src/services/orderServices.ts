@@ -1,21 +1,23 @@
+import { PartialCreatedOrderDto } from '../dtos/order/PartialCreatedOrderDto';
+import { CreatedMaterialDto } from '../dtos/inventory/CreatedMaterialDto';
+import { OrderHasMaterialDto } from '../dtos/order/OrderHasMaterialDto';
+import { OrderHasLaborDto } from '../dtos/order/OrderHasLaborDto';
+import { CreatedLaborDto } from '../dtos/labor/CreatedLaborDto';
+import { CreatedOrderDto } from '../dtos/order/CreatedOrderDto';
+import { OrderDto } from '../dtos/order/OrderDto';
+
 import OrderDataBase from '../repositories/OrderDataBase';
 import { CustomError } from '../helpers/CustomError';
-import { CreatedMaterial } from '../types/Material';
 import orderHelper from './helpers/OrderHelper';
-import { PartialCreatedOrder } from '../types/Order';
 import { PartialOrder } from '../types/Order';
-import { CreatedLabor } from '../types/Labor';
-import { CreatedOrder } from '../types/Order';
-import { Order } from '../types/Order';
 
 class OrderServices {
-
-  async createOrder(order: Order, username: string) {
-    const materials = await orderHelper.getAll<CreatedMaterial>(
+  async createOrder(order: OrderDto, username: string) {
+    const materials = await orderHelper.getAll<CreatedMaterialDto>(
       'material',
       order.materials
     );
-    const labors = await orderHelper.getAll<CreatedLabor>(
+    const labors = await orderHelper.getAll<CreatedLaborDto>(
       'labor',
       order.labors
     );
@@ -27,6 +29,7 @@ class OrderServices {
       labors,
       order
     );
+
     const totalProductionTime = orderHelper.calculateTotalProductionTime(
       labors,
       order
@@ -41,11 +44,6 @@ class OrderServices {
       username
     );
 
-    const partialCreatedOrder = createdOrder as PartialCreatedOrder;
-
-    delete partialCreatedOrder.materials;
-    delete partialCreatedOrder.labors;
-
     const orderHasLabor = orderHelper.createOrderHasLaborTable(
       order.labors,
       createdOrder.id
@@ -57,16 +55,16 @@ class OrderServices {
     );
 
     await OrderDataBase.createOrder(
-      partialCreatedOrder,
-      orderHasLabor,
-      orderHasMaterial,
+      new PartialCreatedOrderDto(createdOrder),
+      orderHasLabor.map((el) => new OrderHasLaborDto(el)),
+      orderHasMaterial.map((el) => new OrderHasMaterialDto(el)),
       order.unitsToManufacture
     );
 
     return this.getOneOrder(createdOrder.id);
   }
 
-  async getOneOrder(orderId: string): Promise<CreatedOrder> {
+  async getOneOrder(orderId: string): Promise<CreatedOrderDto> {
     const order = await OrderDataBase.getOrder(orderId);
 
     if (!order) throw new CustomError('Order not found', 404);
@@ -74,50 +72,50 @@ class OrderServices {
     const materials = await OrderDataBase.getOrderMaterials(orderId);
     const labors = await OrderDataBase.getOrderLabors(orderId);
 
-    const CreatedOrder = {
+    const createdOrder = {
       ...order,
       materials: [...materials],
       labors: [...labors],
     };
 
-    return CreatedOrder;
+    return new CreatedOrderDto(createdOrder);
   }
 
-  async getAllOrders(): Promise<CreatedOrder[]> {
+  async getAllOrders(): Promise<CreatedOrderDto[]> {
     const orderIds = await OrderDataBase.getAllOrderIds();
     const createdOrders = [];
-    
+
     for (const orderId of orderIds) {
       createdOrders.push(await this.getOneOrder(orderId.id));
     }
-    
+
     return createdOrders;
   }
 
   async updateOrder(
     orderChanges: PartialOrder,
     orderId: string
-  ): Promise<CreatedOrder> {
+  ): Promise<CreatedOrderDto> {
     const oldOrder = await this.getOneOrder(orderId);
 
-    if( (orderChanges.status == 'canceled')){
+    if (orderChanges.status == 'canceled') {
       // If we cancel the order, we return the materials to recover the stock.
       orderChanges.materials = [];
       orderChanges.labors = [];
     }
 
     //Updating order
-    const updatedOrder: CreatedOrder = { ...oldOrder, ...orderChanges };
-    
+    const updatedOrder: CreatedOrderDto = { ...oldOrder, ...orderChanges };
+
     updatedOrder.createdAt = new Date(updatedOrder.createdAt).toISOString();
     updatedOrder.updatedAt = new Date().toISOString();
 
-    const materials = await orderHelper.getAll<CreatedMaterial>(
+    const materials = await orderHelper.getAll<CreatedMaterialDto>(
       'material',
       updatedOrder.materials
     );
-    
-    const labors = await orderHelper.getAll<CreatedLabor>(
+
+    const labors = await orderHelper.getAll<CreatedLaborDto>(
       'labor',
       updatedOrder.labors
     );
@@ -129,14 +127,14 @@ class OrderServices {
       labors,
       updatedOrder
     );
-    
+
     updatedOrder.totalPrice = totalPrice;
 
     const totalProductionTime = orderHelper.calculateTotalProductionTime(
       labors,
       updatedOrder
     );
-    
+
     updatedOrder.totalProductionTime = totalProductionTime;
 
     await orderHelper.checkForMissingMaterials(updatedOrder);
@@ -153,16 +151,11 @@ class OrderServices {
       updatedOrder.createdAt
     );
 
-    const partialUpdatedOrder = updatedOrder as PartialCreatedOrder;
-
-    delete partialUpdatedOrder.materials;
-    delete partialUpdatedOrder.labors;
-
     await OrderDataBase.updateOrder(
       oldOrder,
-      partialUpdatedOrder,
-      orderHasLabor,
-      orderHasMaterial,
+      new PartialCreatedOrderDto(updatedOrder),
+      orderHasLabor.map((el) => new OrderHasLaborDto(el)),
+      orderHasMaterial.map((el) => new OrderHasMaterialDto(el)),
       updatedOrder.unitsToManufacture
     );
 
@@ -171,7 +164,7 @@ class OrderServices {
 
   async manufactureOrder(quantity: number, orderId: string) {
     const manufactureOrder = await this.getOneOrder(orderId);
-    
+
     if (manufactureOrder.status !== 'inProduction') {
       throw new CustomError(
         `Can not manufacture, order status: ${manufactureOrder.status}`,
@@ -182,7 +175,7 @@ class OrderServices {
     await this.produce(manufactureOrder, quantity);
   }
 
-  async produce(manufactureOrder: CreatedOrder, quantity: number) {
+  async produce(manufactureOrder: CreatedOrderDto, quantity: number) {
     const nextManufacturedTotal =
       Number(manufactureOrder.manufactured) + quantity;
 
@@ -197,7 +190,7 @@ class OrderServices {
     await OrderDataBase.produce(manufactureOrder, quantity);
 
     if (nextManufacturedTotal == Number(manufactureOrder.unitsToManufacture)) {
-      console.log(6)
+      console.log(6);
     }
   }
 }
