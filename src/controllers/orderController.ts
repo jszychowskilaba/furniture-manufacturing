@@ -1,13 +1,15 @@
+import { PartialOrderDto } from '../dtos/order/PartialOrderDto';
+import { CreatedOrderDto } from '../dtos/order/CreatedOrderDto';
 import { Request, Response, NextFunction } from 'express';
 import orderServices from '../services/orderServices';
 import { CustomError } from '../helpers/CustomError';
-import { CreatedOrder } from '../types/Order';
+import { OrderDto } from '../dtos/order/OrderDto';
 
 class OrderController {
   async createOrder(req: Request, res: Response, next: NextFunction) {
     try {
-      const createdOrder: CreatedOrder = await orderServices.createOrder(
-        req.body,
+      const createdOrder: CreatedOrderDto = await orderServices.createOrder(
+        new OrderDto(req.body),
         req.headers.username as string
       );
 
@@ -20,7 +22,7 @@ class OrderController {
   async getOneOrder(req: Request, res: Response, next: NextFunction) {
     const orderId = req.params.id;
     try {
-      const createdOrder: CreatedOrder = await orderServices.getOneOrder(
+      const createdOrder: CreatedOrderDto = await orderServices.getOneOrder(
         orderId
       );
       res.status(200).json(createdOrder);
@@ -31,7 +33,8 @@ class OrderController {
 
   async getAllOrders(req: Request, res: Response, next: NextFunction) {
     try {
-      const createdOrders: CreatedOrder[] = await orderServices.getAllOrders();
+      const createdOrders: CreatedOrderDto[] =
+        await orderServices.getAllOrders();
       res.status(200).json(createdOrders);
     } catch (error) {
       next(error);
@@ -56,8 +59,8 @@ class OrderController {
 
   async updateOrder(req: Request, res: Response, next: NextFunction) {
     try {
-      const createdOrder = await orderServices.updateOrder(
-        req.body,
+      const createdOrder: CreatedOrderDto = await orderServices.updateOrder(
+        new PartialOrderDto(req.body),
         req.params.id
       );
       res.status(200).json(createdOrder);
