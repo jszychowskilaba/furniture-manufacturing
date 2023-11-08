@@ -1,34 +1,65 @@
-import { CreatedLabor, PartialCreatedLabor } from '../types/Labor';
-import { CRUDODataBase } from './helpers/CRUDODataBase';
+import { CreatedLaborDto } from '../dtos/labor/CreatedLaborDto';
+import { PartialCreatedLabor } from '../types/Labor';
+import queryCreator from './helpers/QueryCreator';
+import { pool } from '../databases/DataBase/Pool';
 import { IDataBase } from '../types/IDataBase';
 
-class LaborDataBase implements IDataBase<CreatedLabor, PartialCreatedLabor> {
-  private operations: CRUDODataBase<CreatedLabor>;
+class LaborDataBase implements IDataBase<CreatedLaborDto, PartialCreatedLabor> {
+  private tableName;
   constructor() {
-    this.operations = new CRUDODataBase('labor', 'id');
+    this.tableName = 'labor';
   }
 
-  async create(labor: CreatedLabor): Promise<void> {
-    await this.operations.create(labor);
+  async create(labor: CreatedLaborDto): Promise<void> {
+    const query = queryCreator.insert(this.tableName, labor);
+
+    await pool.query(query);
   }
 
   async hasWith(column: string, value: string): Promise<boolean> {
-    return await this.operations.hasWith(column, value);
+    const query = queryCreator.selectByTableColumnValue(
+      this.tableName,
+      column,
+      value
+    );
+
+    const result = await pool.query(query);
+
+    return !(result.rows[0] === undefined);
   }
 
-  async getAll(): Promise<CreatedLabor[]> {
-    return await this.operations.getAll();
+  async getAll(): Promise<CreatedLaborDto[]> {
+    const query = queryCreator.selectByColumn(this.tableName, '*');
+
+    const createdLabors = (await pool.query(query)).rows.map(
+      (createdLabor) => new CreatedLaborDto(createdLabor)
+    );
+
+    return createdLabors;
   }
 
-  async getOne(laborId: string): Promise<CreatedLabor> {
-    return await this.operations.getOne(laborId);
+  async getOne(laborId: string): Promise<CreatedLaborDto> {
+    const query = queryCreator.selectByTableColumnValue(
+      this.tableName,
+      'id',
+      laborId
+    );
+
+    return new CreatedLaborDto((await pool.query(query)).rows[0]);
   }
 
   async update(
     laborId: string,
     laborUpdates: PartialCreatedLabor
   ): Promise<void> {
-    await this.operations.update(laborId, laborUpdates);
+    const query = queryCreator.update(
+      this.tableName,
+      laborUpdates,
+      'id',
+      laborId
+    );
+
+    await pool.query(query);
   }
 }
 

@@ -1,8 +1,8 @@
 import { PartialUserDto } from '../dtos/user/PartialUserDto';
 import { CreatedUserDto } from '../dtos/user/CreatedUserDto';
+import { UserDto } from '../dtos/user/UserDto';
 import { Request, Response, NextFunction } from 'express';
 import userServices from '../services/userServices';
-import { UserDto } from '../dtos/user/UserDto';
 
 class UserController {
   createUser = async (req: Request, res: Response, next: NextFunction) => {

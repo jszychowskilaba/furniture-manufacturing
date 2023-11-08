@@ -1,10 +1,12 @@
+import { PartialCreatedLaborDto } from '../dtos/labor/PartialCreatedLaborDto';
 import { PartialLaborDto } from '../dtos/labor/PartialLaborDto';
 import { CreatedLaborDto } from '../dtos/labor/CreatedLaborDto';
+import { LaborDto } from '../dtos/labor/LaborDto';
+import { CreatedLabor, PartialCreatedLabor } from '../types/Labor';
 import laborDataBase from '../repositories/LaborDataBase';
 import { CreationStamp } from './helpers/CreationStamp';
 import { CustomError } from '../helpers/CustomError';
 import { UpdateStamp } from './helpers/UpdateStamp';
-import { LaborDto } from '../dtos/labor/LaborDto';
 import { IService } from '../types/IService';
 
 class LaborServices
@@ -15,7 +17,7 @@ class LaborServices
       throw new CustomError('Data with same internal code already exists', 409);
     }
 
-    const createdLabor = {
+    const createdLabor: CreatedLabor = {
       ...new CreationStamp(username),
       ...labor,
     };
@@ -44,12 +46,15 @@ class LaborServices
   ): Promise<CreatedLaborDto> {
     await this.getOne(laborId); // Throws error if data not exists
 
-    const dataUpdates = {
+    const dataUpdates: PartialCreatedLabor = {
       ...laborChanges,
       ...new UpdateStamp(),
     };
 
-    await laborDataBase.update(laborId, dataUpdates);
+    await laborDataBase.update(
+      laborId,
+      new PartialCreatedLaborDto(dataUpdates)
+    );
     return this.getOne(laborId);
   }
 }

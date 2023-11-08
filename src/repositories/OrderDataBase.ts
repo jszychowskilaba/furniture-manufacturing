@@ -1,24 +1,10 @@
-import { PoolClient } from 'pg';
-import {
-  CreatedOrder,
-  orderHasLabor,
-  orderHasMaterial,
-  PartialCreatedOrder,
-} from '../types/Order';
+import { CreatedOrder, PartialCreatedOrder } from '../types/Order';
+import { orderHasLabor, orderHasMaterial } from '../types/Order';
 import queryCreator from './helpers/QueryCreator';
 import { pool } from '../databases/DataBase/Pool';
+import { PoolClient } from 'pg';
 
 class OrderDataBase {
-  async getAllOrderResource(ids: string[], resource: string) {
-    const values = Object.values(ids)
-      .map((id) => `'${id}'`)
-      .join(', ');
-
-    const query = `SELECT * FROM "${resource}" WHERE "id" IN (${values})`;
-
-    return (await pool.query(query)).rows;
-  }
-
   async getAllOrderIds(): Promise<Array<{ id: string }>> {
     return (await pool.query('SELECT "id" FROM "manufactureOrder"')).rows;
   }

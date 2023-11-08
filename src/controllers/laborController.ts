@@ -1,8 +1,8 @@
 import { PartialLaborDto } from '../dtos/labor/PartialLaborDto';
 import { CreatedLaborDto } from '../dtos/labor/CreatedLaborDto';
+import { LaborDto } from '../dtos/labor/LaborDto';
 import { Request, Response, NextFunction } from 'express';
 import laborServices from '../services/laborServices';
-import { LaborDto } from '../dtos/labor/LaborDto';
 
 class LaborController {
   createLabor = async (req: Request, res: Response, next: NextFunction) => {

@@ -1,23 +1,27 @@
-import { User, PartialUser, CreatedUser } from '../types/User';
+import { PartialCreatedUserDto } from '../dtos/user/PartialCreatedUserDto';
+import { CreatedUserDto } from '../dtos/user/CreatedUserDto';
+import { PartialUserDto } from '../dtos/user/PartialUserDto';
+import { UserDto } from '../dtos/user/UserDto';
+import { CreatedUser, PartialCreatedUser, PartialUser } from '../types/User';
 import { CreationStamp } from './helpers/CreationStamp';
 import userDataBase from '../repositories/UserDataBase';
 import { CustomError } from '../helpers/CustomError';
-import { PartialCreatedUser } from '../types/User';
 import { IService } from '../types/IService';
 import { Crypto } from '../helpers/Crypto';
-import { CreatedUserDto } from '../dtos/user/CreatedUserDto';
 
-class UserServices implements IService<User, CreatedUserDto, PartialUser> {
-  async create(user: User, username: string): Promise<CreatedUser> {
+class UserServices
+  implements IService<UserDto, CreatedUserDto, PartialUserDto>
+{
+  async create(user: UserDto, username: string): Promise<CreatedUserDto> {
     if (await userDataBase.hasWith('username', user.username)) {
       throw new CustomError('Username already in use.', 409);
     }
 
-    const createdData = {
+    const createdData: CreatedUser = {
       ...new CreationStamp(username),
       ...user,
       ...new Crypto().createPassword(user.password as string),
-    } as CreatedUser;
+    };
 
     await userDataBase.create(new CreatedUserDto(createdData));
 
@@ -29,7 +33,8 @@ class UserServices implements IService<User, CreatedUserDto, PartialUser> {
   }
 
   async getAll(): Promise<CreatedUserDto[]> {
-    const users = await userDataBase.getAll();
+    const users: CreatedUserDto[] = await userDataBase.getAll();
+
     users.forEach((user) => {
       user.hashedPassword = '*';
       user.salt = '*';
@@ -38,7 +43,7 @@ class UserServices implements IService<User, CreatedUserDto, PartialUser> {
   }
 
   async getOne(userId: string): Promise<CreatedUserDto> {
-    const user = await userDataBase.getOne(userId);
+    const user: CreatedUserDto = await userDataBase.getOne(userId);
 
     if (!user) throw new CustomError('Data not found', 404);
 
@@ -52,7 +57,7 @@ class UserServices implements IService<User, CreatedUserDto, PartialUser> {
     userId: string,
     userChanges: PartialUser
   ): Promise<CreatedUserDto> {
-    let newUserChanges = {};
+    let newUserChanges: PartialCreatedUser = {};
 
     if (userChanges.password) {
       const password = userChanges.password;
@@ -68,7 +73,10 @@ class UserServices implements IService<User, CreatedUserDto, PartialUser> {
       };
     }
 
-    await userDataBase.update(userId, newUserChanges);
+    await userDataBase.update(
+      userId,
+      new PartialCreatedUserDto(newUserChanges)
+    );
 
     return this.getOne(userId);
   }

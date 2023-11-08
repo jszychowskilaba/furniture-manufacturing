@@ -1,36 +1,66 @@
-import { CreatedMaterial, PartialCreatedMaterial } from '../types/Material';
-import { CRUDODataBase } from './helpers/CRUDODataBase';
+import { CreatedMaterialDto } from '../dtos/inventory/CreatedMaterialDto';
+import { PartialCreatedMaterial } from '../types/Material';
+import queryCreator from './helpers/QueryCreator';
+import { pool } from '../databases/DataBase/Pool';
 import { IDataBase } from '../types/IDataBase';
 
 class InventoryDataBase
-  implements IDataBase<CreatedMaterial, PartialCreatedMaterial>
+  implements IDataBase<CreatedMaterialDto, PartialCreatedMaterial>
 {
-  private operations: CRUDODataBase<CreatedMaterial>;
+  private tableName: string;
   constructor() {
-    this.operations = new CRUDODataBase('material', 'id');
+    this.tableName = 'material';
   }
 
-  async create(material: CreatedMaterial): Promise<void> {
-    await this.operations.create(material);
+  async create(material: CreatedMaterialDto): Promise<void> {
+    const query = queryCreator.insert(this.tableName, material);
+    await pool.query(query);
   }
 
   async hasWith(column: string, value: string): Promise<boolean> {
-    return await this.operations.hasWith(column, value);
+    const query = queryCreator.selectByTableColumnValue(
+      this.tableName,
+      column,
+      value
+    );
+
+    const result = await pool.query(query);
+
+    return !(result.rows[0] === undefined);
   }
 
-  async getAll(): Promise<CreatedMaterial[]> {
-    return await this.operations.getAll();
+  async getAll(): Promise<CreatedMaterialDto[]> {
+    const query = queryCreator.selectByColumn(this.tableName, '*');
+
+    const createdMaterials = (await pool.query(query)).rows.map(
+      (createdMaterial) => new CreatedMaterialDto(createdMaterial)
+    );
+
+    return createdMaterials;
   }
 
-  async getOne(materialId: string): Promise<CreatedMaterial> {
-    return await this.operations.getOne(materialId);
+  async getOne(materialId: string): Promise<CreatedMaterialDto> {
+    const query = queryCreator.selectByTableColumnValue(
+      this.tableName,
+      'id',
+      materialId
+    );
+
+    return new CreatedMaterialDto((await pool.query(query)).rows[0]);
   }
 
   async update(
     materialId: string,
     materialUpdates: PartialCreatedMaterial
   ): Promise<void> {
-    await this.operations.update(materialId, materialUpdates);
+    const query = queryCreator.update(
+      this.tableName,
+      materialUpdates,
+      'id',
+      materialId
+    );
+
+    await pool.query(query);
   }
 }
 

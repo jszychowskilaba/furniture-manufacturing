@@ -1,9 +1,9 @@
 import { PartialOrderDto } from '../dtos/order/PartialOrderDto';
 import { CreatedOrderDto } from '../dtos/order/CreatedOrderDto';
+import { OrderDto } from '../dtos/order/OrderDto';
 import { Request, Response, NextFunction } from 'express';
 import orderServices from '../services/orderServices';
 import { CustomError } from '../helpers/CustomError';
-import { OrderDto } from '../dtos/order/OrderDto';
 
 class OrderController {
   async createOrder(req: Request, res: Response, next: NextFunction) {

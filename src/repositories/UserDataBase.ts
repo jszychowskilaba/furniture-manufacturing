@@ -1,31 +1,60 @@
+import { CreatedUserDto } from '../dtos/user/CreatedUserDto';
+import { PartialCreatedUser } from '../types/User';
+import queryCreator from './helpers/QueryCreator';
+import { pool } from '../databases/DataBase/Pool';
 import { IDataBase } from '../types/IDataBase';
-import { CreatedUser, PartialCreatedUser } from '../types/User';
-import { CRUDODataBase } from './helpers/CRUDODataBase';
 
-class UserDataBase implements IDataBase<CreatedUser, PartialCreatedUser> {
-  private operations: CRUDODataBase<CreatedUser>;
+class UserDataBase implements IDataBase<CreatedUserDto, PartialCreatedUser> {
+  private tableName: string;
   constructor() {
-    this.operations = new CRUDODataBase('appUser', 'username');
+    this.tableName = 'appUser';
   }
 
-  async create(user: CreatedUser): Promise<void> {
-    await this.operations.create(user);
+  async create(user: CreatedUserDto): Promise<void> {
+    const query = queryCreator.insert(this.tableName, user);
+   
+    await pool.query(query);
   }
 
   async hasWith(column: string, value: string): Promise<boolean> {
-    return await this.operations.hasWith(column, value);
+    const query = queryCreator.selectByTableColumnValue(
+      this.tableName,
+      column,
+      value
+    );
+    const result = await pool.query(query);
+
+    return !(result.rows[0] === undefined);
   }
 
-  async getAll(): Promise<CreatedUser[]> {
-    return await this.operations.getAll();
+  async getAll(): Promise<CreatedUserDto[]> {
+    const query = queryCreator.selectByColumn(this.tableName, '*');
+    const users = (await pool.query(query)).rows.map(
+      (user) => new CreatedUserDto(user)
+    );
+    
+    return users;
   }
 
-  async getOne(userId: string): Promise<CreatedUser> {
-    return await this.operations.getOne(userId);
+  async getOne(userId: string): Promise<CreatedUserDto> {
+    const query = queryCreator.selectByTableColumnValue(
+      this.tableName,
+      'username',
+      userId
+    );
+   
+    return new CreatedUserDto((await pool.query(query)).rows[0]);
   }
 
   async update(userId: string, userUpdates: PartialCreatedUser): Promise<void> {
-    await this.operations.update(userId, userUpdates);
+    const query = queryCreator.update(
+      this.tableName,
+      userUpdates,
+      'username',
+      userId
+    );
+    
+    await pool.query(query);
   }
 }
 
