@@ -64,3 +64,4 @@ class LaborDataBase implements IDataBase<CreatedLaborDto, PartialCreatedLabor> {
 }
 
 export default new LaborDataBase();
+export { LaborDataBase };

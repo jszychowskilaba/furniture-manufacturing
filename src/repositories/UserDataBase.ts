@@ -12,7 +12,7 @@ class UserDataBase implements IDataBase<CreatedUserDto, PartialCreatedUser> {
 
   async create(user: CreatedUserDto): Promise<void> {
     const query = queryCreator.insert(this.tableName, user);
-   
+
     await pool.query(query);
   }
 
@@ -32,7 +32,7 @@ class UserDataBase implements IDataBase<CreatedUserDto, PartialCreatedUser> {
     const users = (await pool.query(query)).rows.map(
       (user) => new CreatedUserDto(user)
     );
-    
+
     return users;
   }
 
@@ -42,7 +42,7 @@ class UserDataBase implements IDataBase<CreatedUserDto, PartialCreatedUser> {
       'username',
       userId
     );
-   
+
     return new CreatedUserDto((await pool.query(query)).rows[0]);
   }
 
@@ -53,9 +53,10 @@ class UserDataBase implements IDataBase<CreatedUserDto, PartialCreatedUser> {
       'username',
       userId
     );
-    
+
     await pool.query(query);
   }
 }
 
 export default new UserDataBase();
+export { UserDataBase };

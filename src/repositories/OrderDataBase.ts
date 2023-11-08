@@ -201,3 +201,4 @@ class OrderDataBase {
 }
 
 export default new OrderDataBase();
+export { OrderDataBase };
