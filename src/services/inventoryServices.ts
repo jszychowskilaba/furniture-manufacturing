@@ -2,7 +2,8 @@ import { PartialCreatedMaterialDto } from '../dtos/inventory/PartialCreatedMater
 import { CreatedMaterialDto } from '../dtos/inventory/CreatedMaterialDto';
 import { PartialMaterialDto } from '../dtos/inventory/PartialMaterialDto';
 import { MaterialDto } from '../dtos/inventory/MaterialDto';
-import inventoryDataBase from '../repositories/InventoryDataBase';
+import { InventoryDataBase } from '../repositories/InventoryDataBase';
+import inventoryDatabase from '../repositories/InventoryDataBase';
 import { CreatedMaterial, PartialCreatedMaterial } from '../types/Material';
 import { CreationStamp } from './helpers/CreationStamp';
 import { CustomError } from '../helpers/CustomError';
@@ -12,12 +13,21 @@ import { IService } from '../types/IService';
 class InventoryServices
   implements IService<MaterialDto, CreatedMaterialDto, PartialMaterialDto>
 {
+  private inventoryDatabase: InventoryDataBase;
+
+  constructor(inventoryDataBase: InventoryDataBase) {
+    this.inventoryDatabase = inventoryDataBase;
+  }
+
   async create(
     material: MaterialDto,
     username: string
   ): Promise<CreatedMaterialDto> {
     if (
-      await inventoryDataBase.hasWith('internalCode', material.internalCode)
+      await this.inventoryDatabase.hasWith(
+        'internalCode',
+        material.internalCode
+      )
     ) {
       throw new CustomError('Data with same internal code already exists', 409);
     }
@@ -27,18 +37,23 @@ class InventoryServices
       ...material,
     };
 
-    await inventoryDataBase.create(new CreatedMaterialDto(createdMaterial));
+    await this.inventoryDatabase.create(
+      new CreatedMaterialDto(createdMaterial)
+    );
 
     return createdMaterial;
   }
 
   async getAll(): Promise<CreatedMaterialDto[]> {
-    const allMaterials: CreatedMaterialDto[] = await inventoryDataBase.getAll();
+    const allMaterials: CreatedMaterialDto[] =
+      await this.inventoryDatabase.getAll();
     return allMaterials;
   }
 
   async getOne(materialId: string): Promise<CreatedMaterialDto> {
-    const data: CreatedMaterialDto = await inventoryDataBase.getOne(materialId);
+    const data: CreatedMaterialDto = await this.inventoryDatabase.getOne(
+      materialId
+    );
 
     if (!data) throw new CustomError('Data not found', 404);
 
@@ -56,7 +71,7 @@ class InventoryServices
       ...new UpdateStamp(),
     };
 
-    await inventoryDataBase.update(
+    await this.inventoryDatabase.update(
       materialId,
       new PartialCreatedMaterialDto(dataUpdates)
     );
@@ -64,4 +79,4 @@ class InventoryServices
   }
 }
 
-export default new InventoryServices();
+export default new InventoryServices(inventoryDatabase);

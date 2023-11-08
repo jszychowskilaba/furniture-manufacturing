@@ -65,3 +65,4 @@ class InventoryDataBase
 }
 
 export default new InventoryDataBase();
+export { InventoryDataBase };
