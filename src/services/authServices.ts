@@ -1,7 +1,7 @@
 import { UserCredentials } from '../types/types';
 import updateTokens from './helpers/updateTokens';
 import isValidCredentials from './helpers/isValidCredentials';
-import * as Auth from '../repositories/AuthDataBase';
+import Auth from '../repositories/AuthDataBase';
 import { CustomError } from '../helpers/CustomError';
 
 class AuthServices {

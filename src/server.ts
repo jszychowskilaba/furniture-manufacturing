@@ -1,6 +1,6 @@
-import app from './app';
-import { TokensDB } from './repositories/AuthDataBase';
 import { initializeDataBase } from './databases/DataBase/initialization';
+import { TokensDB } from './databases/Auth/Auth';
+import app from './app';
 
 // Starting redis client for Auth Data Base
 // AuthDB docker container must be already running

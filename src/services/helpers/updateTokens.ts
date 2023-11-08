@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { UserCredentials } from '../../types/types';
-import * as Auth from '../../repositories/AuthDataBase';
+import Auth from '../../repositories/AuthDataBase';
 
 /**
  * Updates token and refreshToken with expiration time stored
