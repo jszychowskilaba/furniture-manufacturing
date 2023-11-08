@@ -4,7 +4,7 @@ import { PartialUserDto } from '../dtos/user/PartialUserDto';
 import { UserDto } from '../dtos/user/UserDto';
 import { CreatedUser, PartialCreatedUser, PartialUser } from '../types/User';
 import { CreationStamp } from './helpers/CreationStamp';
-import userDataBase from '../repositories/UserDataBase';
+import userDataBase, { UserDataBase } from '../repositories/UserDataBase';
 import { CustomError } from '../helpers/CustomError';
 import { IService } from '../types/IService';
 import { Crypto } from '../helpers/Crypto';
@@ -12,8 +12,14 @@ import { Crypto } from '../helpers/Crypto';
 class UserServices
   implements IService<UserDto, CreatedUserDto, PartialUserDto>
 {
+  private userDataBase: UserDataBase;
+
+  constructor(userDataBase: UserDataBase) {
+    this.userDataBase = userDataBase;
+  }
+
   async create(user: UserDto, username: string): Promise<CreatedUserDto> {
-    if (await userDataBase.hasWith('username', user.username)) {
+    if (await this.userDataBase.hasWith('username', user.username)) {
       throw new CustomError('Username already in use.', 409);
     }
 
@@ -23,7 +29,7 @@ class UserServices
       ...new Crypto().createPassword(user.password as string),
     };
 
-    await userDataBase.create(new CreatedUserDto(createdData));
+    await this.userDataBase.create(new CreatedUserDto(createdData));
 
     createdData.hashedPassword = '*';
     createdData.salt = '*';
@@ -33,7 +39,7 @@ class UserServices
   }
 
   async getAll(): Promise<CreatedUserDto[]> {
-    const users: CreatedUserDto[] = await userDataBase.getAll();
+    const users: CreatedUserDto[] = await this.userDataBase.getAll();
 
     users.forEach((user) => {
       user.hashedPassword = '*';
@@ -43,7 +49,7 @@ class UserServices
   }
 
   async getOne(userId: string): Promise<CreatedUserDto> {
-    const user: CreatedUserDto = await userDataBase.getOne(userId);
+    const user: CreatedUserDto = await this.userDataBase.getOne(userId);
 
     if (!user) throw new CustomError('Data not found', 404);
 
@@ -73,7 +79,7 @@ class UserServices
       };
     }
 
-    await userDataBase.update(
+    await this.userDataBase.update(
       userId,
       new PartialCreatedUserDto(newUserChanges)
     );
@@ -82,4 +88,5 @@ class UserServices
   }
 }
 
-export default new UserServices();
+export default new UserServices(userDataBase);
+export { UserServices };

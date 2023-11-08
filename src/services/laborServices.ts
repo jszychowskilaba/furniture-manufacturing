@@ -3,7 +3,7 @@ import { PartialLaborDto } from '../dtos/labor/PartialLaborDto';
 import { CreatedLaborDto } from '../dtos/labor/CreatedLaborDto';
 import { LaborDto } from '../dtos/labor/LaborDto';
 import { CreatedLabor, PartialCreatedLabor } from '../types/Labor';
-import laborDataBase from '../repositories/LaborDataBase';
+import laborDataBase, { LaborDataBase } from '../repositories/LaborDataBase';
 import { CreationStamp } from './helpers/CreationStamp';
 import { CustomError } from '../helpers/CustomError';
 import { UpdateStamp } from './helpers/UpdateStamp';
@@ -12,8 +12,14 @@ import { IService } from '../types/IService';
 class LaborServices
   implements IService<LaborDto, CreatedLaborDto, PartialLaborDto>
 {
+  private laborDataBase: LaborDataBase;
+
+  constructor(laborDataBase: LaborDataBase) {
+    this.laborDataBase = laborDataBase;
+  }
+
   async create(labor: LaborDto, username: string): Promise<CreatedLaborDto> {
-    if (await laborDataBase.hasWith('internalCode', labor.internalCode)) {
+    if (await this.laborDataBase.hasWith('internalCode', labor.internalCode)) {
       throw new CustomError('Data with same internal code already exists', 409);
     }
 
@@ -22,18 +28,18 @@ class LaborServices
       ...labor,
     };
 
-    await laborDataBase.create(new CreatedLaborDto(createdLabor));
+    await this.laborDataBase.create(new CreatedLaborDto(createdLabor));
 
     return createdLabor;
   }
 
   async getAll(): Promise<CreatedLaborDto[]> {
-    const allLabors: CreatedLaborDto[] = await laborDataBase.getAll();
+    const allLabors: CreatedLaborDto[] = await this.laborDataBase.getAll();
     return allLabors;
   }
 
   async getOne(laborId: string): Promise<CreatedLaborDto> {
-    const data: CreatedLaborDto = await laborDataBase.getOne(laborId);
+    const data: CreatedLaborDto = await this.laborDataBase.getOne(laborId);
 
     if (!data) throw new CustomError('Data not found', 404);
 
@@ -51,7 +57,7 @@ class LaborServices
       ...new UpdateStamp(),
     };
 
-    await laborDataBase.update(
+    await this.laborDataBase.update(
       laborId,
       new PartialCreatedLaborDto(dataUpdates)
     );
@@ -59,4 +65,5 @@ class LaborServices
   }
 }
 
-export default new LaborServices();
+export default new LaborServices(laborDataBase);
+export { LaborServices };

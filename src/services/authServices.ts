@@ -73,3 +73,4 @@ class AuthServices {
 }
 
 export default new AuthServices(Auth);
+export { AuthServices };

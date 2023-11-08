@@ -80,3 +80,4 @@ class InventoryServices
 }
 
 export default new InventoryServices(inventoryDatabase);
+export { InventoryServices };

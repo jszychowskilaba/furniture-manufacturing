@@ -6,12 +6,18 @@ import { CreatedLaborDto } from '../dtos/labor/CreatedLaborDto';
 import { CreatedOrderDto } from '../dtos/order/CreatedOrderDto';
 import { OrderDto } from '../dtos/order/OrderDto';
 
-import OrderDataBase from '../repositories/OrderDataBase';
+import orderDataBase, { OrderDataBase } from '../repositories/OrderDataBase';
 import { CustomError } from '../helpers/CustomError';
 import orderHelper from './helpers/OrderHelper';
 import { CreatedOrder, PartialOrder } from '../types/Order';
 
 class OrderServices {
+  private orderDataBase: OrderDataBase;
+
+  constructor(orderDataBase: OrderDataBase) {
+    this.orderDataBase = orderDataBase;
+  }
+
   async createOrder(order: OrderDto, username: string) {
     const materials: CreatedMaterialDto[] =
       await orderHelper.getAll<CreatedMaterialDto>('material', order.materials);
@@ -51,7 +57,7 @@ class OrderServices {
       createdOrder.id
     );
 
-    await OrderDataBase.createOrder(
+    await this.orderDataBase.createOrder(
       new PartialCreatedOrderDto(createdOrder),
       orderHasLabor.map((el) => new OrderHasLaborDto(el)),
       orderHasMaterial.map((el) => new OrderHasMaterialDto(el)),
@@ -62,12 +68,12 @@ class OrderServices {
   }
 
   async getOneOrder(orderId: string): Promise<CreatedOrderDto> {
-    const order: CreatedOrder = await OrderDataBase.getOrder(orderId);
+    const order: CreatedOrder = await this.orderDataBase.getOrder(orderId);
 
     if (!order) throw new CustomError('Order not found', 404);
 
-    const materials = await OrderDataBase.getOrderMaterials(orderId);
-    const labors = await OrderDataBase.getOrderLabors(orderId);
+    const materials = await this.orderDataBase.getOrderMaterials(orderId);
+    const labors = await this.orderDataBase.getOrderLabors(orderId);
 
     const createdOrder: CreatedOrder = {
       ...order,
@@ -79,7 +85,7 @@ class OrderServices {
   }
 
   async getAllOrders(): Promise<CreatedOrderDto[]> {
-    const orderIds = await OrderDataBase.getAllOrderIds();
+    const orderIds = await this.orderDataBase.getAllOrderIds();
     const createdOrders: CreatedOrderDto[] = [];
 
     for (const orderId of orderIds) {
@@ -147,7 +153,7 @@ class OrderServices {
       updatedOrder.createdAt
     );
 
-    await OrderDataBase.updateOrder(
+    await this.orderDataBase.updateOrder(
       new CreatedOrderDto(oldOrder),
       new PartialCreatedOrderDto(updatedOrder),
       orderHasLabor.map((el) => new OrderHasLaborDto(el)),
@@ -183,7 +189,8 @@ class OrderServices {
         403
       );
     }
-    await OrderDataBase.produce(manufactureOrder, quantity);
+    await this.orderDataBase.produce(manufactureOrder, quantity);
   }
 }
-export default new OrderServices();
+export default new OrderServices(orderDataBase);
+export { OrderServices };
