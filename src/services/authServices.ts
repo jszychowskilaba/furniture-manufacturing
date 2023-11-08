@@ -1,10 +1,16 @@
 import { UserCredentials } from '../types/types';
 import updateTokens from './helpers/updateTokens';
 import isValidCredentials from './helpers/isValidCredentials';
-import Auth from '../repositories/AuthDataBase';
+import Auth, { AuthDataBase } from '../repositories/AuthDataBase';
 import { CustomError } from '../helpers/CustomError';
 
 class AuthServices {
+  private Auth: AuthDataBase;
+
+  constructor(AuthDataBase: AuthDataBase) {
+    this.Auth = AuthDataBase;
+  }
+
   /**
    * Login user if user credentials are valid. It works by generating
    * oauth tokens, storing them in AuthDB and returning them
@@ -22,21 +28,21 @@ class AuthServices {
    * @param token The token
    */
   async logout(token: string): Promise<void> {
-    const username = await Auth.getUsernameFromToken(token);
+    const username = await this.Auth.getUsernameFromToken(token);
 
     if (!username) {
       throw new CustomError('Invalid token', 401);
     }
 
-    const refreshToken = await Auth.getAsync(`${username}.refreshToken`);
+    const refreshToken = await this.Auth.getAsync(`${username}.refreshToken`);
 
     // Deleting tokens
-    await Auth.deleteAsync(token);
-    await Auth.deleteAsync(`${username}.token`);
+    await this.Auth.deleteAsync(token);
+    await this.Auth.deleteAsync(`${username}.token`);
 
     if (refreshToken) {
-      await Auth.deleteAsync(refreshToken);
-      await Auth.deleteAsync(`${username}.refreshToken`);
+      await this.Auth.deleteAsync(refreshToken);
+      await this.Auth.deleteAsync(`${username}.refreshToken`);
     }
   }
 
@@ -47,10 +53,10 @@ class AuthServices {
    * @returns The new tokens
    */
   async refreshTokens(refreshToken: string): Promise<string[]> {
-    const tokenType = await Auth.getTokenType(refreshToken);
+    const tokenType = await this.Auth.getTokenType(refreshToken);
 
     if (tokenType === 'refreshToken') {
-      const username = await Auth.getUsernameFromToken(refreshToken);
+      const username = await this.Auth.getUsernameFromToken(refreshToken);
 
       if (username) {
         const userCredentials: UserCredentials = {
@@ -66,4 +72,4 @@ class AuthServices {
   }
 }
 
-export default new AuthServices();
+export default new AuthServices(Auth);

@@ -84,3 +84,4 @@ class AuthDataBase {
 }
 
 export default new AuthDataBase();
+export { AuthDataBase };
