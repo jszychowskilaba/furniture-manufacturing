@@ -21,4 +21,4 @@ jobs:
       - name: Compile JavaScript code
         run: npx tsc
       - name: Compose docker testing container
-        run: docker compose -f docker-compose.test.yml up
+        run: docker compose -f docker-compose.test.yml run --rm app-test-run
