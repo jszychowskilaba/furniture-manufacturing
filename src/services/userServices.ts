@@ -2,7 +2,7 @@ import { PartialCreatedUserDto } from '../dtos/user/PartialCreatedUserDto';
 import { CreatedUserDto } from '../dtos/user/CreatedUserDto';
 import { PartialUserDto } from '../dtos/user/PartialUserDto';
 import { UserDto } from '../dtos/user/UserDto';
-import { CreatedUser, PartialCreatedUser, PartialUser } from '../types/User';
+import { PartialCreatedUser, PartialUser } from '../types/User';
 import { CreationStamp } from './helpers/CreationStamp';
 import userDataBase, { UserDataBase } from '../repositories/UserDataBase';
 import { CustomError } from '../helpers/CustomError';
@@ -23,19 +23,18 @@ class UserServices
       throw new CustomError('Username already in use.', 409);
     }
 
-    const createdData: CreatedUser = {
+    const createdDataDto = new CreatedUserDto({
       ...new CreationStamp(username),
       ...user,
       ...new Crypto().createPassword(user.password as string),
-    };
+    });
 
-    await this.userDataBase.create(new CreatedUserDto(createdData));
+    await this.userDataBase.create(createdDataDto);
 
-    createdData.hashedPassword = '*';
-    createdData.salt = '*';
-    createdData.password = '*';
+    createdDataDto.hashedPassword = '*';
+    createdDataDto.salt = '*';
 
-    return createdData;
+    return createdDataDto;
   }
 
   async getAll(): Promise<CreatedUserDto[]> {
@@ -63,25 +62,25 @@ class UserServices
     userId: string,
     userChanges: PartialUser
   ): Promise<CreatedUserDto> {
-    let newUserChanges: PartialCreatedUser = {};
+    let newUserChangesDto: PartialCreatedUser = {};
 
     if (userChanges.password) {
       const password = userChanges.password;
       delete userChanges.password;
 
-      newUserChanges = {
+      newUserChangesDto =  new PartialCreatedUserDto({
         ...userChanges,
         ...new Crypto().createPassword(password),
-      };
+      });
     } else {
-      newUserChanges = {
+      newUserChangesDto = new PartialCreatedUserDto({
         ...userChanges,
-      };
+      });
     }
 
     await this.userDataBase.update(
       userId,
-      new PartialCreatedUserDto(newUserChanges)
+      newUserChangesDto
     );
 
     return this.getOne(userId);

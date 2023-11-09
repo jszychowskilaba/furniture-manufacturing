@@ -75,13 +75,13 @@ class OrderServices {
     const materials = await this.orderDataBase.getOrderMaterials(orderId);
     const labors = await this.orderDataBase.getOrderLabors(orderId);
 
-    const createdOrder: CreatedOrder = {
+    const createdOrderDto = new CreatedOrderDto({
       ...order,
       materials: [...materials],
       labors: [...labors],
-    };
+    });
 
-    return new CreatedOrderDto(createdOrder);
+    return createdOrderDto;
   }
 
   async getAllOrders(): Promise<CreatedOrderDto[]> {

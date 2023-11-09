@@ -4,7 +4,6 @@ import { PartialMaterialDto } from '../dtos/inventory/PartialMaterialDto';
 import { MaterialDto } from '../dtos/inventory/MaterialDto';
 import { InventoryDataBase } from '../repositories/InventoryDataBase';
 import inventoryDatabase from '../repositories/InventoryDataBase';
-import { CreatedMaterial, PartialCreatedMaterial } from '../types/Material';
 import { CreationStamp } from './helpers/CreationStamp';
 import { CustomError } from '../helpers/CustomError';
 import { UpdateStamp } from './helpers/UpdateStamp';
@@ -32,16 +31,14 @@ class InventoryServices
       throw new CustomError('Data with same internal code already exists', 409);
     }
 
-    const createdMaterial: CreatedMaterial = {
+    const createdMaterialDto = new CreatedMaterialDto({
       ...new CreationStamp(username),
       ...material,
-    };
+    });
 
-    await this.inventoryDatabase.create(
-      new CreatedMaterialDto(createdMaterial)
-    );
+    await this.inventoryDatabase.create(createdMaterialDto);
 
-    return createdMaterial;
+    return createdMaterialDto;
   }
 
   async getAll(): Promise<CreatedMaterialDto[]> {
@@ -66,15 +63,12 @@ class InventoryServices
   ): Promise<CreatedMaterialDto> {
     await this.getOne(materialId); // Throws error if data not exists
 
-    const dataUpdates: PartialCreatedMaterial = {
+    const dataUpdatesDto = new PartialCreatedMaterialDto({
       ...materialChanges,
       ...new UpdateStamp(),
-    };
+    });
 
-    await this.inventoryDatabase.update(
-      materialId,
-      new PartialCreatedMaterialDto(dataUpdates)
-    );
+    await this.inventoryDatabase.update(materialId, dataUpdatesDto);
     return this.getOne(materialId);
   }
 }

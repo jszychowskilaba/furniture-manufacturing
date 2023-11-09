@@ -1,6 +1,3 @@
-import { CreatedMaterialDto } from '../dtos/inventory/CreatedMaterialDto';
-import { PartialMaterialDto } from '../dtos/inventory/PartialMaterialDto';
-import { MaterialDto } from '../dtos/inventory/MaterialDto';
 import { InventoryServices } from '../services/inventoryServices';
 import inventoryServices from '../services/inventoryServices';
 import { Request, Response, NextFunction } from 'express';
@@ -14,11 +11,10 @@ class InventoryController {
 
   createMaterial = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const createdData: CreatedMaterialDto =
-        await this.inventoryServices.create(
-          new MaterialDto(req.body),
-          req.headers.username as string
-        );
+      const createdData = await this.inventoryServices.create(
+        req.body,
+        req.headers.username as string
+      );
       res.status(201).json(createdData);
     } catch (error) {
       next(error);
@@ -27,7 +23,7 @@ class InventoryController {
 
   getAllMaterials = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data: CreatedMaterialDto[] = await this.inventoryServices.getAll();
+      const data = await this.inventoryServices.getAll();
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -37,9 +33,7 @@ class InventoryController {
   getOneMaterial = async (req: Request, res: Response, next: NextFunction) => {
     const materialId = req.params.id;
     try {
-      const data: CreatedMaterialDto = await this.inventoryServices.getOne(
-        materialId
-      );
+      const data = await this.inventoryServices.getOne(materialId);
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -48,9 +42,9 @@ class InventoryController {
 
   updateMaterial = async (req: Request, res: Response, next: NextFunction) => {
     const materialId = req.params.id as string;
-    const materialChanges = new PartialMaterialDto(req.body);
+    const materialChanges = req.body;
     try {
-      const material: CreatedMaterialDto = await this.inventoryServices.update(
+      const material = await this.inventoryServices.update(
         materialId,
         materialChanges
       );

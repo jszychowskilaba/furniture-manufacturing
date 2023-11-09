@@ -1,6 +1,3 @@
-import { PartialOrderDto } from '../dtos/order/PartialOrderDto';
-import { CreatedOrderDto } from '../dtos/order/CreatedOrderDto';
-import { OrderDto } from '../dtos/order/OrderDto';
 import { Request, Response, NextFunction } from 'express';
 import orderServices, { OrderServices } from '../services/orderServices';
 import { CustomError } from '../helpers/CustomError';
@@ -14,11 +11,10 @@ class OrderController {
 
   createOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const createdOrder: CreatedOrderDto =
-        await this.orderServices.createOrder(
-          new OrderDto(req.body),
-          req.headers.username as string
-        );
+      const createdOrder = await this.orderServices.createOrder(
+        req.body,
+        req.headers.username as string
+      );
 
       res.status(201).json(createdOrder);
     } catch (error) {
@@ -29,8 +25,7 @@ class OrderController {
   getOneOrder = async (req: Request, res: Response, next: NextFunction) => {
     const orderId = req.params.id;
     try {
-      const createdOrder: CreatedOrderDto =
-        await this.orderServices.getOneOrder(orderId);
+      const createdOrder = await this.orderServices.getOneOrder(orderId);
       res.status(200).json(createdOrder);
     } catch (error) {
       next(error);
@@ -39,8 +34,7 @@ class OrderController {
 
   getAllOrders = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const createdOrders: CreatedOrderDto[] =
-        await this.orderServices.getAllOrders();
+      const createdOrders = await this.orderServices.getAllOrders();
       res.status(200).json(createdOrders);
     } catch (error) {
       console.log(error);
@@ -70,11 +64,10 @@ class OrderController {
 
   updateOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const createdOrder: CreatedOrderDto =
-        await this.orderServices.updateOrder(
-          new PartialOrderDto(req.body),
-          req.params.id
-        );
+      const createdOrder = await this.orderServices.updateOrder(
+        req.body,
+        req.params.id
+      );
       res.status(200).json(createdOrder);
     } catch (error) {
       next(error);
