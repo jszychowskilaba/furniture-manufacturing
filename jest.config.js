@@ -8,7 +8,7 @@ module.exports = {
       functions: 65,
       lines: 65,
       statements: 65,
-      collectCoverage: false,
+      collectCoverage: true,
     },
   },
 };
