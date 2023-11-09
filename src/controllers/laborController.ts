@@ -1,13 +1,19 @@
 import { PartialLaborDto } from '../dtos/labor/PartialLaborDto';
 import { CreatedLaborDto } from '../dtos/labor/CreatedLaborDto';
 import { LaborDto } from '../dtos/labor/LaborDto';
+import laborServices, { LaborServices } from '../services/laborServices';
 import { Request, Response, NextFunction } from 'express';
-import laborServices from '../services/laborServices';
 
 class LaborController {
+  private laborServices: LaborServices;
+
+  constructor(laborServices: LaborServices) {
+    this.laborServices = laborServices;
+  }
+
   createLabor = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const createdData: CreatedLaborDto = await laborServices.create(
+      const createdData: CreatedLaborDto = await this.laborServices.create(
         new LaborDto(req.body),
         req.headers.username as string
       );
@@ -19,7 +25,7 @@ class LaborController {
 
   getAllLabors = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data: CreatedLaborDto[] = await laborServices.getAll();
+      const data: CreatedLaborDto[] = await this.laborServices.getAll();
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -29,7 +35,7 @@ class LaborController {
   getOneLabor = async (req: Request, res: Response, next: NextFunction) => {
     const laborId = req.params.id;
     try {
-      const data: CreatedLaborDto = await laborServices.getOne(laborId);
+      const data: CreatedLaborDto = await this.laborServices.getOne(laborId);
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -40,7 +46,7 @@ class LaborController {
     const laborId = req.params.id as string;
     const laborChanges = new PartialLaborDto(req.body);
     try {
-      const labor: CreatedLaborDto = await laborServices.update(
+      const labor: CreatedLaborDto = await this.laborServices.update(
         laborId,
         laborChanges
       );
@@ -51,4 +57,4 @@ class LaborController {
   };
 }
 
-export default new LaborController();
+export default new LaborController(laborServices);

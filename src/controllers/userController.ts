@@ -1,13 +1,19 @@
 import { PartialUserDto } from '../dtos/user/PartialUserDto';
 import { CreatedUserDto } from '../dtos/user/CreatedUserDto';
 import { UserDto } from '../dtos/user/UserDto';
+import userServices, { UserServices } from '../services/userServices';
 import { Request, Response, NextFunction } from 'express';
-import userServices from '../services/userServices';
 
 class UserController {
+  private userServices: UserServices;
+
+  constructor(userServices: UserServices) {
+    this.userServices = userServices;
+  }
+
   createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const createdData: CreatedUserDto = await userServices.create(
+      const createdData: CreatedUserDto = await this.userServices.create(
         new UserDto(req.body),
         req.headers.username as string
       );
@@ -19,7 +25,7 @@ class UserController {
 
   getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data: CreatedUserDto[] = await userServices.getAll();
+      const data: CreatedUserDto[] = await this.userServices.getAll();
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -29,7 +35,7 @@ class UserController {
   getOneUser = async (req: Request, res: Response, next: NextFunction) => {
     const materialId = req.params.id;
     try {
-      const data: CreatedUserDto = await userServices.getOne(materialId);
+      const data: CreatedUserDto = await this.userServices.getOne(materialId);
       res.status(200).json(data);
     } catch (error) {
       next(error);
@@ -40,7 +46,7 @@ class UserController {
     const userId = req.params.id as string;
     const userChanges = new PartialUserDto(req.body);
     try {
-      const user: CreatedUserDto = await userServices.update(
+      const user: CreatedUserDto = await this.userServices.update(
         userId,
         userChanges
       );
@@ -51,4 +57,4 @@ class UserController {
   };
 }
 
-export default new UserController();
+export default new UserController(userServices);

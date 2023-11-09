@@ -2,46 +2,57 @@ import { PartialOrderDto } from '../dtos/order/PartialOrderDto';
 import { CreatedOrderDto } from '../dtos/order/CreatedOrderDto';
 import { OrderDto } from '../dtos/order/OrderDto';
 import { Request, Response, NextFunction } from 'express';
-import orderServices from '../services/orderServices';
+import orderServices, { OrderServices } from '../services/orderServices';
 import { CustomError } from '../helpers/CustomError';
 
 class OrderController {
-  async createOrder(req: Request, res: Response, next: NextFunction) {
+  private orderServices: OrderServices;
+
+  constructor(orderServices: OrderServices) {
+    this.orderServices = orderServices;
+  }
+
+  createOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const createdOrder: CreatedOrderDto = await orderServices.createOrder(
-        new OrderDto(req.body),
-        req.headers.username as string
-      );
+      const createdOrder: CreatedOrderDto =
+        await this.orderServices.createOrder(
+          new OrderDto(req.body),
+          req.headers.username as string
+        );
 
       res.status(201).json(createdOrder);
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  async getOneOrder(req: Request, res: Response, next: NextFunction) {
+  getOneOrder = async (req: Request, res: Response, next: NextFunction) => {
     const orderId = req.params.id;
     try {
-      const createdOrder: CreatedOrderDto = await orderServices.getOneOrder(
-        orderId
-      );
+      const createdOrder: CreatedOrderDto =
+        await this.orderServices.getOneOrder(orderId);
       res.status(200).json(createdOrder);
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  async getAllOrders(req: Request, res: Response, next: NextFunction) {
+  getAllOrders = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const createdOrders: CreatedOrderDto[] =
-        await orderServices.getAllOrders();
+        await this.orderServices.getAllOrders();
       res.status(200).json(createdOrders);
     } catch (error) {
+      console.log(error);
       next(error);
     }
-  }
+  };
 
-  async manufactureOrder(req: Request, res: Response, next: NextFunction) {
+  manufactureOrder = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const orderId = req.params.id;
 
     try {
@@ -50,24 +61,25 @@ class OrderController {
       if (isNaN(quantity) || quantity <= 0)
         throw new CustomError('Quantity must be > 0', 400);
 
-      await orderServices.manufactureOrder(quantity, orderId);
+      await this.orderServices.manufactureOrder(quantity, orderId);
       res.status(200).json(`Manufactured ${quantity} of order ${orderId}`);
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  async updateOrder(req: Request, res: Response, next: NextFunction) {
+  updateOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const createdOrder: CreatedOrderDto = await orderServices.updateOrder(
-        new PartialOrderDto(req.body),
-        req.params.id
-      );
+      const createdOrder: CreatedOrderDto =
+        await this.orderServices.updateOrder(
+          new PartialOrderDto(req.body),
+          req.params.id
+        );
       res.status(200).json(createdOrder);
     } catch (error) {
       next(error);
     }
-  }
+  };
 }
 
-export default new OrderController();
+export default new OrderController(orderServices);

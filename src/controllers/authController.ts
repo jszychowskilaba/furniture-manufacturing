@@ -1,17 +1,23 @@
 import { Request, Response, NextFunction } from 'express';
 import { CustomError } from '../helpers/CustomError';
-import authServices from '../services/authServices';
+import authServices, { AuthServices } from '../services/authServices';
 import { UserCredentials } from '../types/types';
 import 'dotenv/config';
 
 class AuthController {
+  private authServices: AuthServices;
+
+  constructor(authServices: AuthServices) {
+    this.authServices = authServices;
+  }
+
   /**
    * Perform user login given user credentials in a request. If
    * login successful, response with a new pair of token and refreshToken for OAuth
    * @param req The request
    * @param res The response
    */
-  async login(req: Request, res: Response, next: NextFunction) {
+  login = async (req: Request, res: Response, next: NextFunction) => {
     const body = req.body;
     try {
       if (!body.client_id || !body.client_secret) {
@@ -26,7 +32,7 @@ class AuthController {
         client_secret: body.client_secret,
       };
 
-      const [newToken, newRefreshToken] = await authServices.login(
+      const [newToken, newRefreshToken] = await this.authServices.login(
         userCredentials
       );
 
@@ -38,7 +44,7 @@ class AuthController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   /**
    * Performs user log out. If logout successful, responds with status 204.
@@ -46,12 +52,12 @@ class AuthController {
    * @param res The response
    * @returns
    */
-  async logout(req: Request, res: Response, next: NextFunction) {
+  logout = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.header('authorization');
 
     try {
       if (token) {
-        await authServices.logout(token);
+        await this.authServices.logout(token);
         res.status(204).json('');
       } else {
         throw new CustomError('Missing token', 400);
@@ -59,7 +65,7 @@ class AuthController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
   /**
    * Response with new authentication tokens given a valid refresh token
@@ -67,14 +73,14 @@ class AuthController {
    * @param req The request
    * @param res The response
    */
-  async refreshTokens(req: Request, res: Response, next: NextFunction) {
+  refreshTokens = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const oldRefreshToken = req.body.refresh_token;
       if (!oldRefreshToken) {
         throw new CustomError('Missing refresh token', 400);
       }
 
-      const [newToken, newRefreshToken] = await authServices.refreshTokens(
+      const [newToken, newRefreshToken] = await this.authServices.refreshTokens(
         oldRefreshToken
       );
 
@@ -86,7 +92,7 @@ class AuthController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 }
 
-export default new AuthController();
+export default new AuthController(authServices);
