@@ -4,7 +4,7 @@
   "description": "Furniture Manufacturing API System that provides an interface for integrating a bespoke ordering and manufacturing system into your business infrastructure",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand --forceExit",
+    "test": "jest --runInBand --forceExit --coverage",
     "start": "nodemon ./src/server.ts",
     "try": "nodemon ./src/test.ts",
     "db": "nodemon ./src/databases/DataBase/initialization/index.ts"
