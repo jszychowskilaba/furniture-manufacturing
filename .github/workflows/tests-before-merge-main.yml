@@ -1,4 +1,4 @@
-name: Node.js CI
+name: App CI / Tests before main merge
 
 on:
   push:
@@ -17,5 +17,5 @@ jobs:
         run: npm ci
       - name: Compile JavaScript code
         run: npx tsc
-      - name: Compose docker testing container
+      - name: Test production and dev app in docker container
         run: docker compose -f docker-compose.test.yml run --rm app-test-run
