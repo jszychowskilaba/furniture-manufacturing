@@ -3,6 +3,7 @@ import { PartialCreatedMaterial } from '../types/Material';
 import queryCreator from './helpers/QueryCreator';
 import { pool } from '../databases/DataBase/Pool';
 import { IDataBase } from '../types/IDataBase';
+import { CustomError } from '../helpers/CustomError';
 
 class InventoryDataBase
   implements IDataBase<CreatedMaterialDto, PartialCreatedMaterial>
@@ -46,7 +47,11 @@ class InventoryDataBase
       materialId
     );
 
-    return new CreatedMaterialDto((await pool.query(query)).rows[0]);
+    const material = (await pool.query(query)).rows[0];
+
+    if (!material) throw new CustomError('Material not found', 404);
+
+    return new CreatedMaterialDto(material);
   }
 
   async update(

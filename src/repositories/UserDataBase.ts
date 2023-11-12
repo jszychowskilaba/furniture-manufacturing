@@ -3,6 +3,7 @@ import { PartialCreatedUser } from '../types/User';
 import queryCreator from './helpers/QueryCreator';
 import { pool } from '../databases/DataBase/Pool';
 import { IDataBase } from '../types/IDataBase';
+import { CustomError } from '../helpers/CustomError';
 
 class UserDataBase implements IDataBase<CreatedUserDto, PartialCreatedUser> {
   private tableName: string;
@@ -43,7 +44,10 @@ class UserDataBase implements IDataBase<CreatedUserDto, PartialCreatedUser> {
       userId
     );
 
-    return new CreatedUserDto((await pool.query(query)).rows[0]);
+    const user = (await pool.query(query)).rows[0];
+    if (!user) throw new CustomError('User not found', 404);
+
+    return new CreatedUserDto(user);
   }
 
   async update(userId: string, userUpdates: PartialCreatedUser): Promise<void> {

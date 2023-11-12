@@ -3,6 +3,7 @@ import { PartialCreatedLabor } from '../types/Labor';
 import queryCreator from './helpers/QueryCreator';
 import { pool } from '../databases/DataBase/Pool';
 import { IDataBase } from '../types/IDataBase';
+import { CustomError } from '../helpers/CustomError';
 
 class LaborDataBase implements IDataBase<CreatedLaborDto, PartialCreatedLabor> {
   private tableName;
@@ -45,7 +46,10 @@ class LaborDataBase implements IDataBase<CreatedLaborDto, PartialCreatedLabor> {
       laborId
     );
 
-    return new CreatedLaborDto((await pool.query(query)).rows[0]);
+    const labor = (await pool.query(query)).rows[0];
+    if (!labor) throw new CustomError('Labor not found', 404);
+
+    return new CreatedLaborDto(labor);
   }
 
   async update(
