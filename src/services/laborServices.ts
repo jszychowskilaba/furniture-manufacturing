@@ -40,8 +40,6 @@ class LaborServices
   async getOne(laborId: string): Promise<CreatedLaborDto> {
     const data: CreatedLaborDto = await this.laborDataBase.getOne(laborId);
 
-    if (!data) throw new CustomError('Data not found', 404);
-
     return data;
   }
 

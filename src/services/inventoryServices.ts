@@ -52,8 +52,6 @@ class InventoryServices
       materialId
     );
 
-    if (!data) throw new CustomError('Data not found', 404);
-
     return data;
   }
 
