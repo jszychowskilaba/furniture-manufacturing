@@ -80,7 +80,7 @@ describe('Testing userRoutes', () => {
     });
   });
 
-  test('Expect GET: /api/v1/inventory/ to return all inventory', async () => {
+  test('Expect GET: /api/v1/user/ to return all users', async () => {
     // Adding extra user
     const user2: any = {
       username: generateRandomId(),
@@ -107,5 +107,71 @@ describe('Testing userRoutes', () => {
     for (const user of res.body) {
       Object.keys(user1).forEach((key) => expect(user[key]).not.toBeNull());
     }
+  });
+
+  test('Expect PATCH: /api/v1/user to update user', async () => {
+    const user1: any = {
+      username: generateRandomId(),
+      email: generateRandomId(),
+      password: 'secret',
+      name: 'John',
+      lastName: 'Doe',
+      role: 'sales',
+    };
+
+    const update = {
+      email: generateRandomId(),
+      lastName: generateRandomId(),
+    };
+
+    await req
+      .post('/api/v1/user')
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(user1)
+      .expect(201);
+
+    const res = await req
+      .patch(`/api/v1/user/${user1.username}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(update)
+      .expect(200);
+
+    expect(res.body).toMatchObject(update);
+  });
+
+  test('Expect POST: /api/v1/user to res status 409 if user exists', async () => {
+    const user1: any = {
+      username: generateRandomId(),
+      email: generateRandomId(),
+      password: 'secret',
+      name: 'John',
+      lastName: 'Doe',
+      role: 'sales',
+    };
+
+    await req
+      .post('/api/v1/user')
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(user1)
+      .expect(201);
+
+    await req
+      .post('/api/v1/user')
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(user1)
+      .expect(409);
+  });
+
+  test('Expect GET: /api/v1/${user} to rest status 404 if user not exists', async () => {
+    await req
+      .get(`/api/v1/user/${generateRandomId()}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(user1)
+      .expect(404);
   });
 });

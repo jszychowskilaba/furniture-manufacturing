@@ -18,7 +18,7 @@ describe('Testing authenticateUser middleware', () => {
       .post('/api/v1/auth/login')
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .send('client_id=admin&client_secret=admin')
-      .expect(202);
+      .expect(201);
 
     authTokens.access_token = res.body.access_token;
     authTokens.refresh_token = res.body.refresh_token;

@@ -64,4 +64,16 @@ describe('Testing authRoutes', () => {
 
     expect(res.body).toEqual({});
   });
+
+  test('Expect POST: /api/v1/auth/login with missing credentials to res status 400', async () => {
+    await req.post('/api/v1/auth/login').set('authorization', ``).expect(400);
+  });
+
+  test('Expect POST: /api/v1/auth/refresh-tokens with missing token to res status 400', async () => {
+    await req
+      .post('/api/v1/auth/refresh-tokens')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .send(`refresh_token=`)
+      .expect(400);
+  });
 });

@@ -123,4 +123,41 @@ describe('Testing authRoutes', () => {
       expect(res.body[key]).toBe(patchMaterial[key])
     );
   });
+
+  test('Expect POST: /api/v1/inventory to res with status 409 when creating equal materials', async () => {
+    await req
+      .post('/api/v1/inventory')
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(material1)
+      .expect(201);
+
+    await req
+      .post('/api/v1/inventory')
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(material1)
+      .expect(409);
+  });
+
+  test('Expect GET: /api/v1/inventory/noExistent to return 404 if material do not exists', async () => {
+    const randomName = generateRandomId();
+    await req
+      .get(`/api/v1/inventory/${randomName}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .expect(404);
+  });
+
+  test('Expect PATCH: /api/v1/inventory/noExistent to return 404 if material do not exists', async () => {
+    const randomName = generateRandomId();
+    const update = {status: "active"}
+
+    await req
+      .patch(`/api/v1/inventory/${randomName}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(update)
+      .expect(404);
+  });
 });

@@ -157,6 +157,16 @@ describe('Testing orderRoutes', () => {
     );
   });
 
+  test('Expect GET: /api/v1/order/${orderId} to get the manufactureOrder', async () => {
+    const mo = await req
+      .get(`/api/v1/orders/${createdManufactureOrder.id}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .expect(200);
+
+    expect(mo.body).toEqual(createdManufactureOrder);
+  });
+
   test('Expect materials stock and reserved stock to be updated after a order', async () => {
     const res1 = await req
       .get(`/api/v1/inventory/${createdMaterial1.id}`)
@@ -206,5 +216,100 @@ describe('Testing orderRoutes', () => {
 
     expect(res2.body.stock).toBe(material2.stock - 10 * 3);
     expect(res2.body.reservedStock).toBe(10 * 1);
+  });
+
+  test('Expect GET: /api/v1/order/ to get all orders', async () => {
+    const res = await req
+      .get(`/api/v1/orders/`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .expect(200);
+
+    for (const order of res.body) {
+      Object.getOwnPropertyNames(createdManufactureOrder).forEach((key) =>
+        expect(order[key]).not.toBeNull()
+      );
+    }
+  });
+
+  test('Expect POST: /api/v1/order to res status 422 if order already exists', async () => {
+    manufactureOrder = {
+      status: 'inProduction',
+      internalCode: generateRandomId(),
+      description: 'Basic wood table for client Bob Doe',
+      unitsToManufacture: 3,
+      internalNotes: 'See design sent to email @July 23',
+      materials: [
+        { id: createdMaterial1.id, quantity: 20 },
+        { id: createdMaterial2.id, quantity: 10 },
+      ],
+      labors: [
+        { id: createdLabor1.id, quantity: 10 },
+        { id: createdLabor2.id, quantity: 20 },
+      ],
+    };
+
+    await req
+      .post('/api/v1/orders')
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(manufactureOrder)
+      .expect(201);
+
+    await req
+      .post('/api/v1/orders')
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(manufactureOrder)
+      .expect(422);
+  });
+
+  test('Expect GET: /api/v1/order/${orderId} to res 404 if order do not exist', async () => {
+    await req
+      .get(`/api/v1/orders/${generateRandomId()}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .expect(404);
+  });
+
+  test('Expect POST: /v1/orders/{orderID}/manufactureOrder to res status 400 if quantity is negative', async () => {
+    const toManufacture = {
+      quantity: -1,
+    };
+
+    await req
+      .post(`/api/v1/orders/${createdManufactureOrder.id}/manufactureOrder`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(toManufacture)
+      .expect(400);
+  });
+
+  test('Expect UPDATE: /v1/orders/{orderID} to update order', async () => {
+    const update = {
+      internalCode: generateRandomId(),
+    };
+
+    const res = await req
+      .patch(`/api/v1/orders/${createdManufactureOrder.id}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(update)
+      .expect(200);
+
+    expect(res.body.internalCode).toEqual(update.internalCode);
+  });
+
+  test('Expect UPDATE: /v1/orders/{orderID} to res status 404 if order do not exist', async () => {
+    const update = {
+      internalCode: generateRandomId(),
+    };
+
+   await req
+      .patch(`/api/v1/orders/${generateRandomId()}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(update)
+      .expect(404);
   });
 });

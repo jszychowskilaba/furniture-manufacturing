@@ -115,4 +115,38 @@ describe('Testing authRoutes', () => {
       expect(res.body[key]).toBe(patchLabor[key])
     );
   });
+
+  test('Expect POST: /api/v1/labor res status to be 409 if labor already exists', async () => {
+    await req
+      .post('/api/v1/labor')
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(labor1)
+      .expect(201);
+
+    await req
+      .post('/api/v1/labor')
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(labor1)
+      .expect(409);
+  });
+
+  test('Expect GET: /api/v1/labor/${laborId} to rest status 404 if labor not exists', async () => {
+    await req
+      .get(`/api/v1/labor/${generateRandomId()}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .expect(404);
+  });
+
+  test('Expect UPDATE: /api/v1/labor/${laborId} to rest status 404 if labor not exists', async () => {
+    const update = { status: 'active' };
+    await req
+      .patch(`/api/v1/labor/${generateRandomId()}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(update)
+      .expect(404);
+  });
 });
