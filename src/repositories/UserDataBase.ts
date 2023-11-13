@@ -37,6 +37,16 @@ class UserDataBase implements IDataBase<CreatedUserDto, PartialCreatedUser> {
     return users;
   }
 
+  async getByQuery(queryParams: object): Promise<CreatedUserDto[]> {
+    const query = queryCreator.selectByQueryParams(this.tableName, queryParams);
+
+    const filteredMaterials = (await pool.query(query)).rows.map(
+      (filteredMaterial) => new CreatedUserDto(filteredMaterial)
+    );
+
+    return filteredMaterials;
+  }
+
   async getOne(userId: string): Promise<CreatedUserDto> {
     const query = queryCreator.selectByTableColumnValue(
       this.tableName,

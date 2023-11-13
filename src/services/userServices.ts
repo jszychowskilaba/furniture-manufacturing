@@ -47,6 +47,19 @@ class UserServices
     return users;
   }
 
+  async getByQuery(queryParams: object): Promise<CreatedUserDto[]> {
+    const filteredUsers: CreatedUserDto[] = await this.userDataBase.getByQuery(
+      queryParams
+    );
+
+    filteredUsers.forEach((user) => {
+      user.hashedPassword = '*';
+      user.salt = '*';
+    });
+
+    return filteredUsers;
+  }
+
   async getOne(userId: string): Promise<CreatedUserDto> {
     const user: CreatedUserDto = await this.userDataBase.getOne(userId);
 
@@ -68,7 +81,7 @@ class UserServices
       const password = userChanges.password;
       delete userChanges.password;
 
-      newUserChangesDto =  new PartialCreatedUserDto({
+      newUserChangesDto = new PartialCreatedUserDto({
         ...userChanges,
         ...new Crypto().createPassword(password),
       });
@@ -78,10 +91,7 @@ class UserServices
       });
     }
 
-    await this.userDataBase.update(
-      userId,
-      newUserChangesDto
-    );
+    await this.userDataBase.update(userId, newUserChangesDto);
 
     return this.getOne(userId);
   }

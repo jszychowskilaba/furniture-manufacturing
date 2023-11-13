@@ -95,6 +95,17 @@ class OrderServices {
     return createdOrders;
   }
 
+  async getAllOrdersByQuery(queryParams: object): Promise<CreatedOrderDto[]> {
+    const orderIds = await this.orderDataBase.getOrderIdsByQuery(queryParams);
+    const createdOrders: CreatedOrderDto[] = [];
+
+    for (const orderId of orderIds) {
+      createdOrders.push(await this.getOneOrder(orderId.id));
+    }
+
+    return createdOrders;
+  }
+
   async updateOrder(
     orderChanges: PartialOrder,
     orderId: string

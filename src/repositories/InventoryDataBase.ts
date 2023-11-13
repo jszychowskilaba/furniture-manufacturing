@@ -40,6 +40,16 @@ class InventoryDataBase
     return createdMaterials;
   }
 
+  async getByQuery(queryParams: object): Promise<CreatedMaterialDto[]> {
+    const query = queryCreator.selectByQueryParams(this.tableName, queryParams);
+
+    const filteredMaterials = (await pool.query(query)).rows.map(
+      (filteredMaterial) => new CreatedMaterialDto(filteredMaterial)
+    );
+
+    return filteredMaterials;
+  }
+
   async getOne(materialId: string): Promise<CreatedMaterialDto> {
     const query = queryCreator.selectByTableColumnValue(
       this.tableName,

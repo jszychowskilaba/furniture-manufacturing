@@ -9,6 +9,17 @@ class OrderDataBase {
     return (await pool.query('SELECT "id" FROM "manufactureOrder"')).rows;
   }
 
+  async getOrderIdsByQuery(
+    queryParams: object
+  ): Promise<Array<{ id: string }>> {
+    const query = queryCreator.selectByQueryParams(
+      'manufactureOrder',
+      queryParams,
+      'id'
+    );
+    return (await pool.query(query)).rows;
+  }
+
   async getOrderMaterials(
     orderId: string
   ): Promise<Array<{ id: string; quantity: number }>> {

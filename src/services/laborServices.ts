@@ -37,6 +37,12 @@ class LaborServices
     return allLabors;
   }
 
+  async getByQuery(queryParams: object): Promise<CreatedLaborDto[]> {
+    const filteredLabors: CreatedLaborDto[] =
+      await this.laborDataBase.getByQuery(queryParams);
+    return filteredLabors;
+  }
+
   async getOne(laborId: string): Promise<CreatedLaborDto> {
     const data: CreatedLaborDto = await this.laborDataBase.getOne(laborId);
 

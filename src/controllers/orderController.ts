@@ -34,7 +34,14 @@ class OrderController {
 
   getAllOrders = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const createdOrders = await this.orderServices.getAllOrders();
+      let createdOrders;
+
+      if (Object.getOwnPropertyNames(req.query).length) {
+        createdOrders = await this.orderServices.getAllOrdersByQuery(req.query);
+      } else {
+        createdOrders = await this.orderServices.getAllOrders();
+      }
+
       res.status(200).json(createdOrders);
     } catch (error) {
       console.log(error);

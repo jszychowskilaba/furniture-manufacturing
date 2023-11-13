@@ -39,6 +39,16 @@ class LaborDataBase implements IDataBase<CreatedLaborDto, PartialCreatedLabor> {
     return createdLabors;
   }
 
+  async getByQuery(queryParams: object): Promise<CreatedLaborDto[]> {
+    const query = queryCreator.selectByQueryParams(this.tableName, queryParams);
+
+    const filteredMaterials = (await pool.query(query)).rows.map(
+      (filteredMaterial) => new CreatedLaborDto(filteredMaterial)
+    );
+
+    return filteredMaterials;
+  }
+
   async getOne(laborId: string): Promise<CreatedLaborDto> {
     const query = queryCreator.selectByTableColumnValue(
       this.tableName,

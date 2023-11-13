@@ -47,6 +47,12 @@ class InventoryServices
     return allMaterials;
   }
 
+  async getByQuery(queryParams: object): Promise<CreatedMaterialDto[]> {
+    const filteredMaterials: CreatedMaterialDto[] =
+      await this.inventoryDatabase.getByQuery(queryParams);
+    return filteredMaterials;
+  }
+
   async getOne(materialId: string): Promise<CreatedMaterialDto> {
     const data: CreatedMaterialDto = await this.inventoryDatabase.getOne(
       materialId

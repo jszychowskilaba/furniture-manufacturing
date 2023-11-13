@@ -22,7 +22,14 @@ class LaborController {
 
   getAllLabors = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = await this.laborServices.getAll();
+      let data;
+
+      if (Object.getOwnPropertyNames(req.query).length) {
+        data = await this.laborServices.getByQuery(req.query);
+      } else {
+        data = await this.laborServices.getAll();
+      }
+
       res.status(200).json(data);
     } catch (error) {
       next(error);

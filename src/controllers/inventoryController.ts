@@ -23,7 +23,14 @@ class InventoryController {
 
   getAllMaterials = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = await this.inventoryServices.getAll();
+      let data;
+
+      if (Object.getOwnPropertyNames(req.query).length) {
+        data = await this.inventoryServices.getByQuery(req.query);
+      } else {
+        data = await this.inventoryServices.getAll();
+      }
+
       res.status(200).json(data);
     } catch (error) {
       next(error);

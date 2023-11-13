@@ -66,6 +66,64 @@ class QueryCreator {
 
     return query;
   }
+
+  /**
+   * Create a select query given a query parameter lists and a table name. The query
+   * parameter list is taken as an object, where the object key is taken as the
+   * column and the value as the filter value.
+   * The next properties are taken as special features:
+   * - orderBy: for ordering by a certain column
+   * - pages: for limiting the number of pages to show
+   * - pageOffset: for adding a offset to the pages to show
+   * @param tableName The table name
+   * @param queryParams The query parameters
+   * @param column The column name, default is '*'
+   * @returns
+   */
+  selectByQueryParams(
+    tableName: string,
+    queryParams: object,
+    column: string = '*'
+  ) {
+    const specialFilters = ['orderBy', 'pages', 'pageOffset'];
+
+    let query = `SELECT ${column} FROM "${tableName}" WHERE `;
+    let queriesPresent = false;
+
+    for (const [key, value] of Object.entries(queryParams)) {
+      if (specialFilters.includes(key)) continue;
+      query = query.concat(`"${key}" = '${value}' AND `);
+      queriesPresent = true;
+    }
+
+    if (queriesPresent) {
+      // removes last "AND"
+      query = query.slice(0, -5);
+    } else {
+      // removes "WHERE" as there are not queries
+      query = query.slice(0, -7);
+    }
+
+    // adding orderBy if exists
+    if (queryParams['orderBy' as keyof object])
+      query = query.concat(
+        ` ORDER BY "${queryParams['orderBy' as keyof object]}"`
+      );
+
+    // adding pagination if exists
+    if (queryParams['pages' as keyof object]) {
+      query = query.concat(` LIMIT ${queryParams['pages' as keyof object]}`);
+    }
+
+    // adding pageOffset if exists
+    if (queryParams['pageOffset' as keyof object]) {
+      query = query.concat(
+        `  OFFSET ${queryParams['pageOffset' as keyof object]}`
+      );
+    }
+
+    return query;
+  }
 }
 
 export default new QueryCreator();
