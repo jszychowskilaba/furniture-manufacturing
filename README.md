@@ -1,7 +1,5 @@
 # Custom Furniture Manufacturing API
 
-c
-
 The `Custom Furniture Manufacturing API System` provides an interface for integrating a bespoke ordering and manufacturing system into your business infrastructure.
 
 This API **streamlines the process** for estimating production time, materials cost, labor cost and order progress tracking.
@@ -75,6 +73,10 @@ This API **streamlines the process** for estimating production time, materials c
 
 Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
+- **Requirements**:
+
+  - Have valid credentials
+
 - **Request**
 
   ```
@@ -122,6 +124,10 @@ Server side create OAuth 2.0 tokens, stores them in DB and return them.
 
 Server side delete the OAuth 2.0 tokens from the DB.
 
+- **Requirements**:
+
+  - Being logged in
+
 - **Request**
 
   ```
@@ -149,6 +155,10 @@ Server side delete the OAuth 2.0 tokens from the DB.
   <summary>Click here</summary>
 
 Server side generates a new token and a new refresh token, update the old ones in the DB side and response with the new tokens.
+
+- **Requirements**:
+
+  - Being logged in
 
 - **Request**
 
@@ -202,6 +212,10 @@ Server side generates a new token and a new refresh token, update the old ones i
   <summary>Click here</summary>
 
 Server side creates a new user and stores it into data base.
+
+- **Requirements**:
+
+  - Being logged as admin
 
 - **Request**
 
@@ -260,6 +274,10 @@ Server side creates a new user and stores it into data base.
 
 Returns a user by username stored in the DB.
 
+- **Requirements**:
+
+  - Being logged in
+
 - **Responses**
 
   - 200 OK. Password is not returned.
@@ -296,6 +314,24 @@ Returns a user by username stored in the DB.
   <summary>Click here</summary>
 
 Returns all users stored in the DB.
+
+- **Requirements**:
+
+  - Being logged in
+
+**Query parameters**: _all optional_
+
+| **Parameter** |              **Description**               |
+| :-----------: | :----------------------------------------: |
+|    `pages`    |           Number of items to get           |
+| `pageOffset`  |                Items offset                |
+|   `orderBy`   | Order items by any of the below parameters |
+|    `email`    |           Filter items by email            |
+|    `name`     |            Filter items by name            |
+|  `lastName`   |         Filter items by last name          |
+|    `role`     |            Filter items by role            |
+|  `createdAt`  |       Filter items by creation date        |
+|  `updatedAt`  |        Filter items by update date         |
 
 - **Responses**
 
@@ -345,6 +381,10 @@ Returns all users stored in the DB.
   <summary>Click here</summary>
 
 Server side updates a user and stores the changes into data base. Any property from user model can be updated.
+
+- **Requirements**:
+
+  - Being logged as admin
 
 - **Request**
 
@@ -408,6 +448,29 @@ Server side updates a user and stores the changes into data base. Any property f
 
 Returns all inventory stored in DB.
 
+- **Requirements**:
+
+  - Being logged in
+
+**Query parameters**: _all optional_
+
+|  **Parameter**  |              **Description**               |
+| :-------------: | :----------------------------------------: |
+|     `pages`     |           Number of items to get           |
+|  `pageOffset`   |                Items offset                |
+|    `orderBy`    | Order items by any of the below parameters |
+|    `status`     |              Filter by status              |
+| `internalCode`  |          Filter by internal code           |
+|  `description`  |           Filter by description            |
+|     `stock`     |              Filter by stock               |
+| `reservedStock` |          Filter by reserved stock          |
+| `pricePerUnit`  |          Filter by price per unit          |
+|     `unit`      |               Filter by unit               |
+| `purchaseTime`  |          Filter by purchase time           |
+| `internalNotes` |          Filter by internal notes          |
+|   `createdAt`   |          Filter by creation date           |
+|   `updatedAt`   |           Filter by update date            |
+
 - **Responses**
 
   - 200 OK
@@ -464,6 +527,10 @@ Returns all inventory stored in DB.
   <summary>Click here</summary>
 
 Creates a new material and store it in DB.
+
+- **Requirements**:
+
+  - Being logged in as admin or inventory administrator
 
 - **Request**
 
@@ -531,6 +598,14 @@ Creates a new material and store it in DB.
 
 Returns a material by material ID stored in the DB.
 
+- **Requirements**:
+
+  - Being logged in
+
+- **Requirements**:
+
+  - Being logged in
+
 - **Responses**
 
   - 200 OK
@@ -572,6 +647,10 @@ Returns a material by material ID stored in the DB.
   <summary>Click here</summary>
   
   Updates a material by material ID and update the DB. Any property of the material model can be updated.
+
+- **Requirements**:
+
+  - Being logged in as admin or inventory administrator
 
 - **Request**
 
@@ -636,7 +715,27 @@ Returns a material by material ID stored in the DB.
 <details>
   <summary>Click here</summary>
 
-Return all created labors from DB
+Return all created labors from DB.
+
+- **Requirements**:
+
+  - Being logged in
+
+**Query parameters**: _all optional_
+
+|  **Parameter**  |              **Description**               |
+| :-------------: | :----------------------------------------: |
+|     `pages`     |           Number of items to get           |
+|  `pageOffset`   |                Items offset                |
+|    `orderBy`    | Order items by any of the below parameters |
+|    `status`     |              Filter by status              |
+| `internalCode`  |          Filter by internal code           |
+|  `description`  |           Filter by description            |
+| `pricePerUnit`  |          Filter by price per unit          |
+|     `unit`      |               Filter by unit               |
+| `internalNotes` |          Filter by internal notes          |
+|   `createdAt`   |          Filter by creation date           |
+|   `updatedAt`   |           Filter by update date            |
 
 - **Responses**
 
@@ -691,6 +790,10 @@ Return all created labors from DB
   <summary>Click here</summary>
 
 Creates a new labor and stores it in DB.
+
+- **Requirements**:
+
+  - Being logged in as admin or production manager
 
 - **Request**
 
@@ -754,7 +857,11 @@ Creates a new labor and stores it in DB.
 <details>
   <summary>Click here</summary>
 
-Returns a labor stored in the DB by its ID
+Returns a labor stored in the DB by its ID.
+
+- **Requirements**:
+
+  - Being logged in
 
 - **Responses**
 
@@ -795,6 +902,10 @@ Returns a labor stored in the DB by its ID
   <summary>Click here</summary>
 
 Updates labor by its ID and update the DB. Any property of the labor model can be updated.
+
+- **Requirements**:
+
+  - Being logged in as admin or production manager
 
 - **Request**
 
@@ -859,6 +970,28 @@ Updates labor by its ID and update the DB. Any property of the labor model can b
   <summary>Click here</summary>
 
 Return all manufacture orders stored in the DB.
+
+- **Requirements**:
+
+  - Being logged in
+
+**Query parameters**: _all optional_
+
+|     **Parameter**     |              **Description**               |
+| :-------------------: | :----------------------------------------: |
+|        `pages`        |           Number of items to get           |
+|     `pageOffset`      |                Items offset                |
+|       `orderBy`       | Order items by any of the below parameters |
+|       `status`        |              Filter by status              |
+|    `internalCode`     |          Filter by internal code           |
+|     `description`     |           Filter by description            |
+|    `manufactured`     |           Filter by manufactured           |
+|        `price`        |              Filter by price               |
+| `totalProductionTime` |      Filter by total production time       |
+| `unitsToManufacture`  |       Filter by units to manufacture       |
+|    `internalNote`     |          Filter by internal notes          |
+|      `createdAt`      |          Filter by creation date           |
+|      `updatedAt`      |           Filter by update date            |
 
 - **Responses**
 
@@ -928,6 +1061,10 @@ Return all manufacture orders stored in the DB.
   <summary>Click here</summary>
 
 Creates a new manufacture order and stores it in DB.
+
+- **Requirements**:
+
+  - Being logged in as admin or sales
 
 - **Request**
 
@@ -1019,6 +1156,10 @@ Creates a new manufacture order and stores it in DB.
 
 Return a manufacture order stored in DB by its ID.
 
+- **Requirements**:
+
+  - Being logged in
+
 - **Responses**
 
   - 200 OK
@@ -1086,6 +1227,10 @@ Return a manufacture order stored in DB by its ID.
   <summary>Click here</summary>
 
 Update a stored manufacture order in the DB. All properties of order model can be updated. When updating a labor or material, the entire list of the labors or materials will be changed by the new one sent.
+
+- **Requirements**:
+
+  - Being logged in as admin or production manager
 
 - **Request**
 
@@ -1161,6 +1306,10 @@ Update a stored manufacture order in the DB. All properties of order model can b
 
 Manufacture a sent quantity of the manufacture order and update the materials stock and reserved stock.
 
+- **Requirements**:
+
+  - Being logged in as admin or production manager
+
 - **Request**
 
   ```
@@ -1197,6 +1346,8 @@ Manufacture a sent quantity of the manufacture order and update the materials st
 
 - Example
 
+**All fields are necessary for creation**
+
 ```
 {
   "username": "superSystem",
@@ -1211,6 +1362,8 @@ Manufacture a sent quantity of the manufacture order and update the materials st
 ### Material
 
 - Example
+
+**All fields are necessary for creation**
 
 ```
 {
@@ -1230,6 +1383,8 @@ Manufacture a sent quantity of the manufacture order and update the materials st
 
 - Example
 
+**All fields are necessary for creation**
+
 ```
 {
   "status": "active" | "inactive",
@@ -1245,6 +1400,8 @@ Manufacture a sent quantity of the manufacture order and update the materials st
 ### Order
 
 - Example
+
+**All fields are necessary for creation**
 
 ```
 {
