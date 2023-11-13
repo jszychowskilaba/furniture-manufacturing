@@ -44,7 +44,6 @@ class OrderController {
 
       res.status(200).json(createdOrders);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   };
