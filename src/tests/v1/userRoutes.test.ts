@@ -174,4 +174,35 @@ describe('Testing userRoutes', () => {
       .send(user1)
       .expect(404);
   });
+
+  test('Expect GET: /api/v1/user?pages=2 to return 2 users', async () => {
+    const numberOfPages = 2;
+
+    const res = await req
+      .get(`/api/v1/user?pages=${numberOfPages}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .expect(200);
+
+    expect(res.body.length).toBe(numberOfPages);
+  });
+
+  test('Expect PATCH: /api/v1/user to update user password and to be able to login', async () => {
+    const update = {
+      password: 'newPassword',
+    };
+
+    await req
+      .patch(`/api/v1/user/${user1.username}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(update)
+      .expect(200);
+
+    await req
+      .post('/api/v1/auth/login')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .send(`client_id=${user1.username}&client_secret=${update.password}`)
+      .expect(201);
+  });
 });

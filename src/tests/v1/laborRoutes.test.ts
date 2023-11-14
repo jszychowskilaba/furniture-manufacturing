@@ -149,4 +149,16 @@ describe('Testing authRoutes', () => {
       .send(update)
       .expect(404);
   });
+
+  test('Expect GET: /api/v1/labor?pages=2 to return 2 labors', async () => {
+    const numberOfPages = 2;
+    
+    const res = await req
+      .get(`/api/v1/labor?pages=${numberOfPages}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .expect(200);
+
+    expect(res.body.length).toBe(numberOfPages);
+  });
 });

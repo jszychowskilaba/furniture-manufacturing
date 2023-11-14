@@ -11,7 +11,7 @@ beforeAll(async () => {
 
 const req = request(app);
 
-describe('Testing authRoutes', () => {
+describe('Testing inventoryRoutes', () => {
   const authTokens = { access_token: null, refresh_token: null };
   let createdMaterial1Id: any;
 
@@ -151,7 +151,7 @@ describe('Testing authRoutes', () => {
 
   test('Expect PATCH: /api/v1/inventory/noExistent to return 404 if material do not exists', async () => {
     const randomName = generateRandomId();
-    const update = {status: "active"}
+    const update = { status: 'active' };
 
     await req
       .patch(`/api/v1/inventory/${randomName}`)
@@ -159,5 +159,17 @@ describe('Testing authRoutes', () => {
       .set('authorization', `${authTokens.access_token}`)
       .send(update)
       .expect(404);
+  });
+
+  test('Expect GET: /api/v1/inventory?pages=2 to return 2 materials', async () => {
+    const numberOfPages = 2;
+    
+    const res = await req
+      .get(`/api/v1/inventory?pages=${numberOfPages}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .expect(200);
+
+    expect(res.body.length).toBe(numberOfPages);
   });
 });

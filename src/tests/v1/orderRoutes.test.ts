@@ -187,7 +187,7 @@ describe('Testing orderRoutes', () => {
     expect(res2.body.reservedStock).toBe(material2.reservedStock + 10 * 3);
   });
 
-  test('Expect POST: /v1/orders/{orderID}/manufactureOrder to manufacture and update materials', async () => {
+  test('Expect POST: /v1/orders/{orderID}/manufacture to manufacture and update materials', async () => {
     const toManufacture = {
       quantity: 2,
     };
@@ -305,11 +305,102 @@ describe('Testing orderRoutes', () => {
       internalCode: generateRandomId(),
     };
 
-   await req
+    await req
       .patch(`/api/v1/orders/${generateRandomId()}`)
       .set('Content-Type', 'application/json')
       .set('authorization', `${authTokens.access_token}`)
       .send(update)
       .expect(404);
+  });
+
+  test('Expect GET: /api/v1/orders?pages=2 to return 2 orders', async () => {
+    const numberOfPages = 2;
+
+    const res = await req
+      .get(`/api/v1/orders?pages=${numberOfPages}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .expect(200);
+
+    expect(res.body.length).toBe(numberOfPages);
+  });
+
+  test('Expect POST: /v1/orders/{orderID}/manufactureOrder to res status 403 if exceeding units to manufacture', async () => {
+    const toManufacture = {
+      quantity: 50,
+    };
+
+    await req
+      .post(`/api/v1/orders/${createdManufactureOrder.id}/manufactureOrder`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(toManufacture)
+      .expect(403);
+  });
+
+  test('Expect POST: /v1/orders/ to res status 422 if there are not enough materials', async () => {
+    manufactureOrder = {
+      status: 'inProduction',
+      internalCode: generateRandomId(),
+      description: 'Basic wood table for client Bob Doe',
+      unitsToManufacture: 3,
+      internalNotes: 'See design sent to email @July 23',
+      materials: [
+        { id: createdMaterial1.id, quantity: 99999 },
+        { id: createdMaterial2.id, quantity: 10 },
+      ],
+      labors: [
+        { id: createdLabor1.id, quantity: 10 },
+        { id: createdLabor2.id, quantity: 20 },
+      ],
+    };
+    await req
+      .post(`/api/v1/orders/`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(manufactureOrder)
+      .expect(422);
+  });
+
+  test('Expect POST: /v1/orders/{orderId}/manufacture res status 404 if a material do not exist', async () => {
+    const manufactureOrder = {
+      status: 'inProduction',
+      internalCode: generateRandomId(),
+      description: 'Basic wood table for client Bob Doe',
+      unitsToManufacture: 3,
+      internalNotes: 'See design sent to email @July 23',
+      materials: [
+        { id: generateRandomId(), quantity: 99999 },
+        { id: createdMaterial2.id, quantity: 10 },
+      ],
+      labors: [
+        { id: createdLabor1.id, quantity: 10 },
+        { id: createdLabor2.id, quantity: 20 },
+      ],
+    };
+
+    await req
+    .post(`/api/v1/orders/`)
+    .set('Content-Type', 'application/json')
+    .set('authorization', `${authTokens.access_token}`)
+    .send(manufactureOrder)
+    .expect(404);
+
+  });
+
+  test('Expect PATCH: /v1/orders/{orderId} status = "canceled" to return materials', async () => {
+    const update = {
+      status: 'canceled',
+    };
+
+    const res = await req
+      .patch(`/api/v1/orders/${createdManufactureOrder.id}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(update)
+      .expect(200);
+
+    expect(res.body.materials).toEqual([]);
+    expect(res.body.labors).toEqual([]);
   });
 });
