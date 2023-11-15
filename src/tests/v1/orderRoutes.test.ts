@@ -290,14 +290,12 @@ describe('Testing orderRoutes', () => {
       internalCode: generateRandomId(),
     };
 
-    const res = await req
+    await req
       .patch(`/api/v1/orders/${createdManufactureOrder.id}`)
       .set('Content-Type', 'application/json')
       .set('authorization', `${authTokens.access_token}`)
       .send(update)
       .expect(403);
-
-    expect(res.body.internalCode).toEqual(update.internalCode);
   });
 
   test('Expect UPDATE: /v1/orders/{orderID} to res status 404 if order do not exist', async () => {
@@ -401,5 +399,37 @@ describe('Testing orderRoutes', () => {
 
     expect(res.body.materials).toEqual([]);
     expect(res.body.labors).toEqual([]);
+  });
+
+  test('Expect POST: /api/v1/order to res 403 is inactive', async () => {
+    manufactureOrder = {
+      status: 'inProduction',
+      internalCode: generateRandomId(),
+      description: 'Basic wood table for client Bob Doe',
+      unitsToManufacture: 3,
+      internalNotes: 'See design sent to email @July 23',
+      materials: [
+        { id: createdMaterial1.id, quantity: 20 },
+        { id: createdMaterial2.id, quantity: 10 },
+      ],
+      labors: [
+        { id: createdLabor1.id, quantity: 10 },
+        { id: createdLabor2.id, quantity: 20 },
+      ],
+    };
+
+    await req
+      .patch(`/api/v1/inventory/${createdMaterial1.id}`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send({ status: 'inactive' })
+      .expect(200);
+
+    await req
+      .post('/api/v1/orders')
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(manufactureOrder)
+      .expect(422);
   });
 });
