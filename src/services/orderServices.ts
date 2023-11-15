@@ -38,9 +38,9 @@ class OrderServices {
     const totalProductionTime: number =
       orderHelper.calculateTotalProductionTime(labors, order);
 
-    await orderHelper.checkForMissingMaterials(order);
+    orderHelper.checkForMissingMaterials(materials, order);
 
-    const createdOrder: CreatedOrder = orderHelper.createOrderObject(
+    const createdOrder: CreatedOrderDto = orderHelper.createOrderObject(
       order,
       totalPrice,
       totalProductionTime,
@@ -118,6 +118,12 @@ class OrderServices {
       orderChanges.labors = [];
     }
 
+    if (orderChanges.status != 'canceled' && oldOrder.manufactured != 0)
+      throw new CustomError(
+        'Can not update a order with manufactured units. Try canceling order and creating a new one.',
+        403
+      );
+
     //Updating order
     const updatedOrder: CreatedOrder = { ...oldOrder, ...orderChanges };
 
@@ -150,7 +156,7 @@ class OrderServices {
 
     updatedOrder.totalProductionTime = totalProductionTime;
 
-    await orderHelper.checkForMissingMaterials(updatedOrder);
+    await orderHelper.checkForMissingMaterials(materials, updatedOrder);
 
     const orderHasLabor = orderHelper.createOrderHasLaborTable(
       updatedOrder.labors,

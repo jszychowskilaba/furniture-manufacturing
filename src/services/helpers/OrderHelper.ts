@@ -1,9 +1,12 @@
+import { CreatedMaterialDto } from '../../dtos/inventory/CreatedMaterialDto';
+import { CreatedOrderDto } from '../../dtos/order/CreatedOrderDto';
 import OrderDataBase from '../../repositories/OrderDataBase';
 import { CustomError } from '../../helpers/CustomError';
-import { CreatedOrder, Order } from '../../types/Order';
 import { CreatedMaterial } from '../../types/Material';
 import { CreatedLabor } from '../../types/Labor';
+import { Order } from '../../types/Order';
 import { CreationStamp } from './CreationStamp';
+
 
 class OrderHelper {
   async getAll<T>(
@@ -11,12 +14,18 @@ class OrderHelper {
     orderData: Array<{ id: string; quantity: number }>
   ): Promise<T[]> {
     const allData = [];
+    const unStoredResources = [];
 
     for (const data of orderData) {
       const storedData = await OrderDataBase.get<T>(tableName, data.id);
       if (!storedData)
+        unStoredResources.push({ id: data.id, resource: tableName });
+
+      if (unStoredResources.length)
         throw new CustomError(
-          `Data id: ${data.id} is not stored in ${tableName}.`,
+          `These resources are not stored in the db. ${JSON.stringify(
+            unStoredResources
+          )}`,
           404
         );
 
@@ -94,14 +103,19 @@ class OrderHelper {
     return totalTime * order.unitsToManufacture;
   }
 
-  async checkForMissingMaterials(order: Order): Promise<void> {
+  checkForMissingMaterials(
+    orderMaterials: CreatedMaterialDto[],
+    order: Order
+  ): void {
     const missingMaterials = [];
 
     for (const orderMaterial of order.materials) {
-      const inventoryMaterial = await OrderDataBase.get<CreatedMaterial>(
-        'material',
-        orderMaterial.id
+      const inventoryMaterial = orderMaterials.find(
+        (material) => orderMaterial.id == material.id
       );
+
+      if (!inventoryMaterial)
+        throw new CustomError(`Material id${orderMaterial.id} not found.`, 404);
 
       const materialToUse = orderMaterial.quantity * order.unitsToManufacture;
 
@@ -128,14 +142,14 @@ class OrderHelper {
     totalPrice: number,
     totalProductionTime: number,
     username: string
-  ): CreatedOrder {
-    const createdOrder: CreatedOrder = {
+  ): CreatedOrderDto {
+    const createdOrder = new CreatedOrderDto({
       ...new CreationStamp(username),
       ...order,
       manufactured: 0,
       totalPrice: totalPrice,
       totalProductionTime: totalProductionTime,
-    };
+    });
 
     return createdOrder;
   }
@@ -189,7 +203,9 @@ class OrderHelper {
 
     if (checkForInactiveResources.length > 0)
       throw new CustomError(
-        `Can not proceed. These resource IDs are inactive: ${JSON.stringify(checkForInactiveResources)}`,
+        `Can not proceed. These resource IDs are inactive: ${JSON.stringify(
+          checkForInactiveResources
+        )}`,
         422
       );
   }
