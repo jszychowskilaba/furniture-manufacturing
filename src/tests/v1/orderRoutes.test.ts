@@ -285,7 +285,7 @@ describe('Testing orderRoutes', () => {
       .expect(400);
   });
 
-  test('Expect UPDATE: /v1/orders/{orderID} to update order', async () => {
+  test('Expect UPDATE: /v1/orders/{orderID} to res 403 if order already have manufactured units', async () => {
     const update = {
       internalCode: generateRandomId(),
     };
@@ -295,7 +295,7 @@ describe('Testing orderRoutes', () => {
       .set('Content-Type', 'application/json')
       .set('authorization', `${authTokens.access_token}`)
       .send(update)
-      .expect(200);
+      .expect(403);
 
     expect(res.body.internalCode).toEqual(update.internalCode);
   });
@@ -380,12 +380,11 @@ describe('Testing orderRoutes', () => {
     };
 
     await req
-    .post(`/api/v1/orders/`)
-    .set('Content-Type', 'application/json')
-    .set('authorization', `${authTokens.access_token}`)
-    .send(manufactureOrder)
-    .expect(404);
-
+      .post(`/api/v1/orders/`)
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${authTokens.access_token}`)
+      .send(manufactureOrder)
+      .expect(404);
   });
 
   test('Expect PATCH: /v1/orders/{orderId} status = "canceled" to return materials', async () => {
